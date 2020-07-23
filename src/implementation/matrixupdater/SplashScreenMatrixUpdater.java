@@ -19,17 +19,8 @@ public class SplashScreenMatrixUpdater implements MatrixUpdater {
         imageMatrix = new ImageMatrix(imageHeight, imageWidth, matrixHeight, matrixWidth);
         switch (layer) {
             case 0:
-                for (int i = 0; i < matrixHeight / 2; ++i) {
-                    for (int j = 0; j < matrixWidth; ++j) {
-                        imageMatrix.set(i, j, new TextImageSource(new Color(144 + (j / 3), 144 - ((matrixHeight / 2) - i), 255 - ((matrixHeight / 2) - i)), Color.BLACK, ' '));
-                    }
-                }
-                for (int i =  matrixHeight / 3; i < matrixHeight; ++i) {
-                    for (int j = 0; j < matrixWidth; ++j) {
-                        if (i < matrixHeight / 2 && !(j > 3 * (matrixHeight - (4 + i)))) continue;
-                        imageMatrix.set(i, j, new TextImageSource(new Color(196 + (i - (matrixHeight / 2)), 128 - (j / 2), Math.max(0, 32 + (i - j))), Color.BLACK, ' '));
-                    }
-                }
+                sky(matrixHeight, matrixWidth);
+                earth(matrixHeight, matrixWidth);
                 mecha();
                 sun();
                 viridianDrive();
@@ -42,6 +33,14 @@ public class SplashScreenMatrixUpdater implements MatrixUpdater {
                     throw new IllegalArgumentException("Unhandled layer " + layer);
         }
         return imageMatrix;
+    }
+    private void earth(int matrixHeight, int matrixWidth) {
+        for (int i =  matrixHeight / 3; i < matrixHeight; ++i) {
+            for (int j = 0; j < matrixWidth; ++j) {
+                if (i < matrixHeight / 2 && !(j > 3 * (matrixHeight - (4 + i)))) continue;
+                setColorTile(new Color(196, 128, 32), i, j);
+            }
+        }
     }
 
     private void mecha() {
@@ -100,6 +99,13 @@ public class SplashScreenMatrixUpdater implements MatrixUpdater {
         setColorTile(Color.GRAY, 24, 71);
         setColorTile(Color.GRAY, 24, 72);
         setColorTile(Color.GRAY, 24, 73);
+    }
+    private void sky(int matrixHeight, int matrixWidth) {
+        for (int i = 0; i < matrixHeight / 2; ++i) {
+            for (int j = 0; j < matrixWidth; ++j) {
+                setColorTile(new Color(144, 144, 255), i, j);
+            }
+        }
     }
     private void sun() {
         setColorTile(AZURE, 0,0);
@@ -278,7 +284,12 @@ public class SplashScreenMatrixUpdater implements MatrixUpdater {
             setImageTile(row, col + i, new TextImageSource(background, foreground, text.charAt(i)));
     }
     private void setColorTile(Color color, int row, int col) {
-        setImageTile(row, col, new TextImageSource(color, color, ' '));
+        Color scaledColor = new Color(
+                Math.max(Math.min(color.getRed() + (row / 4), 255), 0),
+                Math.max(Math.min(color.getGreen() - (row / 4), 255), 0),
+                Math.max(Math.min(color.getBlue() + (col / 4), 255), 0)
+        );
+        setImageTile(row, col, new TextImageSource(scaledColor, scaledColor, ' '));
     }
     private void setImageTile(int row, int col, ImageSource imageSource) {
         imageMatrix.set(row, col, imageSource);
