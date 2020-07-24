@@ -19,7 +19,7 @@ public class SplashScreenMatrixUpdater extends MatrixUpdater {
     @Override
     protected ImageMatrix doUpdate() {
         ImageMatrix imageMatrix = LAYERS[currentLayer];
-        imageMatrix.set(0,0, new TrueImageSource(imageMatrix.getImageHeight(), imageMatrix.getImageWidth()));
+        imageMatrix.set(0,0, new TrueImageSource(0, 0));
         return imageMatrix;
     }
 }
