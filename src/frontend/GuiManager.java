@@ -1,8 +1,8 @@
 package frontend;
 
+import images.Renderer;
 import implementation.matrixupdater.SplashScreenMatrixUpdater;
 import implementation.paintinstructions.DefaultPaintInstruction;
-import implementation.paintinstructions.TransparentBackgroundPaintInstruction;
 import main.Gui;
 import main.GuiBuilder;
 
@@ -19,6 +19,7 @@ public class GuiManager {
     private static Gui gui;
 
     static void launchGui() {
+        Renderer.setImageDirectoryPath("./gfx");
         gui = GuiBuilder
                 .buildGui()
                 .setSizeAndColor(864, 1280, BG_RGB.getRGB())
@@ -32,14 +33,13 @@ public class GuiManager {
                     .addRegion(
                             0,
                             0,
-                            24,
-                            16,
-                            36,
-                            80,
+                            864,
+                            1280,
+                            1,
+                            1,
                             new SplashScreenMatrixUpdater(),
-                            new DefaultPaintInstruction(),
-                            new TransparentBackgroundPaintInstruction()
-                            )
+                            new DefaultPaintInstruction()
+                    )
                     //todo - more regions?
                 //todo - more channels
                 .build(30);

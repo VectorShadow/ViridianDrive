@@ -4,6 +4,13 @@ import main.Canvas;
 
 import java.awt.image.BufferedImage;
 
+/**
+ * For use with external image files - this will not work well with TextImageSources, due to the way the text
+ * is rendered.
+ *
+ * Text can be rendered with pseudo-transparency by using the ImageMatrix.getBackgroundColorAt() method, on the
+ * image matrix below the one currently being updated.
+ */
 public class TransparentBackgroundPaintInstruction implements PaintInstruction {
 
     @Override
