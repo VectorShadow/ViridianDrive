@@ -11,7 +11,7 @@ public class SplashScreenMatrixUpdater implements MatrixUpdater {
 
     private static final Color AZURE = new Color(63, 159, 255);
     private static final Color VIRIDIAN = new Color(80, 160, 48);
-    
+
     private ImageMatrix imageMatrix;
     
     @Override
@@ -26,8 +26,8 @@ public class SplashScreenMatrixUpdater implements MatrixUpdater {
                 viridianDrive();
                 break;
             case 1:
-                write(30, 22, "A game by Vector Shadow Digital Labs", /*new Color(196, 128, 32)*/ GuiManager.BG_RGB, Color.BLUE);
-                write(32, 26, "[Press any key to continue]", /*new Color(196, 128, 32)*/ GuiManager.BG_RGB, Color.BLUE);
+                write(30, 22, "A game by Vector Shadow Digital Labs", GuiManager.BG_RGB, Color.BLUE);
+                write(32, 26, "[Press any key to continue]", GuiManager.BG_RGB, Color.BLUE);
                 break;
                 default:
                     throw new IllegalArgumentException("Unhandled layer " + layer);
