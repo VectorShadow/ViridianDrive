@@ -1,6 +1,6 @@
 package frontend;
 
-public class Driver {
+public class LocalDriver {
     public static void main(String[] args) {
         GuiManager.launchGui();
         GuiManager.getGui().update();

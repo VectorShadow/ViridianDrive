@@ -6,6 +6,7 @@
       <module fileurl="file://$PROJECT_DIR$/../Logger/Logger.iml" filepath="$PROJECT_DIR$/../Logger/Logger.iml" />
       <module fileurl="file://$PROJECT_DIR$/../ShadowComm/ShadowComm.iml" filepath="$PROJECT_DIR$/../ShadowComm/ShadowComm.iml" />
       <module fileurl="file://$PROJECT_DIR$/ViridianDrive.iml" filepath="$PROJECT_DIR$/ViridianDrive.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../dydx2/dydx2.iml" filepath="$PROJECT_DIR$/../dydx2/dydx2.iml" />
     </modules>
   </component>
 </project>
