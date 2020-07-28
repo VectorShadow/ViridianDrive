@@ -1,20 +1,16 @@
 package backend;
 
-import link.BackendDataHandler;
-import main.Engine;
+import link.LinkManager;
 import main.LogHub;
-import main.Server;
 
 import java.io.IOException;
 
 public class RemoteDriver {
     public static void main(String[] args) {
         try {
-            Server server = new Server(new BackendDataHandler(), 29387);
-            server.start();
-            Engine engine; //todo - more here, probably
+            LinkManager.startRemoteEngine();
         } catch (IOException e) {
-            LogHub.logFatalCrash("IOException during server operation.", e);
+            LogHub.logFatalCrash("Error starting server.", e);
         }
     }
 }
