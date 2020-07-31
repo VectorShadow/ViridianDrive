@@ -1,10 +1,12 @@
 package gamestate;
 
+import gamestate.coordinates.ZoneCoordinate;
+
 public class GameZoneBuilder {
-    public GameZone build(int zoneID, int depth) {
-        return getGenerator(zoneID, depth).generate();
+    public GameZone build(ZoneCoordinate zc) {
+        return getGenerator(zc.LOCATION_ID, zc.DEPTH).generate();
     }
-    public GameZoneGenerator getGenerator(int zoneID, int depth) {
+    private GameZoneGenerator getGenerator(int zoneID, int depth) {
         //todo - different Generators for different IDs and even depths
         return new TestGameZoneGenerator();
     }

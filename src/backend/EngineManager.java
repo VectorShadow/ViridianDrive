@@ -7,9 +7,9 @@ import link.LocalDataLink;
 import main.Client;
 import main.Engine;
 import main.Server;
+import main.ZoneProcessorDataLinkAggregator;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Provides various engine related services.
@@ -52,9 +52,9 @@ public class EngineManager {
         LocalDataLink front = new LocalDataLink(new FrontendDataHandler());
         LocalDataLink back = new LocalDataLink(new BackendDataHandler());
         LocalDataLink.pair(front, back);
-        ArrayList<DataLink> engineLinks = new ArrayList<>();
-        engineLinks.add(back);
-        engine = new Engine(engineLinks);
+        ZoneProcessorDataLinkAggregator aggregator = new ZoneProcessorDataLinkAggregator();
+        aggregator.addDataLink(back);
+        engine = new Engine(aggregator);
         engine.start();
         return front;
     }
@@ -67,8 +67,9 @@ public class EngineManager {
      * @throws IOException passed from Server constructor.
      */
     static void startRemoteEngine() throws IOException {
-        Server server = new Server(new BackendDataHandler(), PORT_NUMBER);
-        engine = new Engine(server.getOpenDataLinks());
+        ZoneProcessorDataLinkAggregator aggregator = new ZoneProcessorDataLinkAggregator();
+        Server server = new Server(new BackendDataHandler(), aggregator, PORT_NUMBER);
+        engine = new Engine(aggregator);
         engine.start();
         server.start();
     }
