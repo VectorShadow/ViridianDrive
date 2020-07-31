@@ -8,6 +8,8 @@ import main.GuiBuilder;
 import main.LiveLog;
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
@@ -45,6 +47,24 @@ public class GuiManager {
                     )
                     //todo - more regions?
                 //todo - more channels
+                .addKeyListener(
+                        new KeyListener() {
+                            @Override
+                            public void keyTyped(KeyEvent e) {
+
+                            }
+
+                            @Override
+                            public void keyPressed(KeyEvent e) {
+                                handleKeyPress(e);
+                            }
+
+                            @Override
+                            public void keyReleased(KeyEvent e) {
+
+                            }
+                        }
+                )
                 .addWindowListener(
                         new WindowListener() {
                             @Override
@@ -90,5 +110,12 @@ public class GuiManager {
 
     public static Gui getGui() {
         return gui;
+    }
+
+
+    public static void handleKeyPress(KeyEvent e) {
+        //todo - lots more here. This will probably want its own class or suite of classes eventually.
+        if (e.getKeyCode() == KeyEvent.VK_ENTER && e.getModifiersEx() == KeyEvent.ALT_DOWN_MASK)
+            gui.toggleFullScreenMode();
     }
 }
