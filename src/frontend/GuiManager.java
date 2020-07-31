@@ -5,8 +5,11 @@ import implementation.matrixupdater.SplashScreenMatrixUpdater;
 import implementation.paintinstructions.DefaultPaintInstruction;
 import main.Gui;
 import main.GuiBuilder;
+import main.LiveLog;
 
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 public class GuiManager {
 
@@ -42,6 +45,45 @@ public class GuiManager {
                     )
                     //todo - more regions?
                 //todo - more channels
+                .addWindowListener(
+                        new WindowListener() {
+                            @Override
+                            public void windowOpened(WindowEvent e) {
+
+                            }
+
+                            @Override
+                            public void windowClosing(WindowEvent e) {
+
+                            }
+
+                            @Override
+                            public void windowClosed(WindowEvent e) {
+                                LiveLog.stop();
+                                //todo - other shutdown procedures here
+                            }
+
+                            @Override
+                            public void windowIconified(WindowEvent e) {
+
+                            }
+
+                            @Override
+                            public void windowDeiconified(WindowEvent e) {
+
+                            }
+
+                            @Override
+                            public void windowActivated(WindowEvent e) {
+
+                            }
+
+                            @Override
+                            public void windowDeactivated(WindowEvent e) {
+
+                            }
+                        }
+                )
                 .build(30);
         //gui.toggleFullScreenMode();
     }
