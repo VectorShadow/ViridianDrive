@@ -1,10 +1,11 @@
-package gamestate;
+package gamestate.gamezone;
 
 import gamestate.terrain.TerrainTile;
 
-public class TestGameZoneGenerator extends GameZoneGenerator {
+public class TestGameZoneBuilder extends GameZoneBuilder {
+
     @Override
-    public GameZone generate() {
+    public GameZone build() {
         GameZone gz = new GameZone(32, 32);
         for (int i = 0; i < gz.ROWS; ++i) {
             for (int j = 0; j < gz.COLUMNS; ++j) {
