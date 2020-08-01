@@ -7,7 +7,7 @@ import definitions.ViridianDriveTerrainLookup;
 import link.DataLink;
 import link.instructions.AccountCreationRequestInstructionDatum;
 import link.instructions.LogInRequestInstructionDatum;
-import link.instructions.LogOutRequestInstructionDatum;
+import link.instructions.LogOutInstructionDatum;
 import main.LiveLog;
 
 import java.io.IOException;
@@ -45,13 +45,11 @@ public class LocalDriver {
             //test duplicate login - success
             frontend.transmit(new LogInRequestInstructionDatum("user", "pass"));
             Thread.sleep(500);
-            //test logout
-            frontend.transmit(new LogOutRequestInstructionDatum("user"));
-            Thread.sleep(500);
             if (!TEST_LOCAL) {
-                //logout resets engine tracking of the user accounts and causes the datalink to be purged.
-                // locally, the paired datalinks remain connected, but remotely, the socket connection is broken when
-                // the original data link is purged, so we need to reconnect to continue testing.
+                //test logout - invalid operation locally
+                frontend.transmit(new LogOutInstructionDatum("user"));
+                Thread.sleep(500);
+                //attempt to reconnect
                 try {
                     frontend = EngineManager.connectToRemoteEngine();
                 } catch (IOException e) {
