@@ -7,7 +7,7 @@ import link.LocalDataLink;
 import main.Client;
 import main.Engine;
 import main.Server;
-import main.ZoneProcessorDataLinkAggregator;
+import main.DataLinkToZoneAggregator;
 
 import java.io.IOException;
 
@@ -52,7 +52,7 @@ public class EngineManager {
         LocalDataLink front = new LocalDataLink(new FrontendDataHandler());
         LocalDataLink back = new LocalDataLink(new BackendDataHandler());
         LocalDataLink.pair(front, back);
-        ZoneProcessorDataLinkAggregator aggregator = new ZoneProcessorDataLinkAggregator();
+        DataLinkToZoneAggregator aggregator = new DataLinkToZoneAggregator();
         aggregator.addDataLink(back);
         engine = new Engine(aggregator);
         engine.start();
@@ -67,7 +67,7 @@ public class EngineManager {
      * @throws IOException passed from Server constructor.
      */
     static void startRemoteEngine() throws IOException {
-        ZoneProcessorDataLinkAggregator aggregator = new ZoneProcessorDataLinkAggregator();
+        DataLinkToZoneAggregator aggregator = new DataLinkToZoneAggregator();
         Server server = new Server(new BackendDataHandler(), aggregator, PORT_NUMBER);
         engine = new Engine(aggregator);
         engine.start();
