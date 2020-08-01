@@ -20,8 +20,6 @@ public class EngineManager {
 
     private static final int PORT_NUMBER = 29387;
 
-    private static Engine engine = null;
-
     /**
      * Initiate a connection to a remote engine.
      * @return the front end facing remote data link associated with the socket on which the connection was made
@@ -29,19 +27,6 @@ public class EngineManager {
      */
     public static DataLink connectToRemoteEngine() throws IOException {
         return Client.connect(new FrontendDataHandler(), HOST_NAME, PORT_NUMBER);
-    }
-
-    /**
-     * Access the engine.
-     * Backend applications must first call startRemoteEngine() or this call will fail.
-     * Frontend applications running locally must first call startLocalEngine() or this call will fail.
-     * Frontend applications running remotely may not use this call, and should have no need to do so.
-     * @return the engine for this application.
-     */
-    public static Engine getEngine() {
-        if (engine == null)
-            throw new IllegalStateException("Engine must be started before it can be accessed.");
-        return engine;
     }
 
     /**
@@ -54,8 +39,7 @@ public class EngineManager {
         LocalDataLink.pair(front, back);
         DataLinkToZoneAggregator aggregator = new DataLinkToZoneAggregator();
         aggregator.addDataLink(back);
-        engine = new Engine(aggregator);
-        engine.start();
+        Engine.startEngine(aggregator);
         return front;
     }
 
@@ -69,8 +53,7 @@ public class EngineManager {
     static void startRemoteEngine() throws IOException {
         DataLinkToZoneAggregator aggregator = new DataLinkToZoneAggregator();
         Server server = new Server(new BackendDataHandler(), aggregator, PORT_NUMBER);
-        engine = new Engine(aggregator);
-        engine.start();
+        Engine.startEngine(aggregator);
         server.start();
     }
 
