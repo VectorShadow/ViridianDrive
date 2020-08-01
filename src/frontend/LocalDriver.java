@@ -21,7 +21,7 @@ public class LocalDriver {
         GuiManager.launchGui();
         GuiManager.getGui().update();
         //todo - hack! start a local engine for now
-        final boolean TEST_LOCAL = true;
+        final boolean TEST_LOCAL = false;
         DataLink frontend = null;
         try {
             if (TEST_LOCAL)
