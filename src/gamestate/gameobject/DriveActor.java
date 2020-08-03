@@ -20,7 +20,7 @@ public class DriveActor extends GameActor {
     @Override
     public int getMovementSpeed() {
         //todo - test hack only
-        return 4;
+        return 16;
     }
 
     @Override

@@ -23,7 +23,7 @@ public class LocalDriver {
         );
         GuiManager.launchGui();
         GuiManager.getGui().update();
-        final boolean TEST_LOCAL = true;
+        final boolean TEST_LOCAL = false;
         DataLink frontend = null;
         try {
             if (TEST_LOCAL)
