@@ -8,7 +8,9 @@ import link.DataLink;
 import link.instructions.AccountCreationRequestInstructionDatum;
 import link.instructions.LogInRequestInstructionDatum;
 import link.instructions.LogOutInstructionDatum;
+import link.instructions.SelectAvatarInstructionData;
 import main.LiveLog;
+import user.DriveAvatar;
 
 import java.io.IOException;
 
@@ -62,6 +64,9 @@ public class LocalDriver {
             Thread.sleep(500);
             //test login - success
             frontend.transmit(new LogInRequestInstructionDatum("user", "pass"));
+            Thread.sleep(500);
+            //test avatar selection
+            frontend.transmit(new SelectAvatarInstructionData(new DriveAvatar()));
         } catch (InterruptedException e) {
             System.out.println("Interrupted exception during instruction testing:\n" + e);
         }
