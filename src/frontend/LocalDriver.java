@@ -4,6 +4,7 @@ import backend.EngineManager;
 import definitions.DefinitionsManager;
 import definitions.ViridianDriveGameZoneGenerator;
 import definitions.ViridianDriveTerrainLookup;
+import frontend.io.GuiManager;
 import link.DataLink;
 import link.instructions.AccountCreationRequestInstructionDatum;
 import link.instructions.LogInRequestInstructionDatum;
@@ -23,7 +24,7 @@ public class LocalDriver {
         );
         GuiManager.launchGui();
         GuiManager.getGui().update();
-        final boolean TEST_LOCAL = false;
+        final boolean TEST_LOCAL = true;
         DataLink frontend = null;
         try {
             if (TEST_LOCAL)

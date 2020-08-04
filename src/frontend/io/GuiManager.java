@@ -1,6 +1,7 @@
-package frontend;
+package frontend.io;
 
 import images.Renderer;
+import implementation.matrixupdater.PlayerViewMatrixUpdater;
 import implementation.matrixupdater.SplashScreenMatrixUpdater;
 import implementation.paintinstructions.DefaultPaintInstruction;
 import main.Gui;
@@ -17,13 +18,21 @@ public class GuiManager {
 
     public static final Color BG_RGB = Color.BLACK;
 
-    private static final int CH_SPLASH = 0;
-    //todo - more channels
-    private static final int CH_SPLASH_RG_ART = 0;
+    public static final int CH_SPLASH = 0;
+    public static final int CH_SPLASH_RG_ART = 0;
 
-    private static Gui gui;
+    //todo - more channels here - menus, etc.
 
-    static void launchGui() {
+    public static final int CH_MAIN = 1;
+    public static final int CH_MAIN_RG_VIEW = 0;
+
+    //todo - more channels here - inventory, corporation, etc., probably
+
+    public static Gui gui;
+
+    private static InputContext inputContext = new SplashScreenInputContext();
+
+    public static void launchGui() {
         Renderer.setImageDirectoryPath("./gfx");
         gui = GuiBuilder
                 .buildGui()
@@ -45,6 +54,22 @@ public class GuiManager {
                             new SplashScreenMatrixUpdater(),
                             new DefaultPaintInstruction()
                     )
+                /*
+                 * OutputChannel 1 - Main Game Play Channel
+                 */
+                .addOutputChannel()
+                    /*
+                     * Channel 1 Region 0 - Player Avatar View
+                     */
+                    .addRegion(96,
+                            48,
+                            24,
+                            24,
+                            25,
+                            32,
+                            new PlayerViewMatrixUpdater(),
+                            new DefaultPaintInstruction()
+                    )
                     //todo - more regions?
                 //todo - more channels
                 .addKeyListener(
@@ -56,7 +81,7 @@ public class GuiManager {
 
                             @Override
                             public void keyPressed(KeyEvent e) {
-                                handleKeyPress(e);
+                                inputContext.masterHandleKeyPress(e);
                             }
 
                             @Override
@@ -105,17 +130,17 @@ public class GuiManager {
                         }
                 )
                 .build(30);
-        //gui.toggleFullScreenMode();
+        gui.toggleFullScreenMode();
+    }
+
+    public static void setInputContext(InputContext inputContext) {
+        GuiManager.inputContext = inputContext;
+    }
+    public static void setOutputChannel(int newChannel) {
+        gui.setCurrentChannel(newChannel);
     }
 
     public static Gui getGui() {
         return gui;
-    }
-
-
-    public static void handleKeyPress(KeyEvent e) {
-        //todo - lots more here. This will probably want its own class or suite of classes eventually.
-        if (e.getKeyCode() == KeyEvent.VK_ENTER && e.getModifiersEx() == KeyEvent.ALT_DOWN_MASK)
-            gui.toggleFullScreenMode();
     }
 }
