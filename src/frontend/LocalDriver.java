@@ -12,7 +12,6 @@ import link.instructions.LogOutInstructionDatum;
 import link.instructions.SelectAvatarInstructionData;
 import main.LiveLog;
 import user.DriveAvatar;
-import user.UserAccount;
 
 import java.io.IOException;
 
