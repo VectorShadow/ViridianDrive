@@ -1,7 +1,7 @@
 package frontend.io;
 
 import java.awt.event.KeyEvent;
-import static frontend.io.GuiManager.*;
+import static frontend.io.IOManager.*;
 
 /**
  * Determine how the frontend handles inputs.
@@ -15,8 +15,9 @@ public abstract class InputContext {
         //todo - additional master event handling?
         //otherwise delegate to the implementation
         else
-            handleKeyPress(e);
+            handleKeyPressed(e);
     }
 
-    protected abstract void handleKeyPress(KeyEvent e);
+    protected abstract void handleKeyPressed(KeyEvent e);
+    protected abstract void handleKeyReleased(KeyEvent e);
 }

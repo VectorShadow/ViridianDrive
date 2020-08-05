@@ -1,4 +1,4 @@
-package gamestate.gameobject;
+package gamestate.gameobject.actor;
 
 import event.ActorMovementEvent;
 import event.ActorRotationEvent;
@@ -7,31 +7,24 @@ import event.Event;
 import java.util.ArrayList;
 import java.util.Random;
 
-/**
- * Implementation of GameActor.
- */
-public class DriveActor extends GameActor {
+public class TestActor extends DriveActor {
     @Override
     public int getMovementAccess() {
-        //todo - test hack only
         return 1;
     }
 
     @Override
     public int getMovementSpeed() {
-        //todo - test hack only
         return 16;
     }
 
     @Override
     public double getTurningSpeed() {
-        //todo - test hack only
         return Math.PI / 16;
     }
 
     @Override
     public ArrayList<Event> scheduleEvents() {
-        //todo - test hack only
         Random r = new Random();
         ArrayList<Event> events = new ArrayList<>();
         double d = r.nextDouble();

@@ -14,7 +14,7 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-public class GuiManager {
+public class IOManager {
 
     public static final Color BG_RGB = Color.BLACK;
 
@@ -134,7 +134,7 @@ public class GuiManager {
     }
 
     public static void setInputContext(InputContext inputContext) {
-        GuiManager.inputContext = inputContext;
+        IOManager.inputContext = inputContext;
     }
     public static void setOutputChannel(int newChannel) {
         gui.setCurrentChannel(newChannel);

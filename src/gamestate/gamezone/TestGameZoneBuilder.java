@@ -1,8 +1,5 @@
 package gamestate.gamezone;
 
-import gamestate.coordinates.Coordinate;
-import gamestate.coordinates.PointCoordinate;
-import gamestate.gameobject.DriveActor;
 import gamestate.terrain.TerrainTile;
 
 public class TestGameZoneBuilder extends GameZoneBuilder {
@@ -18,11 +15,6 @@ public class TestGameZoneBuilder extends GameZoneBuilder {
                                 new TerrainTile(0); //empty space to fill
             }
         }
-        //hack - test:
-        DriveActor driveActor = new DriveActor();
-        driveActor.setAt(PointCoordinate.centerOf(new Coordinate(15, 15)));
-        driveActor.setGameZone(gz);
-        gz.addActor(driveActor);
         return gz;
     }
 }

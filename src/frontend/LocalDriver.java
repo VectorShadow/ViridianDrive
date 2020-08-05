@@ -4,7 +4,7 @@ import backend.EngineManager;
 import definitions.DefinitionsManager;
 import definitions.ViridianDriveGameZoneGenerator;
 import definitions.ViridianDriveTerrainLookup;
-import frontend.io.GuiManager;
+import frontend.io.IOManager;
 import link.DataLink;
 import link.instructions.AccountCreationRequestInstructionDatum;
 import link.instructions.LogInRequestInstructionDatum;
@@ -12,6 +12,7 @@ import link.instructions.LogOutInstructionDatum;
 import link.instructions.SelectAvatarInstructionData;
 import main.LiveLog;
 import user.DriveAvatar;
+import user.UserAccount;
 
 import java.io.IOException;
 
@@ -22,8 +23,8 @@ public class LocalDriver {
                 new ViridianDriveGameZoneGenerator(),
                 new ViridianDriveTerrainLookup()
         );
-        GuiManager.launchGui();
-        GuiManager.getGui().update();
+        IOManager.launchGui();
+        IOManager.getGui().update();
         final boolean TEST_LOCAL = true;
         DataLink frontend = null;
         try {
@@ -67,7 +68,8 @@ public class LocalDriver {
             frontend.transmit(new LogInRequestInstructionDatum("user", "pass"));
             Thread.sleep(500);
             //test avatar selection
-            frontend.transmit(new SelectAvatarInstructionData(new DriveAvatar()));
+            PlayerSession.setPlayerAvatar(new DriveAvatar());
+            frontend.transmit(new SelectAvatarInstructionData(PlayerSession.getPlayerAvatar()));
         } catch (InterruptedException e) {
             System.out.println("Interrupted exception during instruction testing:\n" + e);
         }
