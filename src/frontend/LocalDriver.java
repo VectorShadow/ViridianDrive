@@ -3,9 +3,9 @@ package frontend;
 import backend.EngineManager;
 import definitions.DefinitionsManager;
 import definitions.ViridianDriveGameZoneGenerator;
+import definitions.ViridianDriveOrderExecutor;
 import definitions.ViridianDriveTerrainLookup;
 import frontend.io.IOManager;
-import link.DataLink;
 import link.instructions.AccountCreationRequestInstructionDatum;
 import link.instructions.LogInRequestInstructionDatum;
 import link.instructions.LogOutInstructionDatum;
@@ -20,55 +20,55 @@ public class LocalDriver {
         LiveLog.setConsoleOutLevel(LiveLog.LogEntryPriority.INFO);
         DefinitionsManager.loadDefinitions(
                 new ViridianDriveGameZoneGenerator(),
+                new ViridianDriveOrderExecutor(),
                 new ViridianDriveTerrainLookup()
         );
         IOManager.launchGui();
         IOManager.getGui().update();
-        final boolean TEST_LOCAL = true;
-        DataLink frontend = null;
+        final boolean TEST_LOCAL = false;
         try {
             if (TEST_LOCAL)
-                frontend = EngineManager.startLocalEngine();
+                EngineManager.startLocalEngine();
             else
-                frontend = EngineManager.connectToRemoteEngine();
+                EngineManager.connectToRemoteEngine();
         } catch (IOException e) {
             System.out.println("Exception on engine initialization:\n" + e);
         }
         try {
             Thread.sleep(500);
             //test login - account does not exist
-            frontend.transmit(new LogInRequestInstructionDatum("user", "pass"));
+            EngineManager.frontEndDataLink.transmit(new LogInRequestInstructionDatum("user", "pass"));
             Thread.sleep(500);
             //test creation
-            frontend.transmit(new AccountCreationRequestInstructionDatum("user", "pass"));
+            EngineManager.frontEndDataLink.transmit(new AccountCreationRequestInstructionDatum("user", "pass"));
             Thread.sleep(500);
             //test duplicate login - incorrect password
-            frontend.transmit(new LogInRequestInstructionDatum("user", "wrongpass"));
+            EngineManager.frontEndDataLink.transmit(new LogInRequestInstructionDatum("user", "wrongpass"));
             Thread.sleep(500);
             //test duplicate login - success
-            frontend.transmit(new LogInRequestInstructionDatum("user", "pass"));
+            EngineManager.frontEndDataLink.transmit(new LogInRequestInstructionDatum("user", "pass"));
             Thread.sleep(500);
             if (!TEST_LOCAL) {
                 //test logout - invalid operation locally
-                frontend.transmit(new LogOutInstructionDatum("user"));
+                EngineManager.frontEndDataLink.transmit(new LogOutInstructionDatum("user"));
                 Thread.sleep(500);
                 //attempt to reconnect
                 try {
-                    frontend = EngineManager.connectToRemoteEngine();
+                    EngineManager.connectToRemoteEngine();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 Thread.sleep(500);
             }
             //test login - incorrect password
-            frontend.transmit(new LogInRequestInstructionDatum("user", "wrongpass"));
+            EngineManager.frontEndDataLink.transmit(new LogInRequestInstructionDatum("user", "wrongpass"));
             Thread.sleep(500);
             //test login - success
-            frontend.transmit(new LogInRequestInstructionDatum("user", "pass"));
+            EngineManager.frontEndDataLink.transmit(new LogInRequestInstructionDatum("user", "pass"));
             Thread.sleep(500);
             //test avatar selection
             PlayerSession.setPlayerAvatar(new DriveAvatar());
-            frontend.transmit(new SelectAvatarInstructionData(PlayerSession.getPlayerAvatar()));
+            EngineManager.frontEndDataLink.transmit(new SelectAvatarInstructionData(PlayerSession.getPlayerAvatar()));
         } catch (InterruptedException e) {
             System.out.println("Interrupted exception during instruction testing:\n" + e);
         }

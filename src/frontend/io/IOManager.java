@@ -86,7 +86,7 @@ public class IOManager {
 
                             @Override
                             public void keyReleased(KeyEvent e) {
-
+                                inputContext.handleKeyReleased(e);
                             }
                         }
                 )

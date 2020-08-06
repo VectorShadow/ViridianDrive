@@ -1,8 +1,10 @@
 package frontend.io;
 
+import backend.EngineManager;
 import frontend.PlayerSession;
-import gamestate.gameobject.actor.order.MovementOrder;
-import gamestate.gameobject.actor.order.RotationOrder;
+import gamestate.order.MovementOrder;
+import gamestate.order.RotationOrder;
+import link.instructions.OrderTransmissionInstructionDatum;
 
 import java.awt.event.KeyEvent;
 import static java.awt.event.KeyEvent.*;
@@ -17,16 +19,32 @@ public class AvatarControlInputContext extends InputContext {
         int keyMod = e.getModifiersEx();
         switch (keyCode) {
             case VK_W:
-                PlayerSession.getPlayerActor().setMovementOrder(new MovementOrder(true));
+                EngineManager.frontEndDataLink.transmit(
+                        new OrderTransmissionInstructionDatum(
+                                new MovementOrder(true)
+                        )
+                );
                 break;
             case VK_A:
-                PlayerSession.getPlayerActor().setRotationOrder(new RotationOrder(false));
+                EngineManager.frontEndDataLink.transmit(
+                        new OrderTransmissionInstructionDatum(
+                                new RotationOrder(false)
+                        )
+                );
                 break;
             case VK_S:
-                PlayerSession.getPlayerActor().setMovementOrder(new MovementOrder(false));
+                EngineManager.frontEndDataLink.transmit(
+                        new OrderTransmissionInstructionDatum(
+                                new MovementOrder(false)
+                        )
+                );
                 break;
             case VK_D:
-                PlayerSession.getPlayerActor().setRotationOrder(new RotationOrder(true));
+                EngineManager.frontEndDataLink.transmit(
+                        new OrderTransmissionInstructionDatum(
+                                new RotationOrder(true)
+                        )
+                );
                 break;
         }
     }
@@ -37,10 +55,14 @@ public class AvatarControlInputContext extends InputContext {
         int keyMod = e.getModifiersEx();
         switch (keyCode) {
             case VK_W: case VK_S:
-                PlayerSession.getPlayerActor().setMovementOrder(null);
+                EngineManager.frontEndDataLink.transmit(
+                        new OrderTransmissionInstructionDatum(MovementOrder.class)
+                );
                 break;
             case VK_A: case VK_D:
-                PlayerSession.getPlayerActor().setRotationOrder(null);
+                EngineManager.frontEndDataLink.transmit(
+                        new OrderTransmissionInstructionDatum(RotationOrder.class)
+                );
                 break;
         }
     }

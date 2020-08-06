@@ -16,31 +16,31 @@ import java.io.IOException;
  */
 public class EngineManager {
 
+    public static DataLink frontEndDataLink = null;
+
     private static final String HOST_NAME = "vps244728.vps.ovh.ca";
 
     private static final int PORT_NUMBER = 29387;
 
     /**
      * Initiate a connection to a remote engine.
-     * @return the front end facing remote data link associated with the socket on which the connection was made
      * @throws IOException passed from Client.connect().
      */
-    public static DataLink connectToRemoteEngine() throws IOException {
-        return Client.connect(new FrontendDataHandler(), HOST_NAME, PORT_NUMBER);
+    public static void connectToRemoteEngine() throws IOException {
+        frontEndDataLink = Client.connect(new FrontendDataHandler(), HOST_NAME, PORT_NUMBER);
     }
 
     /**
      * Start a locally running engine.
-     * @return the frontend data link connected to the engine.
      */
-    public static DataLink startLocalEngine() {
+    public static void startLocalEngine() {
         LocalDataLink front = new LocalDataLink(new FrontendDataHandler());
         LocalDataLink back = new LocalDataLink(new BackendDataHandler());
         LocalDataLink.pair(front, back);
         DataLinkToZoneAggregator aggregator = new DataLinkToZoneAggregator();
         aggregator.addDataLink(back);
         Engine.startEngine(aggregator);
-        return front;
+        frontEndDataLink = front;
     }
 
     /**

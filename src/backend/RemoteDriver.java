@@ -2,6 +2,7 @@ package backend;
 
 import definitions.DefinitionsManager;
 import definitions.ViridianDriveGameZoneGenerator;
+import definitions.ViridianDriveOrderExecutor;
 import definitions.ViridianDriveTerrainLookup;
 import main.LogHub;
 import util.ArgumentHandler;
@@ -13,6 +14,7 @@ public class RemoteDriver {
         ArgumentHandler.handle(args);
         DefinitionsManager.loadDefinitions(
                 new ViridianDriveGameZoneGenerator(),
+                new ViridianDriveOrderExecutor(),
                 new ViridianDriveTerrainLookup()
         );
         try {
