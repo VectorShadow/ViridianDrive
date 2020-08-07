@@ -2,7 +2,7 @@ package frontend;
 
 import gamestate.gameobject.actor.DriveActor;
 import user.DriveAvatar;
-import user.UserAccount;
+import user.UserAccountManager;
 
 /**
  * Access UserAccount's active session to provide implementation specific data to IOManager.
@@ -14,7 +14,7 @@ public class PlayerSession {
     }
 
     public static DriveAvatar getPlayerAvatar() {
-        return (DriveAvatar) UserAccount.activeSession.getCurrentAvatar();
+        return (DriveAvatar) UserAccountManager.activeSession.getCurrentAvatar();
     }
 
     public static void setPlayerActor(DriveActor driveActor) {
@@ -22,6 +22,6 @@ public class PlayerSession {
     }
 
     public static void setPlayerAvatar(DriveAvatar driveAvatar) {
-        UserAccount.activeSession.setCurrentAvatar(driveAvatar);
+        UserAccountManager.activeSession.setCurrentAvatar(driveAvatar);
     }
 }
