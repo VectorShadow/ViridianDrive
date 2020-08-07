@@ -1,10 +1,8 @@
 package frontend;
 
 import backend.EngineManager;
-import definitions.DefinitionsManager;
-import definitions.ViridianDriveGameZoneGenerator;
-import definitions.ViridianDriveOrderExecutor;
-import definitions.ViridianDriveTerrainLookup;
+import definitions.*;
+import frontend.io.GUIConstants;
 import frontend.io.IOManager;
 import link.instructions.AccountCreationRequestInstructionDatum;
 import link.instructions.LogInRequestInstructionDatum;
@@ -20,11 +18,12 @@ public class LocalDriver {
         LiveLog.setConsoleOutLevel(LiveLog.LogEntryPriority.INFO);
         DefinitionsManager.loadDefinitions(
                 new ViridianDriveGameZoneGenerator(),
+                new ViridianDriveGameZoneUpdateListener(),
                 new ViridianDriveOrderExecutor(),
                 new ViridianDriveTerrainLookup()
         );
         IOManager.launchGui();
-        IOManager.getGui().update();
+        IOManager.getGui().update(GUIConstants.CHANNEL_SPLASH_SCREEN);
         final boolean TEST_LOCAL = false;
         try {
             if (TEST_LOCAL)

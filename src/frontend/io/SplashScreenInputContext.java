@@ -7,7 +7,7 @@ public class SplashScreenInputContext extends InputContext {
     @Override
     public void handleKeyPressed(KeyEvent e) {
         setInputContext(new AvatarControlInputContext());
-        setOutputChannel(CH_MAIN);
+        setOutputChannel(GUIConstants.CHANNEL_MAIN_GAME);
     }
 
     @Override

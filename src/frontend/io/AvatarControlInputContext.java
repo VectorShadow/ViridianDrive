@@ -13,9 +13,7 @@ import static java.awt.event.KeyEvent.*;
 /**
  * Handle all input in the main game mode and convert it to avatar commands.
  */
-//todo - this should probably update the frontend actor through a special interface that checks the current state of
-// that actor and only transmits the order if there is a change. If we do this, we should also call mirror
-// OrderExecutor's disconnect procedure on the frontend so we don't desynch front and back end actor states.
+//todo - this should probably do nothing (or very little) if we are using a remote connection but not currently connected.
 public class AvatarControlInputContext extends InputContext {
     @Override
     protected void handleKeyPressed(KeyEvent e) {

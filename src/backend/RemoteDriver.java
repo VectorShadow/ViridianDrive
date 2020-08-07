@@ -1,9 +1,6 @@
 package backend;
 
-import definitions.DefinitionsManager;
-import definitions.ViridianDriveGameZoneGenerator;
-import definitions.ViridianDriveOrderExecutor;
-import definitions.ViridianDriveTerrainLookup;
+import definitions.*;
 import main.LogHub;
 import util.ArgumentHandler;
 
@@ -14,6 +11,7 @@ public class RemoteDriver {
         ArgumentHandler.handle(args);
         DefinitionsManager.loadDefinitions(
                 new ViridianDriveGameZoneGenerator(),
+                new ViridianDriveGameZoneUpdateListener(),
                 new ViridianDriveOrderExecutor(),
                 new ViridianDriveTerrainLookup()
         );

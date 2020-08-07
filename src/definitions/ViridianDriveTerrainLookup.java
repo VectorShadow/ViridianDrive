@@ -1,11 +1,10 @@
 package definitions;
 
-import gamestate.terrain.TerrainProperties;
 import gamestate.terrain.ViridianDriveTerrainProperties;
 
 public class ViridianDriveTerrainLookup extends TerrainLookup {
     @Override
-    protected TerrainProperties lookup(short terrainID) {
+    protected ViridianDriveTerrainProperties lookup(short terrainID) {
         switch (terrainID) {
             case 0:
                 return ViridianDriveTerrainProperties.EMPTY_TILE;

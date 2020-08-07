@@ -14,29 +14,23 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
+import static frontend.io.GUIConstants.*;
+
 public class IOManager {
 
     public static final Color BG_RGB = Color.BLACK;
-
-    public static final int CH_SPLASH = 0;
-    public static final int CH_SPLASH_RG_ART = 0;
-
-    //todo - more channels here - menus, etc.
-
-    public static final int CH_MAIN = 1;
-    public static final int CH_MAIN_RG_VIEW = 0;
-
-    //todo - more channels here - inventory, corporation, etc., probably
 
     public static Gui gui;
 
     private static InputContext inputContext = new SplashScreenInputContext();
 
+    private static boolean graphicsMode = false;
+
     public static void launchGui() {
         Renderer.setImageDirectoryPath("./gfx");
         gui = GuiBuilder
                 .buildGui()
-                .setSizeAndColor(864, 1280, BG_RGB.getRGB())
+                .setSizeAndColor(CANVAS_HEIGHT, CANVAS_WIDTH, BG_RGB.getRGB())
                 /*
                  * OutputChannel 0 - Splash Screen
                  */
@@ -47,8 +41,8 @@ public class IOManager {
                     .addRegion(
                             0,
                             0,
-                            864,
-                            1280,
+                            CANVAS_HEIGHT,
+                            CANVAS_WIDTH,
                             1,
                             1,
                             new SplashScreenMatrixUpdater(),
@@ -61,13 +55,14 @@ public class IOManager {
                     /*
                      * Channel 1 Region 0 - Player Avatar View
                      */
-                    .addRegion(96,
-                            48,
-                            24,
-                            24,
-                            25,
-                            32,
+                    .addRegion(REGION_VIEW_ORIGIN_X,
+                            REGION_VIEW_ORIGIN_Y,
+                            REGION_VIEW_TILE_DIMENSION,
+                            REGION_VIEW_TILE_DIMENSION,
+                            REGION_VIEW_HEIGHT,
+                            REGION_VIEW_WIDTH,
                             new PlayerViewMatrixUpdater(),
+                            new DefaultPaintInstruction(),
                             new DefaultPaintInstruction()
                     )
                     //todo - more regions?
@@ -130,7 +125,15 @@ public class IOManager {
                         }
                 )
                 .build(30);
-        gui.toggleFullScreenMode();
+        //gui.toggleFullScreenMode();
+    }
+
+    public static boolean getGraphicsMode() {
+        return graphicsMode;
+    }
+
+    public static void setGraphicsMode(boolean graphicsOn) {
+        graphicsMode = graphicsOn;
     }
 
     public static void setInputContext(InputContext inputContext) {
