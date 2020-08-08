@@ -2,7 +2,8 @@ package frontend.io;
 
 public class GUIConstants {
     public static final int CHANNEL_SPLASH_SCREEN = 0;
-    public static final int CHANNEL_MAIN_GAME = 1;
+    public static final int CHANNEL_LOGIN = 1;
+    public static final int CHANNEL_MAIN_GAME = 2;
 
     public static final int CANVAS_HEIGHT = 864;
     public static final int CANVAS_WIDTH = 1280;

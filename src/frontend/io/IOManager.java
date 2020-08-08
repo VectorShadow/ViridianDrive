@@ -1,5 +1,7 @@
 package frontend.io;
 
+import frontend.io.inputcontext.InputContext;
+import frontend.io.inputcontext.SplashScreenInputContext;
 import images.Renderer;
 import implementation.matrixupdater.PlayerViewMatrixUpdater;
 import implementation.matrixupdater.SplashScreenMatrixUpdater;

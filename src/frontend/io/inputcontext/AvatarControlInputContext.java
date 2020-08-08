@@ -1,7 +1,8 @@
-package frontend.io;
+package frontend.io.inputcontext;
 
 import backend.EngineManager;
 import frontend.PlayerSession;
+import frontend.io.inputcontext.InputContext;
 import gamestate.order.MovementOrder;
 import gamestate.order.Order;
 import gamestate.order.RotationOrder;
@@ -44,7 +45,7 @@ public class AvatarControlInputContext extends InputContext {
     }
 
     @Override
-    protected void handleKeyReleased(KeyEvent e) {
+    public void handleKeyReleased(KeyEvent e) {
         int keyCode = e.getKeyCode();
         int keyMod = e.getModifiersEx();
         Class<? extends Order> orderClass = Order.class;
