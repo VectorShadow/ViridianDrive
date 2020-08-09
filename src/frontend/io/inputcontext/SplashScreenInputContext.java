@@ -1,6 +1,7 @@
 package frontend.io.inputcontext;
 
 import frontend.io.GUIConstants;
+import frontend.io.IOManager;
 
 import java.awt.event.KeyEvent;
 import static frontend.io.IOManager.*;
@@ -8,8 +9,9 @@ import static frontend.io.IOManager.*;
 public class SplashScreenInputContext extends InputContext {
     @Override
     protected void handleKeyPressed(KeyEvent e) {
-        setInputContext(new LoginScreenInputContext());
+        setInputContext(LoginScreenInputContext.get());
         setOutputChannel(GUIConstants.CHANNEL_LOGIN);
+        IOManager.getGui().update(GUIConstants.CHANNEL_LOGIN);
     }
 
     @Override

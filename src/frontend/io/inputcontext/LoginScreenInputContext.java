@@ -1,6 +1,8 @@
 package frontend.io.inputcontext;
 
 import backend.EngineManager;
+import definitions.DefinitionsManager;
+import definitions.LoginResponseHandler;
 import frontend.PlayerSession;
 import frontend.io.GUIConstants;
 import frontend.io.IOManager;
@@ -16,82 +18,97 @@ import java.io.IOException;
 
 import static java.awt.event.KeyEvent.*;
 
-public class LoginScreenInputContext extends InputContext {
-    private static Color statusColor = Color.GREEN;
-    private static String statusMessage = "Play offline or enter a username and password to connect to the server.";
+public class LoginScreenInputContext extends InputContext implements LoginResponseHandler {
 
-    private static boolean creatingNewAccount = false;
-    private static boolean playingOnline = true;
+    private static final int PASSWORD_LENGTH_MAX = 16;
+    private static final int PASSWORD_LENGTH_MIN = 8;
+    private static final int USERNAME_LENGTH_MAX = 16;
+    private static final int USERNAME_LENGTH_MIN = 4;
 
-    private static String savedPassword = "";
+    private Color statusColor = Color.GREEN;
+    private String statusMessage = "Play Offline, or login to play Online.";
 
-    private static int selectedIndex = 0;
+    private boolean creatingNewAccount = false;
+    private boolean playingOnline = true;
 
-    public static final String playOffline = "Play Offline";
-    public static String enteredUsername = "";
-    private static String enteredPassword = "";
-    public static final String playOnline = "Login";
-    public static final String quit = "Quit";
+    private String savedPassword = "";
 
-    private static final int OPTION_INDEX_PLAY_OFFLINE = 0;
-    private static final int OPTION_INDEX_ENTER_USERNAME = 1;
-    private static final int OPTION_INDEX_ENTER_PASSWORD = 2;
-    private static final int OPTION_INDEX_PLAY_ONLINE = 3;
-    private static final int OPTION_INDEX_QUIT = 4;
+    private int selectedIndex = 0;
 
-    public static String getHiddenPassword() {
-        StringBuilder sb = new StringBuilder();
-        for (char c : enteredPassword.toCharArray())
-            sb.append('*');
-        return sb.toString();
+    private String enteredUsername = "";
+    private String enteredPassword = "";
+
+    private final int OPTION_INDEX_ENTER_USERNAME = 0;
+    private final int OPTION_INDEX_ENTER_PASSWORD = 1;
+    private final int OPTION_INDEX_PLAY_OFFLINE = 2;
+    private final int OPTION_INDEX_QUIT = 3;
+
+    public static final int OPTION_COUNT = 4;
+
+    public String getText(int fieldIndex) {
+        switch (fieldIndex) {
+            case OPTION_INDEX_ENTER_USERNAME:
+                return "Username: " + enteredUsername;
+            case OPTION_INDEX_ENTER_PASSWORD:
+                StringBuilder sb = new StringBuilder("Password: ");
+                for (char c : enteredPassword.toCharArray())
+                    sb.append('*');
+                return sb.toString();
+            case OPTION_INDEX_PLAY_OFFLINE:
+                return "Play Offline";
+            case OPTION_INDEX_QUIT:
+                return "Quit";
+                default:
+                    throw new IllegalArgumentException("Unsupported field index: " + fieldIndex);
+        }
     }
 
-    private static void go() {
+    public int getSelectedIndex() {
+        return selectedIndex;
+    }
+
+    public Color getStatusColor() {
+        return statusColor;
+    }
+
+    public String getStatusMessage() {
+        return statusMessage;
+    }
+
+    private void go() {
         switch (selectedIndex) {
-            case OPTION_INDEX_PLAY_OFFLINE:
-                playingOnline = false;
-                if (creatingNewAccount)
-                    EngineManager.
-                            frontEndDataLink.
-                            transmit(
-                                    new AccountCreationRequestInstructionDatum(
-                                            "localUser",
-                                            "defaultPassword"
-                                    )
-                            );
-                else
-                    EngineManager.
-                            frontEndDataLink.
-                            transmit(
-                                    new LogInRequestInstructionDatum(
-                                            "localUser",
-                                            "defaultPassword"
-                                    )
-                            );
-                break;
             case OPTION_INDEX_ENTER_USERNAME:
                 selectedIndex = OPTION_INDEX_ENTER_PASSWORD;
                 refreshScreen();
                 break;
-            case OPTION_INDEX_ENTER_PASSWORD: case OPTION_INDEX_PLAY_ONLINE:
+            case OPTION_INDEX_ENTER_PASSWORD:
                 playingOnline = true;
-                if (enteredUsername.length() < 4 || enteredUsername.length() > 16) {
+                if (enteredUsername.length() < USERNAME_LENGTH_MIN || enteredUsername.length() > USERNAME_LENGTH_MAX) {
                     statusColor = Color.YELLOW;
-                    statusMessage = "Username must be at least 4 characters long and not more than 16.";
+                    statusMessage = "Username must be " + USERNAME_LENGTH_MIN +
+                            " - " + USERNAME_LENGTH_MAX + "characters.";
                     refreshScreen();
-                } else if (enteredPassword.length() < 8 || enteredPassword.length() > 16) {
+                } else if (enteredPassword.length() < PASSWORD_LENGTH_MIN || enteredPassword.length() > PASSWORD_LENGTH_MAX) {
                     statusColor = Color.YELLOW;
-                    statusMessage = "Password must be at least 8 characters long and not more than 16.";
+                    statusMessage = "Password must be "+ PASSWORD_LENGTH_MIN +
+                            " - " + PASSWORD_LENGTH_MAX + "characters.";
                     refreshScreen();
                 } else if (creatingNewAccount && !enteredPassword.equals(savedPassword)) {
                     statusColor = Color.YELLOW;
                     statusMessage = "Password confirmation failed. Try again.";
+                    creatingNewAccount = false;
                     savedPassword = "";
                     enteredPassword = "";
                     refreshScreen();
                 } else {
                     try {
                         EngineManager.connectToRemoteEngine();
+                        statusColor = Color.BLUE;
+                        statusMessage = "Connecting...";
+                        refreshScreen();
+                        do {
+                            Thread.sleep(250); //wait for crypto handshake
+                        } while (!EngineManager.frontEndDataLink.isEncrypted());
                         if (creatingNewAccount)
                             EngineManager.
                                     frontEndDataLink.
@@ -112,20 +129,46 @@ public class LoginScreenInputContext extends InputContext {
                                     );
                     } catch (IOException e) {
                         statusColor = Color.RED;
-                        statusMessage = "Unable to connect. Check your internet connection and try again, or play offline.";
+                        statusMessage = "Unable to connect. Try again or play offline.";
                         refreshScreen();
+                    } catch (InterruptedException e) {
+                        LogHub.logFatalCrash(
+                                "Thread Interrupted Exception while waiting on cryptographic handshake.",
+                                new IllegalStateException()
+                        );
                     }
                 }
+                break;
+            case OPTION_INDEX_PLAY_OFFLINE:
+                playingOnline = false;
+                EngineManager.startLocalEngine();
+                if (creatingNewAccount)
+                    EngineManager.
+                            frontEndDataLink.
+                            transmit(
+                                    new AccountCreationRequestInstructionDatum(
+                                            "localUser",
+                                            "defaultPassword"
+                                    )
+                            );
+                else
+                    EngineManager.
+                            frontEndDataLink.
+                            transmit(
+                                    new LogInRequestInstructionDatum(
+                                            "localUser",
+                                            "defaultPassword"
+                                    )
+                            );
                 break;
             case OPTION_INDEX_QUIT:
                 System.exit(0);
         }
     }
-    public static void loginResponseAccountAlreadyConnected() {
+    public void loginResponseAccountAlreadyConnected() {
         if (playingOnline) {
             statusColor = Color.ORANGE;
-            statusMessage = "The specified account is currently connected. " +
-                    "Try again later, or select a different account.";
+            statusMessage = "Account still online. Wait or try another login.";
             refreshScreen();
         } else {
             LogHub.logFatalCrash("Fatal Error - Account Already Connected to local engine.",
@@ -133,11 +176,11 @@ public class LoginScreenInputContext extends InputContext {
         }
     }
 
-    public static void loginResponseAccountDoesNotExist() {
+    public void loginResponseAccountDoesNotExist() {
         creatingNewAccount = true;
         if (playingOnline) {
             statusColor = Color.YELLOW;
-            statusMessage = "Account does not yet exist. Re-enter password to confirm account creation.";
+            statusMessage = "Account does not exist. Confirm password to create.";
             savedPassword = enteredPassword;
             enteredPassword = "";
             refreshScreen();
@@ -145,15 +188,15 @@ public class LoginScreenInputContext extends InputContext {
         else go(); //local account not yet created - simply try again using create rather than login
     }
 
-    public static void loginResponseDuplicateAccountCreation() {
+    public void loginResponseDuplicateAccountCreation() {
         LogHub.logFatalCrash("Fatal Error - Duplicate Account Creation detected.",
                 new IllegalStateException());
     }
 
-    public static void loginResponseIncorrectPassword() {
+    public void loginResponseIncorrectPassword() {
         if (playingOnline) {
             statusColor = Color.ORANGE;
-            statusMessage = "Incorrect password entered. Re-enter the password or select a different account.";
+            statusMessage = "Incorrect password. Re-enter or try another login.";
             enteredPassword = "";
             selectedIndex = 2;
             refreshScreen();
@@ -163,20 +206,20 @@ public class LoginScreenInputContext extends InputContext {
         }
     }
 
-    public static void loginResponseSuccess() {
-        if (!playingOnline) EngineManager.startLocalEngine();
+    public void loginResponseSuccess() {
         //todo - go to an avatar selection screen here instead, but for now:
         PlayerSession.setPlayerAvatar(new DriveAvatar());
         EngineManager.frontEndDataLink.transmit(new SelectAvatarInstructionData(PlayerSession.getPlayerAvatar()));
-        IOManager.setOutputChannel(GUIConstants.CHANNEL_MAIN_GAME);
         IOManager.setInputContext(new AvatarControlInputContext());
+        IOManager.setOutputChannel(GUIConstants.CHANNEL_MAIN_GAME);
+        IOManager.getGui().update(GUIConstants.CHANNEL_MAIN_GAME);
     }
 
     /**
      * Update the information used to draw this screen.
      * This must be called after any non-boolean state change in this class.
      */
-    private static void refreshScreen() {
+    private void refreshScreen() {
         IOManager.getGui().update(GUIConstants.CHANNEL_LOGIN);
     }
 
@@ -188,10 +231,49 @@ public class LoginScreenInputContext extends InputContext {
             case VK_ENTER:
                 go();
                 break;
-                //todo - more keycodes! move menu index, enter text, etc.
+            case VK_UP:
+                if (--selectedIndex < 0) selectedIndex = OPTION_COUNT - 1;
+                refreshScreen();
+                break;
+            case VK_DOWN:
+                if (++selectedIndex >= OPTION_COUNT) selectedIndex = 0;
+                refreshScreen();
+                break;
+            case VK_BACK_SPACE: case VK_DELETE:
+                if (selectedIndex == OPTION_INDEX_ENTER_PASSWORD && enteredPassword.length() > 0) {
+                    enteredPassword = enteredPassword.substring(0, enteredPassword.length() - 1);
+                    refreshScreen();
+                }
+                else if (selectedIndex == OPTION_INDEX_ENTER_USERNAME && enteredUsername.length() > 0) {
+                    enteredUsername = enteredUsername.substring(0, enteredUsername.length() - 1);
+                    refreshScreen();
+                }
+                break;
+                default:
+                    char c = toChar(keyCode, keyMod);
+                    if (c != ERROR) {
+                        if (
+                                selectedIndex == OPTION_INDEX_ENTER_PASSWORD &&
+                                        enteredPassword.length() < PASSWORD_LENGTH_MAX
+                        ) {
+                            enteredPassword += c;
+                            refreshScreen();
+                        }
+                        else if (
+                                selectedIndex == OPTION_INDEX_ENTER_USERNAME &&
+                                        enteredUsername.length() < USERNAME_LENGTH_MAX
+                        ) {
+                            enteredUsername += c;
+                            refreshScreen();
+                        }
+                    }
         }
     }
 
     @Override
     public void handleKeyReleased(KeyEvent e) {/*nothing to do here */}
+
+    public static LoginScreenInputContext get() {
+        return (LoginScreenInputContext) DefinitionsManager.getLoginResponseHandler();
+    }
 }

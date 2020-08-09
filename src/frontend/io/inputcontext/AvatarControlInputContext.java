@@ -6,7 +6,9 @@ import frontend.io.inputcontext.InputContext;
 import gamestate.order.MovementOrder;
 import gamestate.order.Order;
 import gamestate.order.RotationOrder;
+import link.instructions.LogOutInstructionDatum;
 import link.instructions.OrderTransmissionInstructionDatum;
+import main.LogHub;
 
 import java.awt.event.KeyEvent;
 import static java.awt.event.KeyEvent.*;
@@ -38,6 +40,10 @@ public class AvatarControlInputContext extends InputContext {
             case VK_D:
                 inputOrder = new RotationOrder(true);
                 orderChanged = PlayerSession.getPlayerActor().setRotationOrder((RotationOrder)inputOrder);
+                break;
+            case VK_X:
+                if (keyMod == CTRL_DOWN_MASK)
+                    EngineManager.frontEndDataLink.transmit(new LogOutInstructionDatum(PlayerSession.getUsername()));
                 break;
         }
         if (orderChanged)

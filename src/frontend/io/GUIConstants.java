@@ -17,4 +17,10 @@ public class GUIConstants {
     public static final int REGION_VIEW_WIDTH = 30;
 
     public static final int REGION_VIEW_TILE_DIMENSION = 24;
+
+    public static final int TEXT_TILE_0_HEIGHT = 32;
+    public static final int TEXT_TILE_0_WIDTH = 20;
+
+    public static final int LOGIN_SCREEN_HEIGHT = CANVAS_HEIGHT / TEXT_TILE_0_HEIGHT;
+    public static final int LOGIN_SCREEN_WIDTH = CANVAS_WIDTH / TEXT_TILE_0_WIDTH;
 }

@@ -1,6 +1,7 @@
 package backend;
 
 import definitions.*;
+import frontend.io.inputcontext.LoginScreenInputContext;
 import main.LogHub;
 import util.ArgumentHandler;
 
@@ -12,6 +13,7 @@ public class RemoteDriver {
         DefinitionsManager.loadDefinitions(
                 new ViridianDriveGameZoneGenerator(),
                 new ViridianDriveGameZoneUpdateListener(),
+                new LoginScreenInputContext(),
                 new ViridianDriveOrderExecutor(),
                 new ViridianDriveTerrainLookup()
         );

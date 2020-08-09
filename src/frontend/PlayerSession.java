@@ -17,6 +17,10 @@ public class PlayerSession {
         return (DriveAvatar) UserAccountManager.activeSession.getCurrentAvatar();
     }
 
+    public static String getUsername() {
+        return UserAccountManager.activeSession.getName();
+    }
+
     public static void setPlayerActor(DriveActor driveActor) {
         getPlayerAvatar().setActor(driveActor);
     }

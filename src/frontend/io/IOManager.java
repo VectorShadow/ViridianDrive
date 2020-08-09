@@ -3,6 +3,7 @@ package frontend.io;
 import frontend.io.inputcontext.InputContext;
 import frontend.io.inputcontext.SplashScreenInputContext;
 import images.Renderer;
+import implementation.matrixupdater.LoginScreenMatrixUpdater;
 import implementation.matrixupdater.PlayerViewMatrixUpdater;
 import implementation.matrixupdater.SplashScreenMatrixUpdater;
 import implementation.paintinstructions.DefaultPaintInstruction;
@@ -50,12 +51,23 @@ public class IOManager {
                             new SplashScreenMatrixUpdater(),
                             new DefaultPaintInstruction()
                     )
+                .addOutputChannel()
+                    .addRegion(
+                            0,
+                            0,
+                            TEXT_TILE_0_HEIGHT,
+                            TEXT_TILE_0_WIDTH,
+                            LOGIN_SCREEN_HEIGHT,
+                            LOGIN_SCREEN_WIDTH,
+                            new LoginScreenMatrixUpdater(),
+                            new DefaultPaintInstruction()
+                    )
                 /*
-                 * OutputChannel 1 - Main Game Play Channel
+                 * OutputChannel 2 - Main Game Play Channel
                  */
                 .addOutputChannel()
                     /*
-                     * Channel 1 Region 0 - Player Avatar View
+                     * Channel 2 Region 0 - Player Avatar View
                      */
                     .addRegion(REGION_VIEW_ORIGIN_X,
                             REGION_VIEW_ORIGIN_Y,
