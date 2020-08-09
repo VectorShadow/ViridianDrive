@@ -22,7 +22,7 @@ public class PlayerViewMatrixUpdater extends MatrixUpdater {
     @Override
     protected ImageMatrix doUpdate() {
         ImageMatrix imageMatrix = LAYERS[currentLayer];
-        if (PlayerSession.getPlayerActor().getAt() != null) {
+        if (PlayerSession.getPlayerActor() != null && PlayerSession.getPlayerActor().getAt() != null) {
             for (int i = 0; i < imageMatrix.getMatrixHeight(); ++i) {
                 for (int j = 0; j < imageMatrix.getMatrixWidth(); ++j) {
                     imageMatrix.set(
