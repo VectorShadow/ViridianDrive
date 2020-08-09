@@ -1,6 +1,7 @@
 package frontend.io.inputcontext;
 
 import backend.EngineManager;
+import crypto.Password;
 import definitions.DefinitionsManager;
 import definitions.LoginResponseHandler;
 import frontend.PlayerSession;
@@ -20,8 +21,6 @@ import static java.awt.event.KeyEvent.*;
 
 public class LoginScreenInputContext extends InputContext implements LoginResponseHandler {
 
-    private static final int PASSWORD_LENGTH_MAX = 16;
-    private static final int PASSWORD_LENGTH_MIN = 8;
     private static final int USERNAME_LENGTH_MAX = 16;
     private static final int USERNAME_LENGTH_MIN = 4;
 
@@ -88,10 +87,13 @@ public class LoginScreenInputContext extends InputContext implements LoginRespon
                     statusMessage = "Username must be " + USERNAME_LENGTH_MIN +
                             " - " + USERNAME_LENGTH_MAX + "characters.";
                     refreshScreen();
-                } else if (enteredPassword.length() < PASSWORD_LENGTH_MIN || enteredPassword.length() > PASSWORD_LENGTH_MAX) {
+                } else if (
+                        enteredPassword.length() < Password.MINIMUM_LENGTH ||
+                                enteredPassword.length() > Password.MAXIMUM_LENGTH
+                ) {
                     statusColor = Color.YELLOW;
-                    statusMessage = "Password must be "+ PASSWORD_LENGTH_MIN +
-                            " - " + PASSWORD_LENGTH_MAX + "characters.";
+                    statusMessage = "Password must be "+ Password.MINIMUM_LENGTH +
+                            " - " + Password.MAXIMUM_LENGTH + "characters.";
                     refreshScreen();
                 } else if (creatingNewAccount && !enteredPassword.equals(savedPassword)) {
                     statusColor = Color.YELLOW;
@@ -254,7 +256,7 @@ public class LoginScreenInputContext extends InputContext implements LoginRespon
                     if (c != ERROR) {
                         if (
                                 selectedIndex == OPTION_INDEX_ENTER_PASSWORD &&
-                                        enteredPassword.length() < PASSWORD_LENGTH_MAX
+                                        enteredPassword.length() < Password.MAXIMUM_LENGTH
                         ) {
                             enteredPassword += c;
                             refreshScreen();
