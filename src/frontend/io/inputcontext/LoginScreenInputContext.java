@@ -4,7 +4,6 @@ import backend.EngineManager;
 import crypto.Password;
 import definitions.DefinitionsManager;
 import definitions.LoginResponseHandler;
-import frontend.PlayerSession;
 import frontend.io.GUIConstants;
 import frontend.io.IOManager;
 import link.instructions.AccountCreationRequestInstructionDatum;
@@ -209,9 +208,10 @@ public class LoginScreenInputContext extends InputContext implements LoginRespon
     }
 
     public void loginResponseSuccess() {
-        //todo - go to an avatar selection screen here instead, but for now:
-        PlayerSession.setPlayerAvatar(new DriveAvatar());
-        EngineManager.frontEndDataLink.transmit(new SelectAvatarInstructionData(PlayerSession.getPlayerAvatar()));
+        //todo - set PlayerSession account metadata
+        //todo - go to an avatar selection screen here
+        //for now, send a select avatar instruction that indicates we want to create a new avatar
+        EngineManager.frontEndDataLink.transmit(new SelectAvatarInstructionData(-1));
         IOManager.setInputContext(new AvatarControlInputContext());
         IOManager.setOutputChannel(GUIConstants.CHANNEL_MAIN_GAME);
         IOManager.getGui().update(GUIConstants.CHANNEL_MAIN_GAME);

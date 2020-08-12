@@ -1,7 +1,6 @@
 package implementation.matrixupdater;
 
 import definitions.DefinitionsManager;
-import frontend.PlayerSession;
 import frontend.io.GUIConstants;
 import gamestate.coordinates.Coordinate;
 import gamestate.gamezone.GameZone;
@@ -9,6 +8,7 @@ import gamestate.terrain.ViridianDriveTerrainProperties;
 import images.ImageMatrix;
 import images.ImageSource;
 import images.TextImageSource;
+import user.PlayerSession;
 
 import java.awt.*;
 
@@ -22,7 +22,7 @@ public class PlayerViewMatrixUpdater extends MatrixUpdater {
     @Override
     protected ImageMatrix doUpdate() {
         ImageMatrix imageMatrix = LAYERS[currentLayer];
-        if (PlayerSession.getPlayerActor() != null && PlayerSession.getPlayerActor().getAt() != null) {
+        if (PlayerSession.getActor() != null && PlayerSession.getActor().getAt() != null) {
             for (int i = 0; i < imageMatrix.getMatrixHeight(); ++i) {
                 for (int j = 0; j < imageMatrix.getMatrixWidth(); ++j) {
                     imageMatrix.set(
@@ -64,7 +64,7 @@ public class PlayerViewMatrixUpdater extends MatrixUpdater {
     }
 
     private Coordinate viewToGameZone(int viewCol, int viewRow) {
-        Coordinate playerAt = PlayerSession.getPlayerActor().getAt().getParentTileCoordinate();
+        Coordinate playerAt = PlayerSession.getActor().getAt().getParentTileCoordinate();
         int x = playerAt.COLUMN;
         int y = playerAt.ROW;
         int regionMidPointX = GUIConstants.REGION_VIEW_WIDTH / 2;

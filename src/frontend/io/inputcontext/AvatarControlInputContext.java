@@ -1,14 +1,12 @@
 package frontend.io.inputcontext;
 
 import backend.EngineManager;
-import frontend.PlayerSession;
-import frontend.io.inputcontext.InputContext;
 import gamestate.order.MovementOrder;
 import gamestate.order.Order;
 import gamestate.order.RotationOrder;
 import link.instructions.LogOutInstructionDatum;
 import link.instructions.OrderTransmissionInstructionDatum;
-import main.LogHub;
+import user.PlayerSession;
 
 import java.awt.event.KeyEvent;
 import static java.awt.event.KeyEvent.*;
@@ -27,23 +25,23 @@ public class AvatarControlInputContext extends InputContext {
         switch (keyCode) {
             case VK_W:
                 inputOrder = new MovementOrder(true);
-                orderChanged = PlayerSession.getPlayerActor().setMovementOrder((MovementOrder)inputOrder);
+                orderChanged = PlayerSession.getActor().setMovementOrder((MovementOrder)inputOrder);
                 break;
             case VK_A:
                 inputOrder = new RotationOrder(false);
-                orderChanged = PlayerSession.getPlayerActor().setRotationOrder((RotationOrder)inputOrder);
+                orderChanged = PlayerSession.getActor().setRotationOrder((RotationOrder)inputOrder);
                 break;
             case VK_S:
                 inputOrder = new MovementOrder(false);
-                orderChanged = PlayerSession.getPlayerActor().setMovementOrder((MovementOrder)inputOrder);
+                orderChanged = PlayerSession.getActor().setMovementOrder((MovementOrder)inputOrder);
                 break;
             case VK_D:
                 inputOrder = new RotationOrder(true);
-                orderChanged = PlayerSession.getPlayerActor().setRotationOrder((RotationOrder)inputOrder);
+                orderChanged = PlayerSession.getActor().setRotationOrder((RotationOrder)inputOrder);
                 break;
             case VK_X:
                 if (keyMod == CTRL_DOWN_MASK)
-                    EngineManager.frontEndDataLink.transmit(new LogOutInstructionDatum(PlayerSession.getUsername()));
+                    EngineManager.frontEndDataLink.transmit(new LogOutInstructionDatum());
                 break;
         }
         if (orderChanged)
@@ -59,11 +57,11 @@ public class AvatarControlInputContext extends InputContext {
         switch (keyCode) {
             case VK_W: case VK_S:
                 orderClass = MovementOrder.class;
-                orderChanged = PlayerSession.getPlayerActor().setMovementOrder(null);
+                orderChanged = PlayerSession.getActor().setMovementOrder(null);
                 break;
             case VK_A: case VK_D:
                 orderClass = RotationOrder.class;
-                orderChanged = PlayerSession.getPlayerActor().setRotationOrder(null);
+                orderChanged = PlayerSession.getActor().setRotationOrder(null);
                 break;
         }
         if (orderChanged)
