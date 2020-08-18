@@ -1,13 +1,52 @@
 package definitions;
 
+import gamestate.gamezone.PreDefinedGameZoneBuilder;
 import gamestate.gamezone.TestGameZoneBuilder;
 import gamestate.coordinates.ZoneCoordinate;
 import gamestate.gamezone.GameZoneBuilder;
+import gamestate.theme.GreenWasteTownTheme;
+
+import java.util.ArrayList;
 
 public class ViridianDriveGameZoneGenerator extends GameZoneGenerator {
+
+    //todo - define ZoneCoordinates for < > passages in pre-defined zones by tile coordinates,
+    // such that issuing a move up or move down command will check the player's tile coordinate and decide whether
+    // to change depths, change location IDs, or do nothing
+
+    private static final int WORLD_LOCATION_STEADROCK_SETTLEMENT = ZoneCoordinate.ORIGIN_ZONE_ID;
+
+    private static final String[] PRE_DEFINED_TERRAIN_STEADROCK_SETTLEMENT = {
+            "################################",
+            "#...............==.....,,%%.%%.#",
+            "#...&&&&&.,.....==.....,.,.%%%,#",
+            "#...&&&&&=========....,.,,..,%.#",
+            "#...&&&&&..,....==...&&&&..,..,#",
+            "#...............=====&&&&...%..#",
+            "#...,.....%.....==...&&&&....,.#",
+            "#..............==....&&&&......#",
+            "#.........,...==...............#",
+            "#....&&&&.....==....,..&&&&&&&.#",
+            "#....&&&&.....==.......&&&&&&&.#",
+            "#....&&&&...====..........=....#",
+            "#......=...=...==....=========.#",
+            "#.......===.....===============#",
+            "#..,......=......====..=...=..=#",
+            "#...%%..,&&&...........=...=...#",
+            "#.,.....,&&&....,..,..&&&&&&&..#",
+            "#..,.%...&&&......,%..&&&&&&&..#",
+            "#.................,...&&&&&&&..#",
+            "################################",
+    };
+
     @Override
     public GameZoneBuilder getGameZoneBuilder(ZoneCoordinate zc) {
-        //todo - switch on zc.id, then on zc.depth if necessary, to return specific builders
-        return new TestGameZoneBuilder();
+        switch (zc.LOCATION_ID) {
+            case (WORLD_LOCATION_STEADROCK_SETTLEMENT):
+                return new PreDefinedGameZoneBuilder(new ArrayList<>(), PRE_DEFINED_TERRAIN_STEADROCK_SETTLEMENT, new GreenWasteTownTheme());
+                default:
+                    throw new IllegalArgumentException("Unable to find a builder definition for " + zc +
+                            " - location ID " + zc.LOCATION_ID + " not supported.");
+        }
     }
 }

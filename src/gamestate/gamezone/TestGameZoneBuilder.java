@@ -2,19 +2,16 @@ package gamestate.gamezone;
 
 import gamestate.terrain.TerrainTile;
 
-public class TestGameZoneBuilder extends GameZoneBuilder {
+public class TestGameZoneBuilder extends ViridianDriveGameZoneBuilder {
+
+    private static final short PROPERTY_DEFINITION_INDEX_EMPTY_TILE = 1;
+
+    public TestGameZoneBuilder() {
+        super(32, 32, null);
+    }
 
     @Override
-    public GameZone build() {
-        GameZone gz = new GameZone(32, 32);
-        for (int i = 0; i < gz.ROWS; ++i) {
-            for (int j = 0; j < gz.COLUMNS; ++j) {
-                gz.TERRAIN[i][j] =
-                        i == 0 || i == gz.ROWS - 1 || j == 0 || j == gz.COLUMNS - 1 ?
-                                new TerrainTile(1) : //map boundaries on the perimeter
-                                new TerrainTile(0); //empty space to fill
-            }
-        }
-        return gz;
+    protected TerrainTile generateTile(int row, int column) {
+        return new TerrainTile(PROPERTY_DEFINITION_INDEX_EMPTY_TILE);
     }
 }
