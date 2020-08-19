@@ -1,7 +1,6 @@
 package frontend.io.inputcontext;
 
 import backend.EngineManager;
-import crypto.Password;
 import frontend.io.GUIConstants;
 import frontend.io.IOManager;
 import link.instructions.SelectAvatarInstructionData;
@@ -24,11 +23,11 @@ public class AvatarSelectionScreenInputContext extends InputContext {
             case VK_ENTER:
                 if (selectedIndex == countAvatars()) {
                     //for now, send a create avatar instruction
-                    //todo - proceed to an avatar creation screen, use the result to transmit an accurate creation code
-                    EngineManager.frontEndDataLink.transmit(new SelectAvatarInstructionData(-1));
+                    //todo - proceed to an avatar creation screen, use the result to transmit an accurate creation code and populate the name field
+                    EngineManager.frontEndDataLink.transmit(new SelectAvatarInstructionData(-1, PlayerSession.getAccountMetadata().USERNAME));
                 } else {
                     //select the avatar corresponding to the selected index
-                    EngineManager.frontEndDataLink.transmit(new SelectAvatarInstructionData(selectedIndex));
+                    EngineManager.frontEndDataLink.transmit(new SelectAvatarInstructionData(selectedIndex, null));
                 }
                 IOManager.setInputContext(new AvatarControlInputContext());
                 IOManager.setOutputChannel(GUIConstants.CHANNEL_MAIN_GAME);

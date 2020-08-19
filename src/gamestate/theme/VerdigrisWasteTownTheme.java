@@ -1,13 +1,13 @@
 package gamestate.theme;
 
-public class VerdigrisWasteTownTheme extends ViridianDriveTheme {
+public class VerdigrisWasteTownTheme extends TownTheme{
 
-    private static final short PROPERTY_DEFINITION_INDEX_VERDIGRIS_DUST = 2;
-    private static final short PROPERTY_DEFINITION_INDEX_WASTE_FLORA = 3;
-    private static final short PROPERTY_DEFINITION_INDEX_BLUE_STONE = 4;
-    private static final short PROPERTY_DEFINITION_INDEX_WASTE_FUNGUS_TREE = 5;
-    private static final short PROPERTY_DEFINITION_INDEX_BLUE_STONE_BRICK = 6;
-    private static final short PROPERTY_DEFINITION_INDEX_TAR_PAVED_ROAD = 7;
+    private static final short PROPERTY_DEFINITION_INDEX_VERDIGRIS_DUST = 33;
+    private static final short PROPERTY_DEFINITION_INDEX_WASTE_FLORA = 34;
+    private static final short PROPERTY_DEFINITION_INDEX_BLUE_STONE = 35;
+    private static final short PROPERTY_DEFINITION_INDEX_WASTE_FUNGUS_TREE = 36;
+    private static final short PROPERTY_DEFINITION_INDEX_BLUE_STONE_BRICK = 37;
+    private static final short PROPERTY_DEFINITION_INDEX_TAR_PAVED_ROAD = 38;
 
     @Override
     protected short getFloorTerrain(int terrainIndex) {
@@ -38,10 +38,5 @@ public class VerdigrisWasteTownTheme extends ViridianDriveTheme {
     @Override
     protected short getSpecialTerrain(int terrainIndex) {
         return PROPERTY_DEFINITION_INDEX_TAR_PAVED_ROAD;
-    }
-
-    @Override
-    protected short getUntypedTerrain(char terrainSymbol) {
-        return -1; //todo - shop entrances, probably
     }
 }

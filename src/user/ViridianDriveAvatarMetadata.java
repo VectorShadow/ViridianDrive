@@ -1,9 +1,24 @@
 package user;
 
+import java.awt.*;
+
 public class ViridianDriveAvatarMetadata extends AvatarMetadata {
-    //todo - name, class, level?
+    private final AvatarClass AVATAR_CLASS;
+    private final int LEVEL;
+    private final String NAME;
+
+    public ViridianDriveAvatarMetadata(AvatarClass avatarClass, int level, String name) {
+        AVATAR_CLASS = avatarClass;
+        LEVEL = level;
+        NAME = name;
+    }
+
     @Override
     public String toString() {
-        return "[Unspecified Metadata]";
+        return NAME + "(Level " + LEVEL + " " + AVATAR_CLASS + ")";
+    }
+
+    public Color getColor() {
+        return AVATAR_CLASS.getColor();
     }
 }

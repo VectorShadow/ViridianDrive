@@ -5,6 +5,7 @@ import images.ImageMatrix;
 import user.AvatarMetadata;
 import user.PlayerSession;
 import user.UserAccount;
+import user.ViridianDriveAvatarMetadata;
 
 import static definitions.ViridianDriveColors.*;
 import static implementation.matrixupdater.MatrixUpdaterTextOperations.*;
@@ -31,7 +32,7 @@ public class AvatarSelectionScreenMatrixUpdater extends MatrixUpdater {
                     startColumn + 1,
                     avatarMetadata.toString(),
                     DISPLAY_BACKGROUND_0,
-                    DISPLAY_FOREGROUND_0
+                    ((ViridianDriveAvatarMetadata)avatarMetadata).getColor()
             );
         }
         writeLine(
