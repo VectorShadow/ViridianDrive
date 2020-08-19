@@ -1,10 +1,9 @@
 package definitions;
 
 import gamestate.gamezone.PreDefinedGameZoneBuilder;
-import gamestate.gamezone.TestGameZoneBuilder;
 import gamestate.coordinates.ZoneCoordinate;
 import gamestate.gamezone.GameZoneBuilder;
-import gamestate.theme.GreenWasteTownTheme;
+import gamestate.theme.VerdigrisWasteTownTheme;
 
 import java.util.ArrayList;
 
@@ -43,7 +42,7 @@ public class ViridianDriveGameZoneGenerator extends GameZoneGenerator {
     public GameZoneBuilder getGameZoneBuilder(ZoneCoordinate zc) {
         switch (zc.LOCATION_ID) {
             case (WORLD_LOCATION_STEADROCK_SETTLEMENT):
-                return new PreDefinedGameZoneBuilder(new ArrayList<>(), PRE_DEFINED_TERRAIN_STEADROCK_SETTLEMENT, new GreenWasteTownTheme());
+                return new PreDefinedGameZoneBuilder(new ArrayList<>(), PRE_DEFINED_TERRAIN_STEADROCK_SETTLEMENT, new VerdigrisWasteTownTheme());
                 default:
                     throw new IllegalArgumentException("Unable to find a builder definition for " + zc +
                             " - location ID " + zc.LOCATION_ID + " not supported.");

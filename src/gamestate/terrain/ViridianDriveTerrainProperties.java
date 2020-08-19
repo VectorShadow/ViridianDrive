@@ -7,6 +7,8 @@ import images.TrueImageSource;
 
 import java.awt.*;
 
+import static definitions.ViridianDriveColors.*;
+
 public class ViridianDriveTerrainProperties extends TerrainProperties {
 
     private static final ViridianDriveTerrainProperties[] TERRAIN_PROPERTY_DEFINITIONS = {
@@ -24,46 +26,46 @@ public class ViridianDriveTerrainProperties extends TerrainProperties {
                     new TextImageSource(Color.BLACK, Color.WHITE,  '.'),
                     null
             ),
-            // 2 - green dust - used in GreenWasteTownTheme
+            // 2 - verdigris dust - used in VerdigrisWasteTownTheme
             new ViridianDriveTerrainProperties(
                     TerrainProperties.ENERGY_PERMISSION_TRANSPARENT,
                     TerrainProperties.MATTER_PERMISSION_FREE,
-                    new TextImageSource(Color.BLACK, Color.GREEN, '.'),
+                    new TextImageSource(VERDIGRIS_DUST, BLUE_STONE, ' '),
                     null
             ),
-            //3 - waste flora - used in GreenWasteTownTheme
+            //3 - waste flora - used in VerdigrisWasteTownTheme
             new ViridianDriveTerrainProperties(
                     TerrainProperties.ENERGY_PERMISSION_TRANSPARENT,
                     TerrainProperties.MATTER_PERMISSION_UNEVEN,
-                    new TextImageSource(Color.BLACK, Color.PINK, '*'),
+                    new TextImageSource(VERDIGRIS_DUST, FUNGAL_FLORA_0, '*'),
                     null
             ),
-            //4 - green stone - used in GreenWasteTownTheme
+            //4 - blue stone - used in VerdigrisWasteTownTheme
             new ViridianDriveTerrainProperties(
                     TerrainProperties.ENERGY_PERMISSION_OPAQUE,
                     TerrainProperties.MATTER_PERMISSION_SKY,
-                    new TextImageSource(Color.BLACK, Color.GREEN, '#'),
+                    new TextImageSource(VERDIGRIS_DUST, BLUE_STONE, '#'),
                     null
             ),
-            //5 - waste fungus tree - used in GreenWasteTownTheme
+            //5 - waste fungus tree - used in VerdigrisWasteTownTheme
             new ViridianDriveTerrainProperties(
                     TerrainProperties.ENERGY_PERMISSION_OPAQUE,
                     TerrainProperties.MATTER_PERMISSION_OBSTACLE,
-                    new TextImageSource(Color.BLACK, Color.PINK, 'T'),
+                    new TextImageSource(VERDIGRIS_DUST, FUNGAL_FLORA_0, 'T'),
                     null
             ),
-            //6 - green stone brick - used in GreenWasteTownTheme
+            //6 - green stone brick - used in VerdigrisWasteTownTheme
             new ViridianDriveTerrainProperties(
                     TerrainProperties.ENERGY_PERMISSION_OPAQUE,
                     TerrainProperties.MATTER_PERMISSION_SHEER,
-                    new TextImageSource(Color.BLACK, Color.GREEN, '$'),
+                    new TextImageSource(BLUE_STONE, BLUE_STONE_BRICK, '$'),
                     null
             ),
-            //7 - tar paved road - used in GreenWasteTownTheme
+            //7 - tar paved road - used in VerdigrisWasteTownTheme
             new ViridianDriveTerrainProperties(
                     TerrainProperties.ENERGY_PERMISSION_TRANSPARENT,
                     TerrainProperties.MATTER_PERMISSION_FREE,
-                    new TextImageSource(Color.BLACK, Color.DARK_GRAY, ':'),
+                    new TextImageSource(TAR_PAVEMENT, VERDIGRIS_DUST, ':'),
                     null
             )
 
@@ -78,8 +80,15 @@ public class ViridianDriveTerrainProperties extends TerrainProperties {
         IMAGE_GFX = imageGfx;
     }
 
-    public ImageSource getImageSource() {
+    public ImageSource getVisibleImageSource() {
+        //todo - apply ascii gfx coloration to image_gfx
         return !IOManager.getGraphicsMode() || IMAGE_GFX == null ? ASCII_GFX : IMAGE_GFX;
+    }
+
+    public ImageSource getMemoryImageSource() {
+        //hack - get a memory colored version of the ascii image.
+        //todo - apply memory coloration to image_gfx
+        return new TextImageSource(MEMORY_BACKGROUND, MEMORY_FOREGROUND, ASCII_GFX);
     }
 
     public static ViridianDriveTerrainProperties lookup(short terrainID) {

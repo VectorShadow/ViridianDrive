@@ -1,5 +1,6 @@
 package frontend.io;
 
+import definitions.ViridianDriveColors;
 import frontend.io.inputcontext.InputContext;
 import frontend.io.inputcontext.SplashScreenInputContext;
 import images.Renderer;
@@ -21,8 +22,6 @@ import static frontend.io.GUIConstants.*;
 
 public class IOManager {
 
-    public static final Color BG_RGB = Color.BLACK;
-
     public static Gui gui;
 
     private static InputContext inputContext = new SplashScreenInputContext();
@@ -33,7 +32,7 @@ public class IOManager {
         Renderer.setImageDirectoryPath("./gfx");
         gui = GuiBuilder
                 .buildGui()
-                .setSizeAndColor(CANVAS_HEIGHT, CANVAS_WIDTH, BG_RGB.getRGB())
+                .setSizeAndColor(CANVAS_HEIGHT, CANVAS_WIDTH, ViridianDriveColors.DISPLAY_BACKGROUND_0.getRGB())
                 /*
                  * OutputChannel 0 - Splash Screen
                  */

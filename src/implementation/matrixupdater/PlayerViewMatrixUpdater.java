@@ -16,26 +16,22 @@ import java.awt.*;
 import java.util.ArrayList;
 
 public class PlayerViewMatrixUpdater extends MatrixUpdater {
-    private static final int SUPPORTED_LAYERS = 2;
 
     private static ArrayList<Coordinate> visibleTiles = new ArrayList<>();
-    //todo - figure out memory
-
-    public PlayerViewMatrixUpdater() {
-        super(SUPPORTED_LAYERS);
-    }
+    private static GameZone playerGameZone = null;
+    private static boolean[][] rememberedTiles;
 
     @Override
-    protected ImageMatrix doUpdate() {
-        ImageMatrix imageMatrix = LAYERS[currentLayer];
+    protected ImageMatrix doUpdate(int currentLayer) {
+        ImageMatrix imageMatrix = ImageMatrix.emptyCopy(layers[currentLayer]);
         if (PlayerSession.getActor() != null && PlayerSession.getActor().getAt() != null) {
-            updateVisibleTiles();
+            updateVisionAndMemory();
             for (int i = 0; i < imageMatrix.getMatrixHeight(); ++i) {
                 for (int j = 0; j < imageMatrix.getMatrixWidth(); ++j) {
                     imageMatrix.set(
                             i,
                             j,
-                            imageAt(j, i)
+                            imageAt(j, i, currentLayer)
                     );
                 }
             }
@@ -43,31 +39,50 @@ public class PlayerViewMatrixUpdater extends MatrixUpdater {
         return imageMatrix;
     }
 
-    private ImageSource imageAt(int viewCol, int viewRow) {
-        GameZone gameZone = GameZone.frontEnd;
+    private ImageSource imageAt(int viewCol, int viewRow, int currentLayer) {
         Coordinate gameZoneCoordinate = viewToGameZone(viewCol, viewRow);
-        int x = gameZoneCoordinate.COLUMN;
-        int y = gameZoneCoordinate.ROW;
+        int gameZoneColumn = gameZoneCoordinate.COLUMN;
+        int gameZoneRow = gameZoneCoordinate.ROW;
         if (
-                !visibleTiles.contains(gameZoneCoordinate) ||
-                        x < 0 ||
-                        x >= gameZone.countColumns() ||
-                        y < 0 ||
-                        y >= gameZone.countRows()
+                gameZoneColumn < 0 ||
+                        gameZoneRow < 0 ||
+                        gameZoneColumn >= playerGameZone.countColumns() ||
+                        gameZoneRow >= playerGameZone.countRows() ||
+                        !rememberedTiles[gameZoneRow][gameZoneColumn]
         )
             return null;
+        if (!visibleTiles.contains(gameZoneCoordinate)) {
+            return
+            ((ViridianDriveTerrainProperties)DefinitionsManager.
+                    getTerrainLookup().
+                    getProperties(
+                            playerGameZone.tileAt(gameZoneCoordinate)
+                    )
+                ).getMemoryImageSource();
+        }
         switch (currentLayer) {
             case 0: //terrain layer
                 return (
                         (ViridianDriveTerrainProperties)DefinitionsManager.
                                 getTerrainLookup().
                                 getProperties(
-                                        gameZone.tileAt(gameZoneCoordinate)
+                                        playerGameZone.tileAt(gameZoneCoordinate)
                                 )
-                ).getImageSource();
+                ).getVisibleImageSource();
             case 1: //for now, actor layer. if we had items, features, etc., those should draw before actors
                 //todo - this is a hack, we simply draw an @ if some actor is here
-                return gameZone.tileAt(gameZoneCoordinate).actorList.isEmpty() ? null : new TextImageSource(Color.BLACK, Color.WHITE, '@');
+                return
+                        playerGameZone.tileAt(gameZoneCoordinate).actorList.isEmpty()
+                                ? null
+                                : new TextImageSource(
+                                        layers[0]
+                                                .getBackgroundColorAt(
+                                                        viewRow,
+                                                        viewCol
+                                                ),
+                                        Color.WHITE,
+                                        '@'
+                                );
             //todo - more cases here, projectiles probably
                 default:
                     throw new IllegalStateException();
@@ -85,19 +100,35 @@ public class PlayerViewMatrixUpdater extends MatrixUpdater {
         return new Coordinate(x + xOffset, y + yOffset);
     }
 
-    private static void updateVisibleTiles() {
+    private static void updateVisionAndMemory() {
+        if (playerGameZone == null || playerGameZone != GameZone.frontEnd) {
+            playerGameZone = GameZone.frontEnd;
+            rememberedTiles = new boolean[playerGameZone.countRows()][playerGameZone.countColumns()];
+            for (int r = 0; r < playerGameZone.countRows(); ++r) {
+                for (int c = 0; c < playerGameZone.countColumns(); ++c){
+                    rememberedTiles[r][c] = false;
+                }
+            }
+        }
         visibleTiles = new ArrayList<>();
         Coordinate playerAt = PlayerSession.getActor().getAt().getParentTileCoordinate();
         visibleTiles.add(playerAt);
         for (Direction direction : Direction.values()) {
             if (direction == Direction.SELF) continue;
             Coordinate c = new Coordinate(playerAt, direction);
-            radiateSight(8.0, direction, c);
+            radiateSight(8.0, direction, c); //todo - derive sight power from player's actor. have power derive from gamezone light level?
         }
     }
 
     private static void radiateSight(double sightPower, Direction primaryDirection, Coordinate radiateFrom) {
         visibleTiles.add(radiateFrom);
+        if (
+                radiateFrom.ROW >= 0 &&
+                        radiateFrom.ROW < playerGameZone.countRows() &&
+                        radiateFrom.COLUMN >= 0 &&
+                        radiateFrom.COLUMN < playerGameZone.countColumns()
+        )
+            rememberedTiles[radiateFrom.ROW][radiateFrom.COLUMN] = true;
         sightPower -= primaryDirection.isDiagonal() ? 1.5 : 1.0;
         if (
                 sightPower < 1.0 ||

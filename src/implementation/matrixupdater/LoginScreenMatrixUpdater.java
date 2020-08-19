@@ -1,5 +1,6 @@
 package implementation.matrixupdater;
 
+import definitions.ViridianDriveColors;
 import frontend.io.IOManager;
 import frontend.io.inputcontext.LoginScreenInputContext;
 import images.ImageMatrix;
@@ -9,21 +10,15 @@ import java.awt.*;
 
 public class LoginScreenMatrixUpdater extends MatrixUpdater {
 
-    private static final int SUPPORTED_LAYERS = 1;
-
-    public LoginScreenMatrixUpdater() {
-        super(SUPPORTED_LAYERS);
-    }
-
     @Override
-    protected ImageMatrix doUpdate() {
-        ImageMatrix imageMatrix = LAYERS[currentLayer];
+    protected ImageMatrix doUpdate(int currentLayer) {
+        ImageMatrix imageMatrix = ImageMatrix.emptyCopy(layers[currentLayer]);
         writeLine(
                 imageMatrix,
                 2,
                 3,
                 LoginScreenInputContext.get().getStatusMessage(),
-                IOManager.BG_RGB,
+                ViridianDriveColors.DISPLAY_BACKGROUND_0,
                 LoginScreenInputContext.get().getStatusColor()
         );
         for (int row = 0; row < LoginScreenInputContext.OPTION_COUNT; ++row) {
@@ -34,7 +29,7 @@ public class LoginScreenMatrixUpdater extends MatrixUpdater {
                     row == LoginScreenInputContext.get().getSelectedIndex() ?
                             "> " + LoginScreenInputContext.get().getText(row)
                             : LoginScreenInputContext.get().getText(row),
-                    IOManager.BG_RGB, Color.WHITE
+                    ViridianDriveColors.DISPLAY_BACKGROUND_0, Color.WHITE
             );
         }
         return imageMatrix;
