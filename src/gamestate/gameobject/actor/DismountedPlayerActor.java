@@ -5,7 +5,7 @@ import gamestate.terrain.TerrainProperties;
 
 import java.util.ArrayList;
 
-public class DismountedPlayerActor extends DriveActor {
+public class DismountedPlayerActor extends ViridianDriveActor {
     @Override
     public int getMovementAccess() {
         return TerrainProperties.MATTER_PERMISSION_OBSTACLE;

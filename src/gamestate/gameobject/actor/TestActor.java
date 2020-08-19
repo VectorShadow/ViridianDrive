@@ -7,7 +7,7 @@ import event.Event;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class TestActor extends DriveActor {
+public class TestActor extends ViridianDriveActor {
     @Override
     public int getMovementAccess() {
         return 1;
