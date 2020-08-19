@@ -10,10 +10,15 @@ public class DriveAvatar extends UserAvatar {
         setAt(ZoneCoordinate.ORIGIN_ZONE);
     }
 
+    public DriveActor currentActor = null;
+
     //todo - we'll need to build or clone mecha and beasts here eventually from stored values, but for now,
     // simply create a new dismounted player avatar for wandering the town.
     @Override
     protected DriveActor deriveActor() {
-        return new DismountedPlayerActor();
+        if (currentActor == null)
+            return new DismountedPlayerActor();
+        else
+            return currentActor;
     }
 }

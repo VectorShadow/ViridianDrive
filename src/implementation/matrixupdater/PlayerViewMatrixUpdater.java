@@ -1,6 +1,7 @@
 package implementation.matrixupdater;
 
 import definitions.DefinitionsManager;
+import definitions.ViridianDriveColors;
 import frontend.io.GUIConstants;
 import gamestate.coordinates.Coordinate;
 import gamestate.gamezone.GameZone;
@@ -75,11 +76,14 @@ public class PlayerViewMatrixUpdater extends MatrixUpdater {
                         playerGameZone.tileAt(gameZoneCoordinate).actorList.isEmpty()
                                 ? null
                                 : new TextImageSource(
-                                        layers[0]
-                                                .getBackgroundColorAt(
-                                                        viewRow,
-                                                        viewCol
-                                                ),
+                                    ViridianDriveColors.DISPLAY_BACKGROUND_0,
+// todo - get the actual actor's image here.
+//  For best transparency, if it is a text image, use the below code. if a true image, use above.
+//                                        layers[0]
+//                                                .getBackgroundColorAt(
+//                                                        viewRow,
+//                                                        viewCol
+//                                                ),
                                         Color.WHITE,
                                         '@'
                                 );

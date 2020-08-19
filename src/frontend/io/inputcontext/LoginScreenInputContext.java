@@ -8,22 +8,24 @@ import frontend.io.GUIConstants;
 import frontend.io.IOManager;
 import link.instructions.AccountCreationRequestInstructionDatum;
 import link.instructions.LogInRequestInstructionDatum;
-import link.instructions.SelectAvatarInstructionData;
 import main.LogHub;
-import user.DriveAvatar;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
+import static frontend.io.IOManager.setInputContext;
+import static frontend.io.IOManager.setOutputChannel;
 import static java.awt.event.KeyEvent.*;
+
+import static definitions.ViridianDriveColors.*;
 
 public class LoginScreenInputContext extends InputContext implements LoginResponseHandler {
 
     private static final int USERNAME_LENGTH_MAX = 16;
     private static final int USERNAME_LENGTH_MIN = 4;
 
-    private Color statusColor = Color.GREEN;
+    private Color statusColor = STATUS_INFO;
     private String statusMessage = "Play Offline, or login to play Online.";
 
     private boolean creatingNewAccount = false;
@@ -82,7 +84,7 @@ public class LoginScreenInputContext extends InputContext implements LoginRespon
             case OPTION_INDEX_ENTER_PASSWORD:
                 playingOnline = true;
                 if (enteredUsername.length() < USERNAME_LENGTH_MIN || enteredUsername.length() > USERNAME_LENGTH_MAX) {
-                    statusColor = Color.YELLOW;
+                    statusColor = STATUS_ALERT;
                     statusMessage = "Username must be " + USERNAME_LENGTH_MIN +
                             " - " + USERNAME_LENGTH_MAX + "characters.";
                     refreshScreen();
@@ -90,12 +92,12 @@ public class LoginScreenInputContext extends InputContext implements LoginRespon
                         enteredPassword.length() < Password.MINIMUM_LENGTH ||
                                 enteredPassword.length() > Password.MAXIMUM_LENGTH
                 ) {
-                    statusColor = Color.YELLOW;
+                    statusColor = STATUS_ALERT;
                     statusMessage = "Password must be "+ Password.MINIMUM_LENGTH +
                             " - " + Password.MAXIMUM_LENGTH + "characters.";
                     refreshScreen();
                 } else if (creatingNewAccount && !enteredPassword.equals(savedPassword)) {
-                    statusColor = Color.YELLOW;
+                    statusColor = STATUS_ALERT;
                     statusMessage = "Password confirmation failed. Try again.";
                     creatingNewAccount = false;
                     savedPassword = "";
@@ -104,7 +106,7 @@ public class LoginScreenInputContext extends InputContext implements LoginRespon
                 } else {
                     try {
                         EngineManager.connectToRemoteEngine();
-                        statusColor = Color.BLUE;
+                        statusColor = STATUS_PENDING;
                         statusMessage = "Connecting...";
                         refreshScreen();
                         do {
@@ -129,7 +131,7 @@ public class LoginScreenInputContext extends InputContext implements LoginRespon
                                             )
                                     );
                     } catch (IOException e) {
-                        statusColor = Color.RED;
+                        statusColor = STATUS_ERROR;
                         statusMessage = "Unable to connect. Try again or play offline.";
                         refreshScreen();
                     } catch (InterruptedException e) {
@@ -168,7 +170,7 @@ public class LoginScreenInputContext extends InputContext implements LoginRespon
     }
     public void loginResponseAccountAlreadyConnected() {
         if (playingOnline) {
-            statusColor = Color.ORANGE;
+            statusColor = STATUS_WARNING;
             statusMessage = "Account still online. Wait or try another login.";
             refreshScreen();
         } else {
@@ -180,7 +182,7 @@ public class LoginScreenInputContext extends InputContext implements LoginRespon
     public void loginResponseAccountDoesNotExist() {
         creatingNewAccount = true;
         if (playingOnline) {
-            statusColor = Color.YELLOW;
+            statusColor = STATUS_ALERT;
             statusMessage = "Account does not exist. Confirm password to create.";
             savedPassword = enteredPassword;
             enteredPassword = "";
@@ -196,7 +198,7 @@ public class LoginScreenInputContext extends InputContext implements LoginRespon
 
     public void loginResponseIncorrectPassword() {
         if (playingOnline) {
-            statusColor = Color.ORANGE;
+            statusColor = STATUS_WARNING;
             statusMessage = "Incorrect password. Re-enter or try another login.";
             enteredPassword = "";
             selectedIndex = 2;
@@ -208,20 +210,17 @@ public class LoginScreenInputContext extends InputContext implements LoginRespon
     }
 
     public void loginResponseSuccess() {
-        //todo - set PlayerSession account metadata
-        //todo - go to an avatar selection screen here
-        //for now, send a select avatar instruction that indicates we want to create a new avatar
-        EngineManager.frontEndDataLink.transmit(new SelectAvatarInstructionData(-1));
-        IOManager.setInputContext(new AvatarControlInputContext());
-        IOManager.setOutputChannel(GUIConstants.CHANNEL_MAIN_GAME);
-        IOManager.getGui().update(GUIConstants.CHANNEL_MAIN_GAME);
+        setInputContext(new AvatarSelectionScreenInputContext());
+        setOutputChannel(GUIConstants.CHANNEL_AVATAR_SELECTION);
+        IOManager.getGui().update(GUIConstants.CHANNEL_AVATAR_SELECTION);
     }
 
     /**
      * Update the information used to draw this screen.
      * This must be called after any non-boolean state change in this class.
      */
-    private void refreshScreen() {
+    @Override
+    protected void refreshScreen() {
         IOManager.getGui().update(GUIConstants.CHANNEL_LOGIN);
     }
 

@@ -67,4 +67,9 @@ public class AvatarControlInputContext extends InputContext {
         if (orderChanged)
             EngineManager.frontEndDataLink.transmit(new OrderTransmissionInstructionDatum(orderClass));
     }
+
+    @Override
+    protected void refreshScreen() {
+        //nothing to do here - screen updates result from engine responses, not directly from our inputs here
+    }
 }

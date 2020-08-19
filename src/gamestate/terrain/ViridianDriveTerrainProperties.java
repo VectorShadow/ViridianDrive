@@ -30,42 +30,42 @@ public class ViridianDriveTerrainProperties extends TerrainProperties {
             new ViridianDriveTerrainProperties(
                     TerrainProperties.ENERGY_PERMISSION_TRANSPARENT,
                     TerrainProperties.MATTER_PERMISSION_FREE,
-                    new TextImageSource(VERDIGRIS_DUST, BLUE_STONE, ' '),
+                    new TextImageSource(ASSET_VERDIGRIS_DUST, ASSET_BLUE_STONE, ' '),
                     null
             ),
             //3 - waste flora - used in VerdigrisWasteTownTheme
             new ViridianDriveTerrainProperties(
                     TerrainProperties.ENERGY_PERMISSION_TRANSPARENT,
                     TerrainProperties.MATTER_PERMISSION_UNEVEN,
-                    new TextImageSource(VERDIGRIS_DUST, FUNGAL_FLORA_0, '*'),
+                    new TextImageSource(ASSET_VERDIGRIS_DUST, ASSET_FUNGAL_FLORA_0, '*'),
                     null
             ),
             //4 - blue stone - used in VerdigrisWasteTownTheme
             new ViridianDriveTerrainProperties(
                     TerrainProperties.ENERGY_PERMISSION_OPAQUE,
                     TerrainProperties.MATTER_PERMISSION_SKY,
-                    new TextImageSource(VERDIGRIS_DUST, BLUE_STONE, '#'),
+                    new TextImageSource(ASSET_VERDIGRIS_DUST, ASSET_BLUE_STONE, '#'),
                     null
             ),
             //5 - waste fungus tree - used in VerdigrisWasteTownTheme
             new ViridianDriveTerrainProperties(
                     TerrainProperties.ENERGY_PERMISSION_OPAQUE,
                     TerrainProperties.MATTER_PERMISSION_OBSTACLE,
-                    new TextImageSource(VERDIGRIS_DUST, FUNGAL_FLORA_0, 'T'),
+                    new TextImageSource(ASSET_VERDIGRIS_DUST, ASSET_FUNGAL_FLORA_0, 'T'),
                     null
             ),
             //6 - green stone brick - used in VerdigrisWasteTownTheme
             new ViridianDriveTerrainProperties(
                     TerrainProperties.ENERGY_PERMISSION_OPAQUE,
                     TerrainProperties.MATTER_PERMISSION_SHEER,
-                    new TextImageSource(BLUE_STONE, BLUE_STONE_BRICK, '$'),
+                    new TextImageSource(ASSET_BLUE_STONE, ASSET_BLUE_STONE_BRICK, '$'),
                     null
             ),
             //7 - tar paved road - used in VerdigrisWasteTownTheme
             new ViridianDriveTerrainProperties(
                     TerrainProperties.ENERGY_PERMISSION_TRANSPARENT,
                     TerrainProperties.MATTER_PERMISSION_FREE,
-                    new TextImageSource(TAR_PAVEMENT, VERDIGRIS_DUST, ':'),
+                    new TextImageSource(ASSET_TAR_PAVEMENT, ASSET_VERDIGRIS_DUST, ':'),
                     null
             )
 
@@ -88,7 +88,7 @@ public class ViridianDriveTerrainProperties extends TerrainProperties {
     public ImageSource getMemoryImageSource() {
         //hack - get a memory colored version of the ascii image.
         //todo - apply memory coloration to image_gfx
-        return new TextImageSource(MEMORY_BACKGROUND, MEMORY_FOREGROUND, ASCII_GFX);
+        return new TextImageSource(OVERRIDE_MEMORY_BACKGROUND, OVERRIDE_MEMORY_FOREGROUND, ASCII_GFX);
     }
 
     public static ViridianDriveTerrainProperties lookup(short terrainID) {

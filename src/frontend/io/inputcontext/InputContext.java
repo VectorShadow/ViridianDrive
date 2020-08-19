@@ -29,6 +29,7 @@ public abstract class InputContext {
 
     protected abstract void handleKeyPressed(KeyEvent e);
     public abstract void handleKeyReleased(KeyEvent e);
+    protected abstract void refreshScreen();
 
     /**
      * Convert a keyboard input to an integer.

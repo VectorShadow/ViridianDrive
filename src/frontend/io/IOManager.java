@@ -4,15 +4,16 @@ import definitions.ViridianDriveColors;
 import frontend.io.inputcontext.InputContext;
 import frontend.io.inputcontext.SplashScreenInputContext;
 import images.Renderer;
+import implementation.matrixupdater.AvatarSelectionScreenMatrixUpdater;
 import implementation.matrixupdater.LoginScreenMatrixUpdater;
 import implementation.matrixupdater.PlayerViewMatrixUpdater;
 import implementation.matrixupdater.SplashScreenMatrixUpdater;
 import implementation.paintinstructions.DefaultPaintInstruction;
+import implementation.paintinstructions.TransparentBackgroundPaintInstruction;
 import main.Gui;
 import main.GuiBuilder;
 import main.LiveLog;
 
-import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
@@ -50,23 +51,46 @@ public class IOManager {
                             new SplashScreenMatrixUpdater(),
                             new DefaultPaintInstruction()
                     )
+                /*
+                 * OutputChannel 1 - Login Screen
+                 */
                 .addOutputChannel()
+                    /*
+                     * Channel 1 Region 0 - Login Options
+                     */
                     .addRegion(
                             0,
                             0,
                             TEXT_TILE_0_HEIGHT,
                             TEXT_TILE_0_WIDTH,
-                            LOGIN_SCREEN_HEIGHT,
-                            LOGIN_SCREEN_WIDTH,
+                            FULL_TEXT_SCREEN_HEIGHT,
+                            FULL_TEXT_SCREEN_WIDTH,
                             new LoginScreenMatrixUpdater(),
                             new DefaultPaintInstruction()
                     )
                 /*
-                 * OutputChannel 2 - Main Game Play Channel
+                 * OutputChannel 2 - Avatar Selection Channel
                  */
                 .addOutputChannel()
                     /*
-                     * Channel 2 Region 0 - Player Avatar View
+                     * Channel 2 Region 0 - Avatar Selection Options
+                     */
+                    .addRegion(
+                            0,
+                            0,
+                            TEXT_TILE_0_HEIGHT,
+                            TEXT_TILE_0_WIDTH,
+                            FULL_TEXT_SCREEN_HEIGHT,
+                            FULL_TEXT_SCREEN_WIDTH,
+                            new AvatarSelectionScreenMatrixUpdater(),
+                            new DefaultPaintInstruction()
+                    )
+                /*
+                 * OutputChannel 3 - Main Game Play Channel
+                 */
+                .addOutputChannel()
+                    /*
+                     * Channel 3 Region 0 - Player Avatar View
                      */
                     .addRegion(REGION_VIEW_ORIGIN_X,
                             REGION_VIEW_ORIGIN_Y,
@@ -76,7 +100,7 @@ public class IOManager {
                             REGION_VIEW_WIDTH,
                             new PlayerViewMatrixUpdater(),
                             new DefaultPaintInstruction(),
-                            new DefaultPaintInstruction()
+                            new TransparentBackgroundPaintInstruction()
                     )
                     //todo - more regions?
                 //todo - more channels

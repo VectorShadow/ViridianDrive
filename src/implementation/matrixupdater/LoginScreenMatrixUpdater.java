@@ -1,12 +1,10 @@
 package implementation.matrixupdater;
 
-import definitions.ViridianDriveColors;
-import frontend.io.IOManager;
 import frontend.io.inputcontext.LoginScreenInputContext;
 import images.ImageMatrix;
-import images.TextImageSource;
 
-import java.awt.*;
+import static definitions.ViridianDriveColors.*;
+import static implementation.matrixupdater.MatrixUpdaterTextOperations.*;
 
 public class LoginScreenMatrixUpdater extends MatrixUpdater {
 
@@ -18,7 +16,7 @@ public class LoginScreenMatrixUpdater extends MatrixUpdater {
                 2,
                 3,
                 LoginScreenInputContext.get().getStatusMessage(),
-                ViridianDriveColors.DISPLAY_BACKGROUND_0,
+                DISPLAY_BACKGROUND_0,
                 LoginScreenInputContext.get().getStatusColor()
         );
         for (int row = 0; row < LoginScreenInputContext.OPTION_COUNT; ++row) {
@@ -29,16 +27,9 @@ public class LoginScreenMatrixUpdater extends MatrixUpdater {
                     row == LoginScreenInputContext.get().getSelectedIndex() ?
                             "> " + LoginScreenInputContext.get().getText(row)
                             : LoginScreenInputContext.get().getText(row),
-                    ViridianDriveColors.DISPLAY_BACKGROUND_0, Color.WHITE
+                    DISPLAY_BACKGROUND_0, DISPLAY_FOREGROUND_0
             );
         }
         return imageMatrix;
-    }
-    //todo - we should probably extract this to a more universally accessible location
-    private void writeLine(ImageMatrix imageMatrix, int row, int startColumn, String line, Color background, Color foreground) {
-        for (int i = 0; i < line.length(); ++i) {
-            if (startColumn + i >= imageMatrix.getMatrixWidth()) return;
-            imageMatrix.set(row, startColumn + i, new TextImageSource(background, foreground, line.charAt(i)));
-        }
     }
 }

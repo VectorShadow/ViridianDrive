@@ -3,7 +3,8 @@ package frontend.io;
 public class GUIConstants {
     public static final int CHANNEL_SPLASH_SCREEN = 0;
     public static final int CHANNEL_LOGIN = 1;
-    public static final int CHANNEL_MAIN_GAME = 2;
+    public static final int CHANNEL_AVATAR_SELECTION = 2;
+    public static final int CHANNEL_MAIN_GAME = 3;
 
     public static final int CANVAS_HEIGHT = 864;
     public static final int CANVAS_WIDTH = 1280;
@@ -21,6 +22,6 @@ public class GUIConstants {
     public static final int TEXT_TILE_0_HEIGHT = 32;
     public static final int TEXT_TILE_0_WIDTH = 20;
 
-    public static final int LOGIN_SCREEN_HEIGHT = CANVAS_HEIGHT / TEXT_TILE_0_HEIGHT;
-    public static final int LOGIN_SCREEN_WIDTH = CANVAS_WIDTH / TEXT_TILE_0_WIDTH;
+    public static final int FULL_TEXT_SCREEN_HEIGHT = CANVAS_HEIGHT / TEXT_TILE_0_HEIGHT;
+    public static final int FULL_TEXT_SCREEN_WIDTH = CANVAS_WIDTH / TEXT_TILE_0_WIDTH;
 }

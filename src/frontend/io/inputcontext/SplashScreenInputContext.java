@@ -18,4 +18,9 @@ public class SplashScreenInputContext extends InputContext {
     public void handleKeyReleased(KeyEvent e) {
         //nothing to do here
     }
+
+    @Override
+    protected void refreshScreen() {
+        //nothing to do here
+    }
 }
