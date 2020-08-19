@@ -117,6 +117,7 @@ public class PlayerViewMatrixUpdater extends MatrixUpdater {
         visibleTiles = new ArrayList<>();
         Coordinate playerAt = PlayerSession.getActor().getAt().getParentTileCoordinate();
         visibleTiles.add(playerAt);
+        rememberedTiles[playerAt.ROW][playerAt.COLUMN] = true;
         for (Direction direction : Direction.values()) {
             if (direction == Direction.SELF) continue;
             Coordinate c = new Coordinate(playerAt, direction);
