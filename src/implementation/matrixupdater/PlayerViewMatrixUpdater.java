@@ -97,8 +97,8 @@ public class PlayerViewMatrixUpdater extends MatrixUpdater {
         Coordinate playerAt = PlayerSession.getActor().getAt().getParentTileCoordinate();
         int x = playerAt.COLUMN;
         int y = playerAt.ROW;
-        int regionMidPointX = GUIConstants.REGION_VIEW_WIDTH / 2;
-        int regionMidPointY = GUIConstants.REGION_VIEW_HEIGHT / 2;
+        int regionMidPointX = GUIConstants.CH_MAIN_RG_VIEW_WIDTH / 2;
+        int regionMidPointY = GUIConstants.CH_MAIN_RG_VIEW_HEIGHT / 2;
         int xOffset = viewCol - regionMidPointX;
         int yOffset = viewRow - regionMidPointY;
         return new Coordinate(x + xOffset, y + yOffset);
@@ -126,31 +126,42 @@ public class PlayerViewMatrixUpdater extends MatrixUpdater {
     }
 
     private static void radiateSight(double sightPower, Direction primaryDirection, Coordinate radiateFrom) {
-        visibleTiles.add(radiateFrom);
-        if (
+        if ( //add this tile to sight and memory if it is within the game zone
                 radiateFrom.ROW >= 0 &&
                         radiateFrom.ROW < playerGameZone.countRows() &&
                         radiateFrom.COLUMN >= 0 &&
                         radiateFrom.COLUMN < playerGameZone.countColumns()
-        )
+        ){
+            visibleTiles.add(radiateFrom);
             rememberedTiles[radiateFrom.ROW][radiateFrom.COLUMN] = true;
-        sightPower -= primaryDirection.isDiagonal() ? 1.5 : 1.0;
-        if (
+        }
+        if ( //if remaining sight power is not sufficient to see beyond tthis tile, stop
                 sightPower < 1.0 ||
-                DefinitionsManager.
-                        getTerrainLookup().
-                        getProperties(
-                                GameZone.
-                                        frontEnd.
-                                        tileAt(
-                                                radiateFrom
-                                        )
-                        ).
-                        ENERGY_PERMISSION == TerrainProperties.ENERGY_PERMISSION_OPAQUE
+                        DefinitionsManager.
+                                getTerrainLookup().
+                                getProperties(
+                                        GameZone.
+                                                frontEnd.
+                                                tileAt(
+                                                        radiateFrom
+                                                )
+                                ).
+                                ENERGY_PERMISSION == TerrainProperties.ENERGY_PERMISSION_OPAQUE
         )
             return;
-        radiateSight(sightPower, primaryDirection.rotateClockwise(), new Coordinate(radiateFrom, primaryDirection.rotateClockwise()));
-        radiateSight(sightPower, primaryDirection, new Coordinate(radiateFrom, primaryDirection));
-        radiateSight(sightPower, primaryDirection.rotateCounterClockwise(), new Coordinate(radiateFrom, primaryDirection.rotateCounterClockwise()));
+        Direction dir;
+        for (int i = 0; i < 3; ++i) { //attempt to view the next 3 tiles in the direction of radiation
+            dir =
+                    i == 0
+                            ? primaryDirection.rotateClockwise()
+                            : i == 1
+                            ? primaryDirection
+                            : primaryDirection.rotateCounterClockwise();
+            radiateSight(
+                    dir.isDiagonal() ? sightPower - 1.5 : sightPower - 1.0, //lose more sight power on a diagonal
+                    primaryDirection, //continue in the current direction
+                    new Coordinate(radiateFrom, dir)
+            );
+        }
     }
 }

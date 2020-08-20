@@ -9,15 +9,22 @@ public class GUIConstants {
     public static final int CANVAS_HEIGHT = 864;
     public static final int CANVAS_WIDTH = 1280;
 
-    public static final int REGION_VIEW_INDEX = 0;
+    public static final int CH_MAIN_RG_VIEW_INDEX = 0;
+    public static final int CH_MAIN_RG_COMPASS_INDEX = 1;
 
-    public static final int REGION_VIEW_ORIGIN_X = 96;
-    public static final int REGION_VIEW_ORIGIN_Y = 48;
+    public static final int CH_MAIN_RG_VIEW_ORIGIN_X = 96;
+    public static final int CH_MAIN_RG_VIEW_ORIGIN_Y = 48;
 
-    public static final int REGION_VIEW_HEIGHT = 25;
-    public static final int REGION_VIEW_WIDTH = 30;
+    public static final int CH_MAIN_RG_VIEW_HEIGHT = 25;
+    public static final int CH_MAIN_RG_VIEW_WIDTH = 30;
 
-    public static final int REGION_VIEW_TILE_DIMENSION = 24;
+    public static final int CH_MAIN_RG_VIEW_TILE_DIMENSION = 24;
+
+    public static final int CH_MAIN_RG_COMPASS_TILE_DIMENSION = 71;
+
+    public static final int CH_MAIN_RG_COMPASS_ORIGIN_X = CH_MAIN_RG_VIEW_ORIGIN_X + (CH_MAIN_RG_VIEW_WIDTH * CH_MAIN_RG_VIEW_TILE_DIMENSION) - CH_MAIN_RG_COMPASS_TILE_DIMENSION;
+    public static final int CH_MAIN_RG_COMPASS_ORIGIN_Y = CH_MAIN_RG_VIEW_ORIGIN_Y;
+
 
     public static final int TEXT_TILE_0_HEIGHT = 32;
     public static final int TEXT_TILE_0_WIDTH = 20;

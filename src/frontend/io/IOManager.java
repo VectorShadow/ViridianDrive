@@ -3,11 +3,8 @@ package frontend.io;
 import definitions.ViridianDriveColors;
 import frontend.io.inputcontext.InputContext;
 import frontend.io.inputcontext.SplashScreenInputContext;
-import images.Renderer;
-import implementation.matrixupdater.AvatarSelectionScreenMatrixUpdater;
-import implementation.matrixupdater.LoginScreenMatrixUpdater;
-import implementation.matrixupdater.PlayerViewMatrixUpdater;
-import implementation.matrixupdater.SplashScreenMatrixUpdater;
+import images.ImageSource;
+import implementation.matrixupdater.*;
 import implementation.paintinstructions.DefaultPaintInstruction;
 import implementation.paintinstructions.TransparentBackgroundPaintInstruction;
 import main.Gui;
@@ -30,10 +27,11 @@ public class IOManager {
     private static boolean graphicsMode = false;
 
     public static void launchGui() {
-        Renderer.setImageDirectoryPath("./gfx");
+        ImageSource.setImageDirectoryPath("./gfx");
         gui = GuiBuilder
                 .buildGui()
                 .setSizeAndColor(CANVAS_HEIGHT, CANVAS_WIDTH, ViridianDriveColors.DISPLAY_BACKGROUND_0.getRGB())
+                .setTitle("Viridian Drive [unversioned pre-alpha]")
                 /*
                  * OutputChannel 0 - Splash Screen
                  */
@@ -92,15 +90,26 @@ public class IOManager {
                     /*
                      * Channel 3 Region 0 - Player Avatar View
                      */
-                    .addRegion(REGION_VIEW_ORIGIN_X,
-                            REGION_VIEW_ORIGIN_Y,
-                            REGION_VIEW_TILE_DIMENSION,
-                            REGION_VIEW_TILE_DIMENSION,
-                            REGION_VIEW_HEIGHT,
-                            REGION_VIEW_WIDTH,
+                    .addRegion(
+                            CH_MAIN_RG_VIEW_ORIGIN_X,
+                            CH_MAIN_RG_VIEW_ORIGIN_Y,
+                            CH_MAIN_RG_VIEW_TILE_DIMENSION,
+                            CH_MAIN_RG_VIEW_TILE_DIMENSION,
+                            CH_MAIN_RG_VIEW_HEIGHT,
+                            CH_MAIN_RG_VIEW_WIDTH,
                             new PlayerViewMatrixUpdater(),
                             new DefaultPaintInstruction(),
                             new TransparentBackgroundPaintInstruction()
+                    )
+                    .addRegion(
+                           CH_MAIN_RG_COMPASS_ORIGIN_X,
+                           CH_MAIN_RG_COMPASS_ORIGIN_Y,
+                           CH_MAIN_RG_COMPASS_TILE_DIMENSION,
+                           CH_MAIN_RG_COMPASS_TILE_DIMENSION,
+                           1,
+                           1,
+                           new CompassMatrixUpdater(),
+                           new TransparentBackgroundPaintInstruction()
                     )
                     //todo - more regions?
                 //todo - more channels
