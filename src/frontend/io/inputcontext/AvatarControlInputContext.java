@@ -18,6 +18,8 @@ import static java.awt.event.KeyEvent.*;
 public class AvatarControlInputContext extends InputContext {
     @Override
     protected void handleKeyPressed(KeyEvent e) {
+        if (PlayerSession.getActor() == null)
+            return;
         int keyCode = e.getKeyCode();
         int keyMod = e.getModifiersEx();
         Order inputOrder = null;

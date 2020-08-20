@@ -6,5 +6,6 @@
     <mapping directory="$PROJECT_DIR$/../ShadowComm" vcs="Git" />
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../dydx2" vcs="Git" />
+    <mapping directory="F:/Repositories" vcs="Git" />
   </component>
 </project>
