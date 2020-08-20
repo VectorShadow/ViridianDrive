@@ -1,26 +1,28 @@
 package implementation.matrixupdater;
 
 import definitions.DefinitionsManager;
-import definitions.ViridianDriveColors;
 import frontend.io.GUIConstants;
+import frontend.io.Imageable;
 import gamestate.coordinates.Coordinate;
+import gamestate.gameobject.MobileGameObject;
+import gamestate.gameobject.actor.ViridianDriveActor;
 import gamestate.gamezone.GameZone;
 import gamestate.terrain.TerrainProperties;
+import gamestate.terrain.ViridianDriveTerrainFeature;
 import gamestate.terrain.ViridianDriveTerrainProperties;
 import images.ImageMatrix;
 import images.ImageSource;
-import images.TextImageSource;
 import user.PlayerSession;
 import util.Direction;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class PlayerViewMatrixUpdater extends MatrixUpdater {
 
     private static ArrayList<Coordinate> visibleTiles = new ArrayList<>();
-    private static GameZone playerGameZone = null;
-    private static boolean[][] rememberedTiles;
+    static GameZone playerGameZone = null;
+    static boolean[][] rememberedTiles;
+    static boolean[][] revealedFeatures;
 
     @Override
     protected ImageMatrix doUpdate(int currentLayer) {
@@ -44,6 +46,7 @@ public class PlayerViewMatrixUpdater extends MatrixUpdater {
         Coordinate gameZoneCoordinate = viewToGameZone(viewCol, viewRow);
         int gameZoneColumn = gameZoneCoordinate.COLUMN;
         int gameZoneRow = gameZoneCoordinate.ROW;
+        Imageable imageable;
         if (
                 gameZoneColumn < 0 ||
                         gameZoneRow < 0 ||
@@ -52,45 +55,38 @@ public class PlayerViewMatrixUpdater extends MatrixUpdater {
                         !rememberedTiles[gameZoneRow][gameZoneColumn]
         )
             return null;
-        if (!visibleTiles.contains(gameZoneCoordinate)) {
-            return
-            ((ViridianDriveTerrainProperties)DefinitionsManager.
-                    getTerrainLookup().
-                    getProperties(
-                            playerGameZone.tileAt(gameZoneCoordinate)
-                    )
-                ).getMemoryImageSource();
-        }
         switch (currentLayer) {
             case 0: //terrain layer
-                return (
-                        (ViridianDriveTerrainProperties)DefinitionsManager.
+                imageable =
+                        (ViridianDriveTerrainProperties)
+                                DefinitionsManager.
                                 getTerrainLookup().
-                                getProperties(
-                                        playerGameZone.tileAt(gameZoneCoordinate)
-                                )
-                ).getVisibleImageSource();
-            case 1: //for now, actor layer. if we had items, features, etc., those should draw before actors
-                //todo - this is a hack, we simply draw an @ if some actor is here
-                return
-                        playerGameZone.tileAt(gameZoneCoordinate).actorList.isEmpty()
-                                ? null
-                                : new TextImageSource(
-                                    ViridianDriveColors.DISPLAY_BACKGROUND_0,
-// todo - get the actual actor's image here.
-//  For best transparency, if it is a text image, use the below code. if a true image, use above.
-//                                        layers[0]
-//                                                .getBackgroundColorAt(
-//                                                        viewRow,
-//                                                        viewCol
-//                                                ),
-                                        Color.WHITE,
-                                        '@'
-                                );
-            //todo - more cases here, projectiles probably
+                                getProperties(playerGameZone.tileAt(gameZoneCoordinate));
+                break;
+            case 1:
+                ViridianDriveTerrainFeature terrainFeature =
+                        (ViridianDriveTerrainFeature)
+                                (playerGameZone.tileAt(gameZoneCoordinate).terrainFeature);
+                imageable =
+                        (terrainFeature == null ||
+                                (terrainFeature.isHidden() && !revealedFeatures[gameZoneRow][gameZoneColumn]))
+                        ? null
+                        : terrainFeature;
+                break;
+            case 2: //for now, actor layer. if we have items, etc., those should draw before actors
+                ArrayList<MobileGameObject> actors = playerGameZone.tileAt(gameZoneCoordinate).actorList;
+                imageable = actors.isEmpty() ? null : (ViridianDriveActor)actors.get(0);
+                break;
+            //todo - more cases here, larger/slower projectiles probably
+            //todo - visual effects?
                 default:
                     throw new IllegalStateException();
         }
+        return imageable == null
+                ? null
+                : visibleTiles.contains(gameZoneCoordinate)
+                ? imageable.getVisibleImageSource()
+                : imageable.getMemoryImageSource();
     }
 
     private Coordinate viewToGameZone(int viewCol, int viewRow) {
@@ -108,6 +104,7 @@ public class PlayerViewMatrixUpdater extends MatrixUpdater {
         if (playerGameZone == null || playerGameZone != GameZone.frontEnd) {
             playerGameZone = GameZone.frontEnd;
             rememberedTiles = new boolean[playerGameZone.countRows()][playerGameZone.countColumns()];
+            revealedFeatures = new boolean[playerGameZone.countRows()][playerGameZone.countColumns()];
             for (int r = 0; r < playerGameZone.countRows(); ++r) {
                 for (int c = 0; c < playerGameZone.countColumns(); ++c){
                     rememberedTiles[r][c] = false;
@@ -163,5 +160,13 @@ public class PlayerViewMatrixUpdater extends MatrixUpdater {
                     new Coordinate(radiateFrom, dir)
             );
         }
+    }
+
+    /**
+     * Call this when we need to make hidden features visible to the player, either by accidentally activating them,
+     * or by some detection ability.
+     */
+    public static void revealFeature(Coordinate gameZoneCoordinate) {
+        revealedFeatures[gameZoneCoordinate.ROW][gameZoneCoordinate.COLUMN] = true;
     }
 }

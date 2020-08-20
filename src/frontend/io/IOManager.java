@@ -99,6 +99,7 @@ public class IOManager {
                             CH_MAIN_RG_VIEW_WIDTH,
                             new PlayerViewMatrixUpdater(),
                             new DefaultPaintInstruction(),
+                            new TransparentBackgroundPaintInstruction(),
                             new TransparentBackgroundPaintInstruction()
                     )
                     /*

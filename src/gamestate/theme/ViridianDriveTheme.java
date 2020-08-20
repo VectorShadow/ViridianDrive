@@ -1,6 +1,7 @@
 package gamestate.theme;
 
 import gamestate.terrain.TerrainTile;
+import gamestate.terrain.ViridianDriveTerrainFeature;
 
 /**
  * A theme for flavoring game zones.
@@ -107,4 +108,9 @@ public abstract class ViridianDriveTheme {
      * This is a catchall category for theme unique terrain which may not fall into the pre-defined categories.
      */
     protected abstract short getUntypedTerrain(char terrainSymbol);
+
+    /**
+     * Return a terrain feature corresponding to the specified feature symbol for this theme.
+     */
+    public abstract ViridianDriveTerrainFeature readFeature(char featureSymbol);
 }

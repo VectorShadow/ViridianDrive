@@ -12,6 +12,7 @@ public class RemoteDriver {
         ArgumentHandler.handle(args);
         DefinitionsManager.loadDefinitions(
                 new ViridianDriveAvatarManager(),
+                new ViridianDriveFeatureHandler(),
                 new ViridianDriveGameZoneGenerator(),
                 new ViridianDriveGameZoneUpdateListener(),
                 new LoginScreenInputContext(),

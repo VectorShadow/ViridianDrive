@@ -11,6 +11,7 @@ public class LocalDriver {
         LiveLog.setConsoleOutLevel(LiveLog.LogEntryPriority.INFO);
         DefinitionsManager.loadDefinitions(
                 new ViridianDriveAvatarManager(),
+                new ViridianDriveFeatureHandler(),
                 new ViridianDriveGameZoneGenerator(),
                 new ViridianDriveGameZoneUpdateListener(),
                 new LoginScreenInputContext(),

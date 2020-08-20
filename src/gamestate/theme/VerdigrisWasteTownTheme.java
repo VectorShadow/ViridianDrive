@@ -2,12 +2,12 @@ package gamestate.theme;
 
 public class VerdigrisWasteTownTheme extends TownTheme{
 
-    private static final short PROPERTY_DEFINITION_INDEX_VERDIGRIS_DUST = 33;
-    private static final short PROPERTY_DEFINITION_INDEX_WASTE_FLORA = 34;
-    private static final short PROPERTY_DEFINITION_INDEX_BLUE_STONE = 35;
-    private static final short PROPERTY_DEFINITION_INDEX_WASTE_FUNGUS_TREE = 36;
-    private static final short PROPERTY_DEFINITION_INDEX_BLUE_STONE_BRICK = 37;
-    private static final short PROPERTY_DEFINITION_INDEX_TAR_PAVED_ROAD = 38;
+    private static final short PROPERTY_DEFINITION_INDEX_VERDIGRIS_DUST = 2;
+    private static final short PROPERTY_DEFINITION_INDEX_WASTE_FLORA = 3;
+    private static final short PROPERTY_DEFINITION_INDEX_BLUE_STONE = 4;
+    private static final short PROPERTY_DEFINITION_INDEX_WASTE_FUNGUS_TREE = 5;
+    private static final short PROPERTY_DEFINITION_INDEX_BLUE_STONE_BRICK = 6;
+    private static final short PROPERTY_DEFINITION_INDEX_TAR_PAVED_ROAD = 7;
 
     @Override
     protected short getFloorTerrain(int terrainIndex) {
@@ -38,5 +38,10 @@ public class VerdigrisWasteTownTheme extends TownTheme{
     @Override
     protected short getSpecialTerrain(int terrainIndex) {
         return PROPERTY_DEFINITION_INDEX_TAR_PAVED_ROAD;
+    }
+
+    @Override
+    protected short getUntypedTerrain(char terrainSymbol) {
+        throw new IllegalStateException("Untyped Terrain is not supported for this theme.");
     }
 }

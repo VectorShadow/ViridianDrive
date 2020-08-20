@@ -5,14 +5,14 @@ import frontend.io.GUIConstants;
 import gamestate.coordinates.Coordinate;
 import gamestate.coordinates.PointCoordinate;
 import gamestate.gameobject.actor.ViridianDriveActor;
-import gamestate.gamezone.GameZone;
+import gamestate.terrain.TerrainTile;
 import images.ImageMatrix;
 import images.TextImageSource;
 import user.PlayerSession;
 
-import java.awt.*;
-
 import static definitions.ViridianDriveColors.*;
+
+import static implementation.matrixupdater.PlayerViewMatrixUpdater.*;
 
 public class MicroViewMatrixUpdater extends MatrixUpdater {
     @Override
@@ -21,24 +21,37 @@ public class MicroViewMatrixUpdater extends MatrixUpdater {
         ViridianDriveActor playerActor = (ViridianDriveActor)PlayerSession.getActor();
         if (playerActor != null && playerActor.getAt() != null){
             PointCoordinate gameZonePointCoordinate;
+            Coordinate gameZoneTileCoordinate;
+            int gameZoneRow, gameZoneCol;
+            TerrainTile terrainTile;
             TextImageSource textImageSource;
             for (int row = 0; row < imageMatrix.getMatrixHeight(); ++row) {
                 for (int col = 0; col < imageMatrix.getMatrixWidth(); ++col) {
                     gameZonePointCoordinate = microToGameZone(col, row);
-                    if (gameZonePointCoordinate.equals(playerActor.getAt()))
-                        textImageSource = new TextImageSource(STATUS_SUCCESS, DISPLAY_FOREGROUND_0, ' ');
-                    else if (
-                            inBounds(gameZonePointCoordinate) &&
-                            DefinitionsManager
-                                    .getTerrainLookup()
-                                    .checkAccess(
-                                            playerActor,
-                                            GameZone.frontEnd.tileAt(gameZonePointCoordinate.getParentTileCoordinate())
-                                    )
-                    )
-                        textImageSource = new TextImageSource(DISPLAY_BACKGROUND_0, DISPLAY_FOREGROUND_0, ' ');
-                    else
-                        textImageSource = new TextImageSource(STATUS_ERROR, DISPLAY_FOREGROUND_0, ' ');
+                    gameZoneTileCoordinate = gameZonePointCoordinate.getParentTileCoordinate();
+                    gameZoneRow = gameZoneTileCoordinate.ROW;
+                    gameZoneCol = gameZoneTileCoordinate.COLUMN;
+                    if (gameZonePointCoordinate.equals(playerActor.getAt())) //check for the player
+                        textImageSource = new TextImageSource(STATUS_INFO, DISPLAY_FOREGROUND_0, ' ');
+                    else if ( //check bounds and memory
+                            inBounds(gameZoneCol, gameZoneRow) &&
+                                    rememberedTiles[gameZoneRow][gameZoneCol]
+                    ) {
+                        terrainTile = playerGameZone.tileAt(gameZoneTileCoordinate);
+                        if (!DefinitionsManager.getTerrainLookup().checkAccess(playerActor, terrainTile)) //check for impassable terrain
+                            textImageSource = new TextImageSource(STATUS_ERROR, DISPLAY_FOREGROUND_0, ' ');
+                        else if ( //check for known features
+                                terrainTile.terrainFeature != null &&
+                                        (!terrainTile.terrainFeature.isHidden() ||
+                                        revealedFeatures[gameZoneRow][gameZoneCol])
+                        )
+                            textImageSource = new TextImageSource(STATUS_SUCCESS, DISPLAY_FOREGROUND_0, ' ');
+                        else if (DefinitionsManager.getTerrainLookup().getProperties(terrainTile).TRAVEL_PERMISSION > 0) //check for terrain which allows travel
+                            textImageSource = new TextImageSource(STATUS_ALERT, DISPLAY_BACKGROUND_0, ' ');
+                        else
+                            textImageSource = new TextImageSource(DISPLAY_BACKGROUND_0, DISPLAY_FOREGROUND_0, ' ');
+                    } else
+                        textImageSource = new TextImageSource(STATUS_PENDING, DISPLAY_BACKGROUND_0, ' ');
                     imageMatrix.set(row, col, textImageSource);
                 }
             }
@@ -57,14 +70,11 @@ public class MicroViewMatrixUpdater extends MatrixUpdater {
         return new PointCoordinate(x + xOffset, y + yOffset);
     }
 
-    private boolean inBounds(PointCoordinate pointCoordinate) {
-        Coordinate gameZoneCoordinate = pointCoordinate.getParentTileCoordinate();
-        int gameZoneColumn = gameZoneCoordinate.COLUMN;
-        int gameZoneRow = gameZoneCoordinate.ROW;
+    private boolean inBounds(int gameZoneColumn, int gameZoneRow) {
         return
                 gameZoneColumn >= 0 &&
                         gameZoneRow >= 0 &&
-                        gameZoneColumn < GameZone.frontEnd.countColumns() &&
-                        gameZoneRow < GameZone.frontEnd.countRows();
+                        gameZoneColumn < playerGameZone.countColumns() &&
+                        gameZoneRow < playerGameZone.countRows();
     }
 }

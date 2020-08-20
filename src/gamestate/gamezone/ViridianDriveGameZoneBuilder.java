@@ -31,11 +31,12 @@ public abstract class ViridianDriveGameZoneBuilder extends GameZoneBuilder {
                                 generateTile(i, j); //else get a tile from the implementation
             }
         }
-        //todo - set features?
-        //todo - set actors?
-        //todo - more?
         return ZONE;
     }
 
+    /**
+     * Generate a tile appropriate for the specified location in the implementation.
+     * This should also set all necessary tile fields, such as features and actors.
+     */
     protected abstract TerrainTile generateTile(int row, int column);
 }
