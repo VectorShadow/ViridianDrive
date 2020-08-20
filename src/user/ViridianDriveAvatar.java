@@ -17,7 +17,7 @@ public class ViridianDriveAvatar extends UserAvatar {
 
     @Override
     AvatarMetadata buildMetadata() {
-        return new ViridianDriveAvatarMetadata(avatarClass, level, NAME);
+        return new ViridianDriveAvatarMetadata(avatarClass, at, level, NAME);
     }
 
     //todo - we'll need to build or clone mecha and beasts here eventually from stored values, but for now,

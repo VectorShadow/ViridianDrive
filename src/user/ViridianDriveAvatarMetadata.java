@@ -1,5 +1,7 @@
 package user;
 
+import gamestate.coordinates.ZoneCoordinate;
+
 import java.awt.*;
 
 public class ViridianDriveAvatarMetadata extends AvatarMetadata {
@@ -7,7 +9,8 @@ public class ViridianDriveAvatarMetadata extends AvatarMetadata {
     private final int LEVEL;
     private final String NAME;
 
-    public ViridianDriveAvatarMetadata(AvatarClass avatarClass, int level, String name) {
+    public ViridianDriveAvatarMetadata(AvatarClass avatarClass, ZoneCoordinate avatarLocation, int level, String name) {
+        super(avatarLocation);
         AVATAR_CLASS = avatarClass;
         LEVEL = level;
         NAME = name;

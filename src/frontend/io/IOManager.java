@@ -101,6 +101,9 @@ public class IOManager {
                             new DefaultPaintInstruction(),
                             new TransparentBackgroundPaintInstruction()
                     )
+                    /*
+                     * Channel 3 Region 1 - Compass
+                     */
                     .addRegion(
                            CH_MAIN_RG_COMPASS_ORIGIN_X,
                            CH_MAIN_RG_COMPASS_ORIGIN_Y,
@@ -110,6 +113,32 @@ public class IOManager {
                            1,
                            new CompassMatrixUpdater(),
                            new TransparentBackgroundPaintInstruction()
+                    )
+                    /*
+                     * Channel 3 Region 2 - Micro View
+                     */
+                    .addRegion(
+                            CH_MAIN_RG_MICRO_ORIGIN_X,
+                            CH_MAIN_RG_MICRO_ORIGIN_Y,
+                            CH_MAIN_RG_MICRO_TILE_DIMENSION,
+                            CH_MAIN_RG_MICRO_TILE_DIMENSION,
+                            CH_MAIN_RG_MICRO_HEIGHT,
+                            CH_MAIN_RG_MICRO_WIDTH,
+                            new MicroViewMatrixUpdater(),
+                            new TransparentBackgroundPaintInstruction()
+                    )
+                    /*
+                     * Channel 3 Region 3 - Location Description
+                     */
+                    .addRegion(
+                            CH_MAIN_RG_LOCATION_DESCRIPTION_ORIGIN_X,
+                            CH_MAIN_RG_LOCATION_DESCRIPTION_ORIGIN_Y,
+                            TEXT_TILE_1_HEIGHT,
+                            TEXT_TILE_1_WIDTH,
+                            CH_MAIN_RG_LOCATION_DESCRIPTION_HEIGHT,
+                            CH_MAIN_RG_LOCATION_DESCRIPTION_WIDTH,
+                            new LocationDescriptionMatrixUpdater(),
+                            new DefaultPaintInstruction()
                     )
                     //todo - more regions?
                 //todo - more channels

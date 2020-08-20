@@ -13,7 +13,7 @@ public class ViridianDriveGameZoneGenerator extends GameZoneGenerator {
     // such that issuing a move up or move down command will check the player's tile coordinate and decide whether
     // to change depths, change location IDs, or do nothing
 
-    private static final int WORLD_LOCATION_STEADROCK_SETTLEMENT = ZoneCoordinate.ORIGIN_ZONE_ID;
+    public static final int WORLD_LOCATION_STEADROCK_SETTLEMENT = ZoneCoordinate.ORIGIN_ZONE_ID;
 
     private static final String[] PRE_DEFINED_TERRAIN_STEADROCK_SETTLEMENT = {
             "################################",
