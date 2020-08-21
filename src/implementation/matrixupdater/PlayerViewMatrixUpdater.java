@@ -102,11 +102,16 @@ public class PlayerViewMatrixUpdater extends MatrixUpdater {
     private static void updateVisionAndMemory() {
         visibleTiles = new ArrayList<>();
         Coordinate playerAt = PlayerSession.getActor().getAt().getParentTileCoordinate();
-        visibleTiles.add(playerAt);
+        double[] arcs = ((ViridianDriveActor)PlayerSession.getActor()).getVisionArcs();
         for (Direction direction : Direction.values()) {
-            if (direction == Direction.SELF) continue;
-            Coordinate c = new Coordinate(playerAt, direction);
-            radiateSight(8.0, direction, c); //todo - derive sight power from player's actor. have power derive from gamezone light level?
+            if (arcs[direction.ordinal()] >= 1.0) {
+                if (direction == Direction.SELF)
+                    visibleTiles.add(playerAt);
+                else {
+                    Coordinate c = new Coordinate(playerAt, direction);
+                    radiateSight(arcs[direction.ordinal()], direction, c); //todo - derive sight power from player's actor. have power derive from gamezone light level?
+                }
+            }
         }
         ArrayList<Coordinate> previouslyUnknownTileCoordinates =
                 PlayerSession.getZoneKnowledge().rememberTiles(visibleTiles);

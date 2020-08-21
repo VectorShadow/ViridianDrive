@@ -10,13 +10,14 @@ import images.TrueImageSource;
 
 import java.awt.*;
 
-import static definitions.ViridianDriveColors.OVERRIDE_MEMORY_BACKGROUND;
-import static definitions.ViridianDriveColors.OVERRIDE_MEMORY_FOREGROUND;
-
 /**
  * Implementation of GameActor.
  */
 public abstract class ViridianDriveActor extends GameActor implements Imageable {
+
+    protected final int ARC_LENGTH = 9;
+
+    protected static final double[] NO_VISION = new double[]{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 
     //todo - implementation specific order fields, probably.
 
@@ -34,4 +35,16 @@ public abstract class ViridianDriveActor extends GameActor implements Imageable 
     public ImageSource getMemoryImageSource() {
         return null; //we don't remember actors, since they may move.
     }
+
+    /**
+     * @return a size 9 array of doubles, with values corresponding to the power of the vision arc that should be drawn
+     * in the direction whose ordinal corresponds to the array index.
+     */
+    public abstract double[] getVisionArcs();
+
+    /**
+     * @return the default vision power of this actor under current optical conditions
+     * Note that this should take into account time of day, weather, and status of optical instruments.
+     */
+    public abstract double getVisionPower();
 }

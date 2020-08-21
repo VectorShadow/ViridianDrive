@@ -3,6 +3,7 @@ package gamestate.gameobject.actor;
 import event.ActorMovementEvent;
 import event.ActorRotationEvent;
 import event.Event;
+import util.Direction;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -34,5 +35,21 @@ public class TestActor extends ViridianDriveActor {
         if (d < 0.15) events.add(new ActorRotationEvent(this, false));
         if (d > 0.85) events.add(new ActorRotationEvent(this, true));
         return events;
+    }
+
+    /**
+     * These vision arcs correspond to optimal vision in all directions.
+     */
+    @Override
+    public double[] getVisionArcs() {
+        double[] arcs = new double[ARC_LENGTH];
+        for (int i = 0; i < ARC_LENGTH; ++i)
+            arcs[i] = getVisionPower();
+        return arcs;
+    }
+
+    @Override
+    public double getVisionPower() {
+        return 8.0;
     }
 }
