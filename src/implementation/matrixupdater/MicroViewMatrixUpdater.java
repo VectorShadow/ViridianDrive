@@ -1,6 +1,7 @@
 package implementation.matrixupdater;
 
 import definitions.DefinitionsManager;
+import definitions.ViridianDriveColors;
 import frontend.io.GUIConstants;
 import gamestate.coordinates.Coordinate;
 import gamestate.coordinates.PointCoordinate;
@@ -26,7 +27,19 @@ public class MicroViewMatrixUpdater extends MatrixUpdater {
                 for (int col = 0; col < imageMatrix.getMatrixWidth(); ++col) {
                     gameZonePointCoordinate = microToGameZone(col, row);
                     gameZoneTileCoordinate = gameZonePointCoordinate.getParentTileCoordinate();
-                    if (gameZonePointCoordinate.equals(playerActor.getAt())) //check for the player
+                    if (
+                            row == 0 || //draw a border around the micro view
+                            row == imageMatrix.getMatrixHeight() - 1 ||
+                            col == 0 ||
+                            col == imageMatrix.getMatrixWidth() - 1
+                    )
+                            textImageSource =
+                                    new TextImageSource(
+                                            ViridianDriveColors.DISPLAY_FOREGROUND_0,
+                                            ViridianDriveColors.DISPLAY_FOREGROUND_0,
+                                            ' '
+                                    );
+                    else if (gameZonePointCoordinate.equals(playerActor.getAt())) //check for the player
                         textImageSource = new TextImageSource(STATUS_INFO, DISPLAY_FOREGROUND_0, ' ');
                     else if (PlayerSession.getZoneKnowledge().isRemembered(gameZoneTileCoordinate)) { //check memory
                         terrainTile = PlayerSession.getZoneKnowledge().getGameZone().tileAt(gameZoneTileCoordinate);

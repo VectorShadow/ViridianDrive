@@ -16,8 +16,6 @@ import java.awt.*;
 
 public class MinimapMatrixUpdater extends MatrixUpdater {
 
-    public static final int ZONE_TILES_PER_MINIMAP_TILE = 16;
-
     @Override
     protected ImageMatrix doUpdate(int currentLayer) {
         ImageMatrix imageMatrix = ImageMatrix.emptyCopy(layers[currentLayer]);
@@ -43,7 +41,16 @@ public class MinimapMatrixUpdater extends MatrixUpdater {
                     imageMatrix.set(
                             row,
                             col,
-                            playerCoordinate.isAdjacentTo(tileCoordinate) //draw a 3x3 representation of the player to ensure his location is clearly marked
+                            row == 0 || //draw a border around the minimap
+                                    row == GUIConstants.CH_MAIN_RG_MINIMAP_HEIGHT - 1 ||
+                                    col == 0 ||
+                                    col == GUIConstants.CH_MAIN_RG_MINIMAP_WIDTH - 1
+                                    ? new TextImageSource(
+                                        ViridianDriveColors.DISPLAY_FOREGROUND_0,
+                                        ViridianDriveColors.DISPLAY_FOREGROUND_0,
+                                        ' '
+                                    )
+                                    : playerCoordinate.isAdjacentTo(tileCoordinate) //draw a 3x3 representation of the player to ensure his location is clearly marked
                                     ? new TextImageSource(
                                         Color.WHITE,
                                         ViridianDriveColors.DISPLAY_FOREGROUND_0,

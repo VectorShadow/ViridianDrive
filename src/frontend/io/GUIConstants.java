@@ -30,8 +30,8 @@ public class GUIConstants {
     public static final int CH_MAIN_RG_LOCATION_DESCRIPTION_ORIGIN_X = CH_MAIN_RG_VIEW_ORIGIN_X;
     public static final int CH_MAIN_RG_LOCATION_DESCRIPTION_ORIGIN_Y = 0;
 
-    public static final int CH_MAIN_RG_MINIMAP_HEIGHT = MinimapMatrixUpdater.ZONE_TILES_PER_MINIMAP_TILE * 9;
-    public static final int CH_MAIN_RG_MINIMAP_WIDTH = MinimapMatrixUpdater.ZONE_TILES_PER_MINIMAP_TILE * 9;
+    public static final int CH_MAIN_RG_MINIMAP_HEIGHT = 144;
+    public static final int CH_MAIN_RG_MINIMAP_WIDTH = 144;
 
     public static final int CH_MAIN_RG_MINIMAP_ORIGIN_X = CANVAS_WIDTH - CH_MAIN_RG_MINIMAP_WIDTH;
     public static final int CH_MAIN_RG_MINIMAP_ORIGIN_Y = 0;

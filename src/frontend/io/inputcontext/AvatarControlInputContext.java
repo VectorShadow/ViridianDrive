@@ -52,6 +52,8 @@ public class AvatarControlInputContext extends InputContext {
 
     @Override
     public void handleKeyReleased(KeyEvent e) {
+        if (PlayerSession.getActor() == null)
+            return;
         int keyCode = e.getKeyCode();
         int keyMod = e.getModifiersEx();
         Class<? extends Order> orderClass = Order.class;
