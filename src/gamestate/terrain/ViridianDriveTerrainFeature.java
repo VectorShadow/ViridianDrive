@@ -139,15 +139,27 @@ public enum ViridianDriveTerrainFeature implements Imageable, TerrainFeature {
     private final TextImageSource ASCII_GFX;
     private final TrueImageSource IMAGE_GFX;
     private final boolean HIDE_BY_DEFAULT;
+    private final boolean AUTO_TRIGGERED;
 
     ViridianDriveTerrainFeature(TextImageSource asciiGfx, TrueImageSource imageGfx) {
-        this(asciiGfx, imageGfx, false);
+        this(asciiGfx, imageGfx, false, false);
     }
     
-    ViridianDriveTerrainFeature(TextImageSource asciiGfx, TrueImageSource imageGfx, boolean hideByDefault) {
+    ViridianDriveTerrainFeature(
+            TextImageSource asciiGfx,
+            TrueImageSource imageGfx,
+            boolean autoTrigger,
+            boolean hideByDefault
+    ) {
         ASCII_GFX = asciiGfx;
         IMAGE_GFX = imageGfx;
+        AUTO_TRIGGERED = autoTrigger;
         HIDE_BY_DEFAULT = hideByDefault;
+    }
+
+    @Override
+    public boolean isAutoTriggered() {
+        return AUTO_TRIGGERED;
     }
     
     @Override

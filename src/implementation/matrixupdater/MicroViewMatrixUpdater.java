@@ -44,8 +44,12 @@ public class MicroViewMatrixUpdater extends MatrixUpdater {
                                 terrainTile.terrainFeature != null &&
                                         (!terrainTile.terrainFeature.isHidden() ||
                                         revealedFeatures[gameZoneRow][gameZoneCol])
-                        )
-                            textImageSource = new TextImageSource(STATUS_SUCCESS, DISPLAY_FOREGROUND_0, ' ');
+                        ) {
+                            if (terrainTile.terrainFeature.isAutoTriggered()) //warn for automatically triggered features like traps
+                                textImageSource = new TextImageSource(STATUS_WARNING, DISPLAY_FOREGROUND_0, ' ');
+                            else //otherwise indicate they are player triggered
+                                textImageSource = new TextImageSource(STATUS_SUCCESS, DISPLAY_BACKGROUND_0, ' ');
+                        }
                         else if (DefinitionsManager.getTerrainLookup().getProperties(terrainTile).TRAVEL_PERMISSION > 0) //check for terrain which allows travel
                             textImageSource = new TextImageSource(STATUS_ALERT, DISPLAY_BACKGROUND_0, ' ');
                         else
