@@ -1,5 +1,6 @@
 package implementation.matrixupdater;
 
+import backend.EngineManager;
 import definitions.DefinitionsManager;
 import frontend.io.GUIConstants;
 import frontend.io.Imageable;
@@ -12,6 +13,7 @@ import gamestate.terrain.ViridianDriveTerrainFeature;
 import gamestate.terrain.ViridianDriveTerrainProperties;
 import images.ImageMatrix;
 import images.ImageSource;
+import link.instructions.UpdatePlayerMemoryInstructionDatum;
 import user.PlayerSession;
 import util.Direction;
 
@@ -20,9 +22,6 @@ import java.util.ArrayList;
 public class PlayerViewMatrixUpdater extends MatrixUpdater {
 
     private static ArrayList<Coordinate> visibleTiles = new ArrayList<>();
-    static GameZone playerGameZone = null;
-    static boolean[][] rememberedTiles;
-    static boolean[][] revealedFeatures;
 
     @Override
     protected ImageMatrix doUpdate(int currentLayer) {
@@ -44,16 +43,8 @@ public class PlayerViewMatrixUpdater extends MatrixUpdater {
 
     private ImageSource imageAt(int viewCol, int viewRow, int currentLayer) {
         Coordinate gameZoneCoordinate = viewToGameZone(viewCol, viewRow);
-        int gameZoneColumn = gameZoneCoordinate.COLUMN;
-        int gameZoneRow = gameZoneCoordinate.ROW;
         Imageable imageable;
-        if (
-                gameZoneColumn < 0 ||
-                        gameZoneRow < 0 ||
-                        gameZoneColumn >= playerGameZone.countColumns() ||
-                        gameZoneRow >= playerGameZone.countRows() ||
-                        !rememberedTiles[gameZoneRow][gameZoneColumn]
-        )
+        if (!PlayerSession.getZoneKnowledge().isRemembered(gameZoneCoordinate))
             return null;
         switch (currentLayer) {
             case 0: //terrain layer
@@ -61,20 +52,28 @@ public class PlayerViewMatrixUpdater extends MatrixUpdater {
                         (ViridianDriveTerrainProperties)
                                 DefinitionsManager.
                                 getTerrainLookup().
-                                getProperties(playerGameZone.tileAt(gameZoneCoordinate));
+                                getProperties(
+                                        PlayerSession.
+                                                getZoneKnowledge().
+                                                getGameZone().
+                                                tileAt(gameZoneCoordinate));
                 break;
             case 1:
                 ViridianDriveTerrainFeature terrainFeature =
-                        (ViridianDriveTerrainFeature)
-                                (playerGameZone.tileAt(gameZoneCoordinate).terrainFeature);
-                imageable =
-                        (terrainFeature == null ||
-                                (terrainFeature.isHidden() && !revealedFeatures[gameZoneRow][gameZoneColumn]))
-                        ? null
-                        : terrainFeature;
+                        (ViridianDriveTerrainFeature) (
+                                PlayerSession.
+                                        getZoneKnowledge().
+                                        getGameZone().
+                                        tileAt(gameZoneCoordinate).
+                                        terrainFeature
+                                );
+                imageable = PlayerSession.getZoneKnowledge().isRevealed(gameZoneCoordinate)
+                        ? terrainFeature
+                        : null;
                 break;
             case 2: //for now, actor layer. if we have items, etc., those should draw before actors
-                ArrayList<MobileGameObject> actors = playerGameZone.tileAt(gameZoneCoordinate).actorList;
+                ArrayList<MobileGameObject> actors =
+                        PlayerSession.getZoneKnowledge().getGameZone().tileAt(gameZoneCoordinate).actorList;
                 imageable = actors.isEmpty() ? null : (ViridianDriveActor)actors.get(0);
                 break;
             //todo - more cases here, larger/slower projectiles probably
@@ -101,47 +100,38 @@ public class PlayerViewMatrixUpdater extends MatrixUpdater {
     }
 
     private static void updateVisionAndMemory() {
-        if (playerGameZone == null || playerGameZone != GameZone.frontEnd) {
-            playerGameZone = GameZone.frontEnd;
-            rememberedTiles = new boolean[playerGameZone.countRows()][playerGameZone.countColumns()];
-            revealedFeatures = new boolean[playerGameZone.countRows()][playerGameZone.countColumns()];
-            for (int r = 0; r < playerGameZone.countRows(); ++r) {
-                for (int c = 0; c < playerGameZone.countColumns(); ++c){
-                    rememberedTiles[r][c] = false;
-                }
-            }
-        }
         visibleTiles = new ArrayList<>();
         Coordinate playerAt = PlayerSession.getActor().getAt().getParentTileCoordinate();
         visibleTiles.add(playerAt);
-        rememberedTiles[playerAt.ROW][playerAt.COLUMN] = true;
         for (Direction direction : Direction.values()) {
             if (direction == Direction.SELF) continue;
             Coordinate c = new Coordinate(playerAt, direction);
             radiateSight(8.0, direction, c); //todo - derive sight power from player's actor. have power derive from gamezone light level?
         }
+        ArrayList<Coordinate> previouslyUnknownTileCoordinates =
+                PlayerSession.getZoneKnowledge().rememberTiles(visibleTiles);
+        if (previouslyUnknownTileCoordinates.size() > 0)
+            EngineManager.frontEndDataLink.transmit(
+                    new UpdatePlayerMemoryInstructionDatum(
+                            PlayerSession.getZoneKnowledge().getMemoryChecksum(),
+                            false,
+                            previouslyUnknownTileCoordinates
+                    )
+            );
     }
 
     private static void radiateSight(double sightPower, Direction primaryDirection, Coordinate radiateFrom) {
-        if ( //add this tile to sight and memory if it is within the game zone
-                radiateFrom.ROW >= 0 &&
-                        radiateFrom.ROW < playerGameZone.countRows() &&
-                        radiateFrom.COLUMN >= 0 &&
-                        radiateFrom.COLUMN < playerGameZone.countColumns()
-        ){
+        if (PlayerSession.getZoneKnowledge().isInBounds(radiateFrom))
             visibleTiles.add(radiateFrom);
-            rememberedTiles[radiateFrom.ROW][radiateFrom.COLUMN] = true;
-        }
-        if ( //if remaining sight power is not sufficient to see beyond tthis tile, stop
+        if ( //if remaining sight power is not sufficient to see beyond this tile, stop
                 sightPower < 1.0 ||
                         DefinitionsManager.
                                 getTerrainLookup().
                                 getProperties(
-                                        GameZone.
-                                                frontEnd.
-                                                tileAt(
-                                                        radiateFrom
-                                                )
+                                        PlayerSession.
+                                                getZoneKnowledge().
+                                                getGameZone().
+                                                tileAt(radiateFrom)
                                 ).
                                 ENERGY_PERMISSION == TerrainProperties.ENERGY_PERMISSION_OPAQUE
         )
@@ -160,13 +150,5 @@ public class PlayerViewMatrixUpdater extends MatrixUpdater {
                     new Coordinate(radiateFrom, dir)
             );
         }
-    }
-
-    /**
-     * Call this when we need to make hidden features visible to the player, either by accidentally activating them,
-     * or by some detection ability.
-     */
-    public static void revealFeature(Coordinate gameZoneCoordinate) {
-        revealedFeatures[gameZoneCoordinate.ROW][gameZoneCoordinate.COLUMN] = true;
     }
 }

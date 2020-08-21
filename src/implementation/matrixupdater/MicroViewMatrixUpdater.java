@@ -12,8 +12,6 @@ import user.PlayerSession;
 
 import static definitions.ViridianDriveColors.*;
 
-import static implementation.matrixupdater.PlayerViewMatrixUpdater.*;
-
 public class MicroViewMatrixUpdater extends MatrixUpdater {
     @Override
     protected ImageMatrix doUpdate(int currentLayer) {
@@ -22,29 +20,19 @@ public class MicroViewMatrixUpdater extends MatrixUpdater {
         if (playerActor != null && playerActor.getAt() != null){
             PointCoordinate gameZonePointCoordinate;
             Coordinate gameZoneTileCoordinate;
-            int gameZoneRow, gameZoneCol;
             TerrainTile terrainTile;
             TextImageSource textImageSource;
             for (int row = 0; row < imageMatrix.getMatrixHeight(); ++row) {
                 for (int col = 0; col < imageMatrix.getMatrixWidth(); ++col) {
                     gameZonePointCoordinate = microToGameZone(col, row);
                     gameZoneTileCoordinate = gameZonePointCoordinate.getParentTileCoordinate();
-                    gameZoneRow = gameZoneTileCoordinate.ROW;
-                    gameZoneCol = gameZoneTileCoordinate.COLUMN;
                     if (gameZonePointCoordinate.equals(playerActor.getAt())) //check for the player
                         textImageSource = new TextImageSource(STATUS_INFO, DISPLAY_FOREGROUND_0, ' ');
-                    else if ( //check bounds and memory
-                            inBounds(gameZoneCol, gameZoneRow) &&
-                                    rememberedTiles[gameZoneRow][gameZoneCol]
-                    ) {
-                        terrainTile = playerGameZone.tileAt(gameZoneTileCoordinate);
+                    else if (PlayerSession.getZoneKnowledge().isRemembered(gameZoneTileCoordinate)) { //check memory
+                        terrainTile = PlayerSession.getZoneKnowledge().getGameZone().tileAt(gameZoneTileCoordinate);
                         if (!DefinitionsManager.getTerrainLookup().checkAccess(playerActor, terrainTile)) //check for impassable terrain
                             textImageSource = new TextImageSource(STATUS_ERROR, DISPLAY_FOREGROUND_0, ' ');
-                        else if ( //check for known features
-                                terrainTile.terrainFeature != null &&
-                                        (!terrainTile.terrainFeature.isHidden() ||
-                                        revealedFeatures[gameZoneRow][gameZoneCol])
-                        ) {
+                        else if (PlayerSession.getZoneKnowledge().isRevealed(gameZoneTileCoordinate)) { //check for known features
                             if (terrainTile.terrainFeature.isAutoTriggered()) //warn for automatically triggered features like traps
                                 textImageSource = new TextImageSource(STATUS_WARNING, DISPLAY_FOREGROUND_0, ' ');
                             else //otherwise indicate they are player triggered
@@ -72,13 +60,5 @@ public class MicroViewMatrixUpdater extends MatrixUpdater {
         int xOffset = viewCol - regionMidPointX;
         int yOffset = viewRow - regionMidPointY;
         return new PointCoordinate(x + xOffset, y + yOffset);
-    }
-
-    private boolean inBounds(int gameZoneColumn, int gameZoneRow) {
-        return
-                gameZoneColumn >= 0 &&
-                        gameZoneRow >= 0 &&
-                        gameZoneColumn < playerGameZone.countColumns() &&
-                        gameZoneRow < playerGameZone.countRows();
     }
 }
