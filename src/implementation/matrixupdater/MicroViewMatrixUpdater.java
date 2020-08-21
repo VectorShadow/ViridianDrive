@@ -39,7 +39,7 @@ public class MicroViewMatrixUpdater extends MatrixUpdater {
                                             ViridianDriveColors.DISPLAY_FOREGROUND_0,
                                             ' '
                                     );
-                    else if (gameZonePointCoordinate.equals(playerActor.getAt())) //check for the player
+                    else if (gameZonePointCoordinate.isAdjacentTo(playerActor.getAt())) //3x3 representation of the player for better visibility
                         textImageSource = new TextImageSource(STATUS_INFO, DISPLAY_FOREGROUND_0, ' ');
                     else if (PlayerSession.getZoneKnowledge().isRemembered(gameZoneTileCoordinate)) { //check memory
                         terrainTile = PlayerSession.getZoneKnowledge().getGameZone().tileAt(gameZoneTileCoordinate);
