@@ -6,6 +6,7 @@ import frontend.io.GUIConstants;
 import gamestate.coordinates.Coordinate;
 import gamestate.coordinates.PointCoordinate;
 import gamestate.gameobject.actor.ViridianDriveActor;
+import gamestate.gamezone.GameZone;
 import gamestate.terrain.TerrainTile;
 import images.ImageMatrix;
 import images.TextImageSource;
@@ -19,6 +20,7 @@ public class MicroViewMatrixUpdater extends MatrixUpdater {
         ImageMatrix imageMatrix = ImageMatrix.emptyCopy(layers[currentLayer]);
         ViridianDriveActor playerActor = (ViridianDriveActor)PlayerSession.getActor();
         if (playerActor != null && playerActor.getAt() != null){
+            GameZone gameZone = PlayerSession.getGameZone();
             PointCoordinate gameZonePointCoordinate;
             Coordinate gameZoneTileCoordinate;
             TerrainTile terrainTile;
@@ -42,10 +44,10 @@ public class MicroViewMatrixUpdater extends MatrixUpdater {
                     else if (gameZonePointCoordinate.isAdjacentTo(playerActor.getAt())) //3x3 representation of the player for better visibility
                         textImageSource = new TextImageSource(STATUS_INFO, DISPLAY_FOREGROUND_0, ' ');
                     else if (PlayerSession.getZoneKnowledge().isRemembered(gameZoneTileCoordinate)) { //check memory
-                        terrainTile = PlayerSession.getZoneKnowledge().getGameZone().tileAt(gameZoneTileCoordinate);
+                        terrainTile = gameZone.tileAt(gameZoneTileCoordinate);
                         if (!DefinitionsManager.getTerrainLookup().checkAccess(playerActor, terrainTile)) //check for impassable terrain
                             textImageSource = new TextImageSource(STATUS_ERROR, DISPLAY_FOREGROUND_0, ' ');
-                        else if (PlayerSession.getZoneKnowledge().isRevealed(gameZoneTileCoordinate)) { //check for known features
+                        else if (PlayerSession.getZoneKnowledge().isRevealed(gameZoneTileCoordinate, gameZone)) { //check for known features
                             if (terrainTile.terrainFeature.isAutoTriggered()) //warn for automatically triggered features like traps
                                 textImageSource = new TextImageSource(STATUS_WARNING, DISPLAY_FOREGROUND_0, ' ');
                             else //otherwise indicate they are player triggered

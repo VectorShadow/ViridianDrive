@@ -42,6 +42,7 @@ public class PlayerViewMatrixUpdater extends MatrixUpdater {
     }
 
     private ImageSource imageAt(int viewCol, int viewRow, int currentLayer) {
+        GameZone gameZone = PlayerSession.getGameZone();
         Coordinate gameZoneCoordinate = viewToGameZone(viewCol, viewRow);
         Imageable imageable;
         if (!PlayerSession.getZoneKnowledge().isRemembered(gameZoneCoordinate))
@@ -53,27 +54,23 @@ public class PlayerViewMatrixUpdater extends MatrixUpdater {
                                 DefinitionsManager.
                                 getTerrainLookup().
                                 getProperties(
-                                        PlayerSession.
-                                                getZoneKnowledge().
-                                                getGameZone().
+                                        gameZone.
                                                 tileAt(gameZoneCoordinate));
                 break;
             case 1:
                 ViridianDriveTerrainFeature terrainFeature =
                         (ViridianDriveTerrainFeature) (
-                                PlayerSession.
-                                        getZoneKnowledge().
-                                        getGameZone().
+                                gameZone.
                                         tileAt(gameZoneCoordinate).
                                         terrainFeature
                                 );
-                imageable = PlayerSession.getZoneKnowledge().isRevealed(gameZoneCoordinate)
+                imageable = PlayerSession.getZoneKnowledge().isRevealed(gameZoneCoordinate, gameZone)
                         ? terrainFeature
                         : null;
                 break;
             case 2: //for now, actor layer. if we have items, etc., those should draw before actors
                 ArrayList<MobileGameObject> actors =
-                        PlayerSession.getZoneKnowledge().getGameZone().tileAt(gameZoneCoordinate).actorList;
+                        gameZone.tileAt(gameZoneCoordinate).actorList;
                 imageable = actors.isEmpty() ? null : (ViridianDriveActor)actors.get(0);
                 break;
             //todo - more cases here, larger/slower projectiles probably
@@ -134,7 +131,6 @@ public class PlayerViewMatrixUpdater extends MatrixUpdater {
                                 getTerrainLookup().
                                 getProperties(
                                         PlayerSession.
-                                                getZoneKnowledge().
                                                 getGameZone().
                                                 tileAt(radiateFrom)
                                 ).

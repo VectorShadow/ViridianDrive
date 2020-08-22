@@ -4,6 +4,7 @@ import definitions.DefinitionsManager;
 import definitions.ViridianDriveColors;
 import frontend.io.GUIConstants;
 import gamestate.coordinates.Coordinate;
+import gamestate.gamezone.GameZone;
 import gamestate.terrain.ViridianDriveTerrainFeature;
 import gamestate.terrain.ViridianDriveTerrainProperties;
 import images.ImageMatrix;
@@ -20,6 +21,7 @@ public class MinimapMatrixUpdater extends MatrixUpdater {
     protected ImageMatrix doUpdate(int currentLayer) {
         ImageMatrix imageMatrix = ImageMatrix.emptyCopy(layers[currentLayer]);
         if (PlayerSession.getActor() != null && PlayerSession.getActor().getAt() != null) {
+            GameZone gameZone = PlayerSession.getGameZone();
             Coordinate playerCoordinate = PlayerSession.getActor().getAt().getParentTileCoordinate();
             Coordinate tileCoordinate;
             ImageSource tileImageSource;
@@ -29,13 +31,13 @@ public class MinimapMatrixUpdater extends MatrixUpdater {
                     tileCoordinate = minimapToGameZone(col, row);
                     tileImageSource =
                             zoneKnowledge.isRemembered(tileCoordinate)
-                                    ? zoneKnowledge.isRevealed(tileCoordinate)
+                                    ? zoneKnowledge.isRevealed(tileCoordinate, gameZone)
                                     ? ((ViridianDriveTerrainFeature)
-                                    zoneKnowledge.getGameZone().tileAt(tileCoordinate).terrainFeature
+                                    gameZone.tileAt(tileCoordinate).terrainFeature
                                     ).getVisibleImageSource() //show revealed terrain features
                                     : ((ViridianDriveTerrainProperties)
                                     (DefinitionsManager.getTerrainLookup().getProperties(
-                                            zoneKnowledge.getGameZone().tileAt(tileCoordinate))
+                                            gameZone.tileAt(tileCoordinate))
                                     )).getVisibleImageSource() //otherwise show terrain
                                     : null; //otherwise show nothing
                     imageMatrix.set(
