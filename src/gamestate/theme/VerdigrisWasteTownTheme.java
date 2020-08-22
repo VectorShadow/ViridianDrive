@@ -24,13 +24,7 @@ public class VerdigrisWasteTownTheme extends VerdigrisWasteTheme {
     }
 
     @Override
-    protected short getSpecialTerrain(int terrainIndex) {
-        //todo - check super, which will have stairs
-        return PROPERTY_DEFINITION_INDEX_TAR_PAVED_ROAD;
-    }
-
-    @Override
     protected short getUntypedTerrain(char terrainSymbol) {
-        throw new IllegalStateException("Untyped Terrain is not supported for this theme.");
+        return PROPERTY_DEFINITION_INDEX_TAR_PAVED_ROAD;
     }
 }

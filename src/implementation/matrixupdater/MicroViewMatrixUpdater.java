@@ -7,6 +7,7 @@ import gamestate.coordinates.Coordinate;
 import gamestate.coordinates.PointCoordinate;
 import gamestate.gameobject.actor.ViridianDriveActor;
 import gamestate.gamezone.GameZone;
+import gamestate.terrain.TerrainProperties;
 import gamestate.terrain.TerrainTile;
 import images.ImageMatrix;
 import images.TextImageSource;
@@ -53,7 +54,8 @@ public class MicroViewMatrixUpdater extends MatrixUpdater {
                             else //otherwise indicate they are player triggered
                                 textImageSource = new TextImageSource(STATUS_SUCCESS, DISPLAY_BACKGROUND_0, ' ');
                         }
-                        else if (DefinitionsManager.getTerrainLookup().getProperties(terrainTile).TRAVEL_PERMISSION > 0) //check for terrain which allows travel
+                        else if (DefinitionsManager.getTerrainLookup().getProperties(terrainTile).TRAVEL_PERMISSION
+                                != TerrainProperties.TRAVEL_PERMISSION_NONE) //check for terrain which allows travel
                             textImageSource = new TextImageSource(STATUS_ALERT, DISPLAY_BACKGROUND_0, ' ');
                         else
                             textImageSource = new TextImageSource(DISPLAY_BACKGROUND_0, DISPLAY_FOREGROUND_0, ' ');

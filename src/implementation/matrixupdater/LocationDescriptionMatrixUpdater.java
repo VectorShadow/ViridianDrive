@@ -1,6 +1,5 @@
 package implementation.matrixupdater;
 
-import definitions.ViridianDriveGameZoneGenerator;
 import gamestate.coordinates.ZoneCoordinate;
 import images.ImageMatrix;
 import user.PlayerSession;
@@ -8,6 +7,7 @@ import user.PlayerSession;
 import java.awt.*;
 
 import static definitions.ViridianDriveColors.*;
+import static definitions.ViridianDriveGameZoneGenerator.*;
 
 public class LocationDescriptionMatrixUpdater extends MatrixUpdater {
     @Override
@@ -18,9 +18,13 @@ public class LocationDescriptionMatrixUpdater extends MatrixUpdater {
             String locationDescription;
             Color textColor;
             switch (zoneCoordinate.LOCATION_ID) {
-                case ViridianDriveGameZoneGenerator.WORLD_LOCATION_STEADROCK_SETTLEMENT:
+                case WORLD_LOCATION_STEADROCK_SETTLEMENT:
                     locationDescription = "Steadrock Settlement";
                     textColor = LOCATION_DESCRIPTION_TOWN;
+                    break;
+                case WORLD_LOCATION_STEADROCK_ARENA:
+                    locationDescription = "Steadrock Arena";
+                    textColor = LOCATION_DESCRIPTION_FIELD;
                     break;
                 //todo - many more cases
                 default:

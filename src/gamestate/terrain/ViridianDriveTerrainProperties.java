@@ -5,6 +5,7 @@ import frontend.io.Imageable;
 import images.ImageSource;
 import images.TextImageSource;
 import images.TrueImageSource;
+import util.Direction;
 
 import java.awt.*;
 
@@ -62,7 +63,7 @@ public class ViridianDriveTerrainProperties extends TerrainProperties implements
                     new TextImageSource(ASSET_VERDIGRIS_DUST, ASSET_FUNGAL_FLORA_0, 'T'),
                     null
             ),
-            // 6 - green stone brick - used in VerdigrisWasteTownTheme
+            // 6 - blue stone brick - used in VerdigrisWasteTownTheme
             new ViridianDriveTerrainProperties(
                     TerrainProperties.ENERGY_PERMISSION_OPAQUE,
                     TerrainProperties.MATTER_PERMISSION_SHEER,
@@ -77,8 +78,15 @@ public class ViridianDriveTerrainProperties extends TerrainProperties implements
                     TerrainProperties.TRAVEL_PERMISSION_NONE,
                     new TextImageSource(ASSET_TAR_PAVEMENT, ASSET_VERDIGRIS_DUST, ':'),
                     null
+            ),
+            // 8 - arena gate - special - used to enter and exit the Steadrock Settlement testing arena.
+            new ViridianDriveTerrainProperties(
+                    TerrainProperties.ENERGY_PERMISSION_TRANSPARENT,
+                    TerrainProperties.MATTER_PERMISSION_FREE,
+                    Direction.SOUTH.ordinal(),
+                    new TextImageSource(ASSET_BLUE_STONE, ASSET_BLUE_STONE_BRICK, '0'),
+                    null
             )
-
     };
 
     private final TextImageSource ASCII_GFX;

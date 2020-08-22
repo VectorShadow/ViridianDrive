@@ -9,6 +9,8 @@ public class VerdigrisWasteTheme extends ViridianDriveTheme {
     protected static final short PROPERTY_DEFINITION_INDEX_BLUE_STONE = 4;
     protected static final short PROPERTY_DEFINITION_INDEX_WASTE_FUNGUS_TREE = 5;
 
+    protected static final short PROPERTY_DEFINITION_INDEX_ARENA_GATE = 8;
+
     /**
      * This class itself needs no features.
      */
@@ -48,12 +50,17 @@ public class VerdigrisWasteTheme extends ViridianDriveTheme {
     }
 
     @Override
-    protected short getSpecialTerrain(int terrainIndex) {
-        return -1; //todo - stairs?
+    protected short getTravelTerrain(int terrainIndex) {
+        switch (terrainIndex) {
+            case 4:
+                return PROPERTY_DEFINITION_INDEX_ARENA_GATE;
+                default:
+                    return -1;
+        }
     }
 
     @Override
     protected short getUntypedTerrain(char terrainSymbol) {
-        throw new IllegalStateException("Untyped Terrain is not supported for this theme.");
+        throw new IllegalStateException("Untyped Terrain for symbol " + terrainSymbol + " not available.");
     }
 }

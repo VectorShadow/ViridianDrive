@@ -46,6 +46,7 @@ public class ViridianDriveColors {
     public static final Color CORPORATION_VITALIS_FG = new Color(0, 197, 233);
 
     public static final Color LOCATION_DESCRIPTION_TOWN = new Color(0, 196, 196);
+    public static final Color LOCATION_DESCRIPTION_FIELD = new Color(196, 196, 0);
 
     public static final Color STATUS_SUCCESS = new Color(0, 225, 63);
     public static final Color STATUS_INFO = new Color(196, 196, 196);

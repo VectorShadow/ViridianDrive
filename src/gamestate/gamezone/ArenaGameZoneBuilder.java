@@ -18,6 +18,9 @@ public class ArenaGameZoneBuilder extends ViridianDriveGameZoneBuilder {
     @Override
     protected TerrainTile generateTile(int row, int column) {
         Coordinate tileCoordinate = new Coordinate(column, row);
+        //hack! put a gate here
+        if (CENTER.equals(tileCoordinate))
+            return THEME.readTerrain('4');
         if (CENTER.distanceTo(tileCoordinate) > RADIUS)
             return THEME.readTerrain('#');
         else {

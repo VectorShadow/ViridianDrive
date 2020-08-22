@@ -42,20 +42,35 @@ public abstract class ViridianDriveTheme {
                 s = getWallTerrain(2);
                 break;
                 //todo - doors, chests(or other loot objects) and mineable walls as features - see dydx
-            case '~':
-                s = getSpecialTerrain(0);
+            case '0':
+                s = getTravelTerrain(0);
                 break;
-            case '=':
-                s = getSpecialTerrain(1);
+            case '1':
+                s = getTravelTerrain(1);
                 break;
-            case '<':
-                s = getSpecialTerrain(2);
+            case '2':
+                s = getTravelTerrain(2);
+                break;
+            case '3':
+                s = getTravelTerrain(3);
+                break;
+            case '4':
+                s = getTravelTerrain(4);
+                break;
+            case '5':
+                s = getTravelTerrain(5);
+                break;
+            case '6':
+                s = getTravelTerrain(6);
+                break;
+            case '7':
+                s = getTravelTerrain(7);
                 break;
             case '>':
-                s = getSpecialTerrain(3);
+                s = getTravelTerrain(8);
                 break;
-            case '*':
-                s = getSpecialTerrain(4);
+            case '<':
+                s = getTravelTerrain(9);
                 break;
                 //todo - traps and other hidden objects as features - see dydx
             default:
@@ -95,20 +110,12 @@ public abstract class ViridianDriveTheme {
     protected abstract short getWallTerrain(int terrainIndex);
 
     /**
-     * Return a terrain tile ID corresponding to a set of special terrain properties for this theme.
+     * Return a terrain tile ID corresponding to a set of travel terrain properties for this theme.
      * The general contract is as follows:
-     * 0(~) - a liquid terrain type such as lakes or rivers.
-     * 1(=) - a road terrain type.
-     * 2(<) - a passage to a shallower floor, or to a connected world location.
-     * 3(>) - a passage to a deeper floor, or to a connected world location.
-     * 4(*) - a theme specific flavor terrain.
-     * Note that implementations need not follow this contract if not appropriate for their theme.
-     * Additionally, implementations may randomly select terrain properties within a category if desired -
-     * for example, if the floor for a specific theme is a mix of barren dust and sparse vegetation, calling
-     * getFloorTerrain(0) might provide a 65% chance of returning barren dust and a 35% chance of returning sparse
-     * vegetation.
+     * 0-7 indicate a travel permission value of 0-8, corresponding to directions with those ordinals.
+     * > and < indicate travel permissions of down and up respectively.
      */
-    protected abstract short getSpecialTerrain(int terrainIndex);
+    protected abstract short getTravelTerrain(int terrainIndex);
 
     /**
      * Return a terrain tile ID corresponding to a set of untyped terrain properties for this theme.

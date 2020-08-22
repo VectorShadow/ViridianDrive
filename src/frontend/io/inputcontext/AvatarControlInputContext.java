@@ -4,6 +4,7 @@ import backend.EngineManager;
 import gamestate.order.MovementOrder;
 import gamestate.order.Order;
 import gamestate.order.RotationOrder;
+import gamestate.order.TravelOrder;
 import link.instructions.LogOutInstructionDatum;
 import link.instructions.OrderTransmissionInstructionDatum;
 import user.PlayerSession;
@@ -44,6 +45,12 @@ public class AvatarControlInputContext extends InputContext {
             case VK_X:
                 if (keyMod == CTRL_DOWN_MASK)
                     EngineManager.frontEndDataLink.transmit(new LogOutInstructionDatum());
+                break;
+            case VK_COMMA: case VK_PERIOD:
+                if (keyMod == SHIFT_DOWN_MASK) {
+                    //todo - handle terrain feature activation?
+                    EngineManager.frontEndDataLink.transmit(new OrderTransmissionInstructionDatum(new TravelOrder()));
+                }
                 break;
         }
         if (orderChanged)
