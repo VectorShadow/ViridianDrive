@@ -16,7 +16,8 @@ public class LocalDriver {
                 new ViridianDriveGameZoneUpdateListener(),
                 new LoginScreenInputContext(),
                 new ViridianDriveOrderExecutor(),
-                new ViridianDriveTerrainLookup()
+                new ViridianDriveTerrainLookup(),
+                new ViridianDriveTravelMap()
         );
         IOManager.launchGui();
         IOManager.getGui().update(GUIConstants.CHANNEL_SPLASH_SCREEN);

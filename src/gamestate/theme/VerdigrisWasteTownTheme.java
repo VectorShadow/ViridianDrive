@@ -1,33 +1,21 @@
 package gamestate.theme;
 
-public class VerdigrisWasteTownTheme extends TownTheme{
+import gamestate.theme.feature.TownFeatureReader;
 
-    private static final short PROPERTY_DEFINITION_INDEX_VERDIGRIS_DUST = 2;
-    private static final short PROPERTY_DEFINITION_INDEX_WASTE_FLORA = 3;
-    private static final short PROPERTY_DEFINITION_INDEX_BLUE_STONE = 4;
-    private static final short PROPERTY_DEFINITION_INDEX_WASTE_FUNGUS_TREE = 5;
-    private static final short PROPERTY_DEFINITION_INDEX_BLUE_STONE_BRICK = 6;
-    private static final short PROPERTY_DEFINITION_INDEX_TAR_PAVED_ROAD = 7;
+public class VerdigrisWasteTownTheme extends VerdigrisWasteTheme {
 
-    @Override
-    protected short getFloorTerrain(int terrainIndex) {
-        switch (terrainIndex) {
-            case 0:
-                return PROPERTY_DEFINITION_INDEX_VERDIGRIS_DUST;
-            case 1:
-                return PROPERTY_DEFINITION_INDEX_WASTE_FLORA;
-            default:
-                throw new IllegalArgumentException("Unhandled terrainIndex " + terrainIndex);
-        }
+    protected static final short PROPERTY_DEFINITION_INDEX_BLUE_STONE_BRICK = 6;
+    protected static final short PROPERTY_DEFINITION_INDEX_TAR_PAVED_ROAD = 7;
+
+    public VerdigrisWasteTownTheme() {
+        super(new TownFeatureReader());
     }
 
     @Override
     protected short getWallTerrain(int terrainIndex) {
+        short superIndex = super.getWallTerrain(terrainIndex);
+        if (superIndex >= 0) return superIndex;
         switch (terrainIndex) {
-            case 0:
-                return PROPERTY_DEFINITION_INDEX_BLUE_STONE;
-            case 1:
-                return PROPERTY_DEFINITION_INDEX_WASTE_FUNGUS_TREE;
             case 2:
                 return PROPERTY_DEFINITION_INDEX_BLUE_STONE_BRICK;
                 default:
@@ -37,6 +25,7 @@ public class VerdigrisWasteTownTheme extends TownTheme{
 
     @Override
     protected short getSpecialTerrain(int terrainIndex) {
+        //todo - check super, which will have stairs
         return PROPERTY_DEFINITION_INDEX_TAR_PAVED_ROAD;
     }
 

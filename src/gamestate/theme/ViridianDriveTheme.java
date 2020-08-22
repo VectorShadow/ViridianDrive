@@ -2,12 +2,19 @@ package gamestate.theme;
 
 import gamestate.terrain.TerrainTile;
 import gamestate.terrain.ViridianDriveTerrainFeature;
+import gamestate.theme.feature.FeatureReader;
 
 /**
  * A theme for flavoring game zones.
  * Themes exist to provide context for zone builder default patterns.
  */
 public abstract class ViridianDriveTheme {
+
+    private final FeatureReader FEATURE_READER;
+
+    public ViridianDriveTheme(FeatureReader featureReader) {
+        FEATURE_READER = featureReader;
+    }
 
     /**
      * Read an input character and return a new terrain tile with an id corresponding to the desired properties.
@@ -112,5 +119,7 @@ public abstract class ViridianDriveTheme {
     /**
      * Return a terrain feature corresponding to the specified feature symbol for this theme.
      */
-    public abstract ViridianDriveTerrainFeature readFeature(char featureSymbol);
+    public ViridianDriveTerrainFeature readFeature(char featureSymbol) {
+        return FEATURE_READER.readFeature(featureSymbol);
+    }
 }

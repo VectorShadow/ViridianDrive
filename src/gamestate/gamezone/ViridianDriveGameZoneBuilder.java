@@ -14,6 +14,10 @@ public abstract class ViridianDriveGameZoneBuilder extends GameZoneBuilder {
 
     protected final GameZone ZONE;
 
+    public ViridianDriveGameZoneBuilder(int size, ViridianDriveTheme theme) {
+        this(size, size, theme);
+    }
+
     public ViridianDriveGameZoneBuilder(int height, int width, ViridianDriveTheme theme) {
         HEIGHT = height;
         WIDTH = width;

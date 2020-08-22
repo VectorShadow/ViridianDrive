@@ -1,10 +1,9 @@
-package gamestate.theme;
+package gamestate.theme.feature;
 
 import gamestate.terrain.ViridianDriveTerrainFeature;
 
-public abstract class TownTheme extends ViridianDriveTheme {
+public class TownFeatureReader extends FeatureReader {
 
-    @Override
     public ViridianDriveTerrainFeature readFeature(char terrainSymbol) {
         switch (terrainSymbol) {
             case 'H': return ViridianDriveTerrainFeature.HANGAR;

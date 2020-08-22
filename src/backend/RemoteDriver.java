@@ -17,7 +17,8 @@ public class RemoteDriver {
                 new ViridianDriveGameZoneUpdateListener(),
                 new LoginScreenInputContext(),
                 new ViridianDriveOrderExecutor(),
-                new ViridianDriveTerrainLookup()
+                new ViridianDriveTerrainLookup(),
+                new ViridianDriveTravelMap()
         );
         try {
             EngineManager.startRemoteEngine();
