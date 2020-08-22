@@ -18,6 +18,15 @@ public class GUIConstants {
 //    public static final int TEXT_TILE_1_HEIGHT = 48;
 //    public static final int TEXT_TILE_1_WIDTH = 32;
 
+    public static final int CH_MAIN_RG_VIEW_TILE_DIMENSION = 32;
+
+    public static final int CH_MAIN_RG_MINIMAP_TILE_DIMENSION = 2;
+
+    public static final int CH_MAIN_RG_COMPASS_TILE_DIMENSION = 71;
+
+    public static final int CH_MAIN_RG_MICRO_TILE_DIMENSION = 2;
+
+
     public static final int CH_MAIN_RG_VIEW_INDEX = 0;
     public static final int CH_MAIN_RG_LOCATION_DESCRIPTION_INDEX = 1;
     public static final int CH_MAIN_RG_MINIMAP_INDEX = 2;
@@ -33,7 +42,7 @@ public class GUIConstants {
     public static final int CH_MAIN_RG_MINIMAP_HEIGHT = 144;
     public static final int CH_MAIN_RG_MINIMAP_WIDTH = 144;
 
-    public static final int CH_MAIN_RG_MINIMAP_ORIGIN_X = CANVAS_WIDTH - CH_MAIN_RG_MINIMAP_WIDTH;
+    public static final int CH_MAIN_RG_MINIMAP_ORIGIN_X = CANVAS_WIDTH - CH_MAIN_RG_MINIMAP_TILE_DIMENSION * CH_MAIN_RG_MINIMAP_WIDTH;
     public static final int CH_MAIN_RG_MINIMAP_ORIGIN_Y = 0;
 
     public static final int CH_MAIN_RG_VIEW_HEIGHT = 27;
@@ -46,15 +55,7 @@ public class GUIConstants {
     public static final int CH_MAIN_RG_MICRO_HEIGHT = 9 * PointCoordinate.POINTS_PER_TILE - 1;
     public static final int CH_MAIN_RG_MICRO_WIDTH = 9 * PointCoordinate.POINTS_PER_TILE - 1;
 
-    public static final int CH_MAIN_RG_VIEW_TILE_DIMENSION = 32;
-
-    public static final int CH_MAIN_RG_MINIMAP_TILE_DIMENSION = 1;
-
-    public static final int CH_MAIN_RG_COMPASS_TILE_DIMENSION = 71;
-
-    public static final int CH_MAIN_RG_MICRO_TILE_DIMENSION = 1;
-
-    public static final int CH_MAIN_RG_MICRO_ORIGIN_X = CH_MAIN_RG_MINIMAP_ORIGIN_X - CH_MAIN_RG_MICRO_WIDTH;
+    public static final int CH_MAIN_RG_MICRO_ORIGIN_X = CH_MAIN_RG_MINIMAP_ORIGIN_X - CH_MAIN_RG_MICRO_TILE_DIMENSION * CH_MAIN_RG_MICRO_WIDTH;
     public static final int CH_MAIN_RG_MICRO_ORIGIN_Y = 0;
 
     public static final int CH_MAIN_RG_COMPASS_ORIGIN_X = CH_MAIN_RG_MICRO_ORIGIN_X - CH_MAIN_RG_COMPASS_TILE_DIMENSION;
