@@ -63,7 +63,7 @@ public class ViridianDriveGameZoneGenerator extends GameZoneGenerator {
     public GameZoneBuilder getGameZoneBuilder(ZoneCoordinate zc) {
         switch (zc.LOCATION_ID) {
             case (WORLD_LOCATION_STEADROCK_SETTLEMENT):
-                return new ArenaGameZoneBuilder(31, new VerdigrisWasteTheme());
+                return new ArenaGameZoneBuilder(63, new VerdigrisWasteTheme());
 //                return new PreDefinedGameZoneBuilder(
 //                        new ArrayList<>(),
 //                        PRE_DEFINED_FEATURES_STEADROCK_SETTLEMENT,
