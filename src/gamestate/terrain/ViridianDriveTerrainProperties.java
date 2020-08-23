@@ -79,11 +79,19 @@ public class ViridianDriveTerrainProperties extends TerrainProperties implements
                     new TextImageSource(ASSET_TAR_PAVEMENT, ASSET_VERDIGRIS_DUST, ':'),
                     null
             ),
-            // 8 - arena gate - special - used to enter and exit the Steadrock Settlement testing arena.
+            // 8 - arena entry gate - special - used to enter the Steadrock Settlement testing arena.
             new ViridianDriveTerrainProperties(
                     TerrainProperties.ENERGY_PERMISSION_TRANSPARENT,
                     TerrainProperties.MATTER_PERMISSION_FREE,
                     Direction.SOUTH.ordinal(),
+                    new TextImageSource(ASSET_BLUE_STONE, ASSET_BLUE_STONE_BRICK, '0'),
+                    null
+            ),
+            // 8 - arena exit gate - special - used to exit the Steadrock Settlement testing arena.
+            new ViridianDriveTerrainProperties(
+                    TerrainProperties.ENERGY_PERMISSION_TRANSPARENT,
+                    TerrainProperties.MATTER_PERMISSION_FREE,
+                    Direction.NORTH.ordinal(),
                     new TextImageSource(ASSET_BLUE_STONE, ASSET_BLUE_STONE_BRICK, '0'),
                     null
             )

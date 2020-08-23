@@ -9,10 +9,9 @@ import gamestate.theme.VerdigrisWasteTownTheme;
 
 import java.util.ArrayList;
 
-public class ViridianDriveGameZoneGenerator extends GameZoneGenerator {
+import static definitions.ViridianDriveTravelMap.*;
 
-    public static final int WORLD_LOCATION_STEADROCK_SETTLEMENT = ZoneCoordinate.ORIGIN_ZONE_ID; //0
-    public static final int WORLD_LOCATION_STEADROCK_ARENA = 1;
+public class ViridianDriveGameZoneGenerator extends GameZoneGenerator {
 
     private static final String[] PRE_DEFINED_FEATURES_STEADROCK_SETTLEMENT = {
             "################################",

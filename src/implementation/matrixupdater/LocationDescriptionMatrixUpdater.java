@@ -7,7 +7,7 @@ import user.PlayerSession;
 import java.awt.*;
 
 import static definitions.ViridianDriveColors.*;
-import static definitions.ViridianDriveGameZoneGenerator.*;
+import static definitions.ViridianDriveTravelMap.*;
 
 public class LocationDescriptionMatrixUpdater extends MatrixUpdater {
     @Override

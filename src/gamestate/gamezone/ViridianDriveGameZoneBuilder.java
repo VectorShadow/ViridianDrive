@@ -1,5 +1,8 @@
 package gamestate.gamezone;
 
+import definitions.DefinitionsManager;
+import gamestate.coordinates.Coordinate;
+import gamestate.terrain.TerrainProperties;
 import gamestate.terrain.TerrainTile;
 import gamestate.theme.ViridianDriveTheme;
 
@@ -43,4 +46,14 @@ public abstract class ViridianDriveGameZoneBuilder extends GameZoneBuilder {
      * This should also set all necessary tile fields, such as features and actors.
      */
     protected abstract TerrainTile generateTile(int row, int column);
+
+    /**
+     * Test each terrain tile for travel permissions and mark the zone as necessary.
+     * All implementations of generateTile should call this.
+     */
+    protected void setTravelPoints(int row, int column, TerrainTile terrainTile) {
+        int travelPermission = DefinitionsManager.getTerrainLookup().getProperties(terrainTile).TRAVEL_PERMISSION;
+        if (travelPermission == TerrainProperties.TRAVEL_PERMISSION_NONE) return;
+        ZONE.TRAVEL_POINTS.setTravelPointTo(travelPermission, new Coordinate(column, row));
+    }
 }

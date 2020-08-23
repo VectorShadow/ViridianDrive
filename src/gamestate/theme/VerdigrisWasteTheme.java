@@ -9,7 +9,8 @@ public class VerdigrisWasteTheme extends ViridianDriveTheme {
     protected static final short PROPERTY_DEFINITION_INDEX_BLUE_STONE = 4;
     protected static final short PROPERTY_DEFINITION_INDEX_WASTE_FUNGUS_TREE = 5;
 
-    protected static final short PROPERTY_DEFINITION_INDEX_ARENA_GATE = 8;
+    protected static final short PROPERTY_DEFINITION_INDEX_ARENA_ENTRY_GATE = 8;
+    protected static final short PROPERTY_DEFINITION_INDEX_ARENA_EXIT_GATE = 9;
 
     /**
      * This class itself needs no features.
@@ -52,8 +53,10 @@ public class VerdigrisWasteTheme extends ViridianDriveTheme {
     @Override
     protected short getTravelTerrain(int terrainIndex) {
         switch (terrainIndex) {
+            case 0:
+                return PROPERTY_DEFINITION_INDEX_ARENA_EXIT_GATE;
             case 4:
-                return PROPERTY_DEFINITION_INDEX_ARENA_GATE;
+                return PROPERTY_DEFINITION_INDEX_ARENA_ENTRY_GATE;
                 default:
                     return -1;
         }

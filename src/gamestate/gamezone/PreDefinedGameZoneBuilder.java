@@ -1,5 +1,6 @@
 package gamestate.gamezone;
 
+import definitions.DefinitionsManager;
 import gamestate.gameobject.actor.ViridianDriveActor;
 import gamestate.terrain.TerrainTile;
 import gamestate.theme.ViridianDriveTheme;
@@ -30,6 +31,7 @@ public class PreDefinedGameZoneBuilder extends ViridianDriveGameZoneBuilder {
     protected TerrainTile generateTile(int row, int column) {
         TerrainTile terrainTile = THEME.readTerrain(TERRAIN[row - 1].charAt(column - 1));
         terrainTile.terrainFeature = THEME.readFeature(FEATURES[row - 1].charAt(column - 1));
+        setTravelPoints(row, column, terrainTile);
         return terrainTile;
     }
 }
