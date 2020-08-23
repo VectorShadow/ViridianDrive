@@ -1,5 +1,6 @@
 package implementation.matrixupdater;
 
+import gamestate.gameobject.MobileGameObject;
 import images.ImageMatrix;
 import images.RotatedTrueImageSource;
 import user.PlayerSession;
@@ -12,7 +13,7 @@ public class CompassMatrixUpdater extends MatrixUpdater {
                 new RotatedTrueImageSource(
                         0,
                         0,
-                        PlayerSession.getActor() == null ? 0.0 : PlayerSession.getActor().getFacing()
+                        PlayerSession.getActor() == null ? MobileGameObject.FACING_NORTH : PlayerSession.getActor().getFacing()
                 );
         imageMatrix.set(0, 0, rtis);
         return imageMatrix;
