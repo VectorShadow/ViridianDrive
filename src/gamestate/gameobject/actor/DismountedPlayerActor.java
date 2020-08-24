@@ -59,6 +59,6 @@ public class DismountedPlayerActor extends ViridianDriveActor {
     @Override
     public double getVisionPower() {
         //todo - time of day and weather effects? pilot wound conditions?
-        return 9.0;
+        return 7.5;
     }
 }

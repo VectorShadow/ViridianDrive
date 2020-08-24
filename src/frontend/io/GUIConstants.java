@@ -18,7 +18,7 @@ public class GUIConstants {
 //    public static final int TEXT_TILE_1_HEIGHT = 48;
 //    public static final int TEXT_TILE_1_WIDTH = 32;
 
-    public static final int CH_MAIN_RG_VIEW_TILE_DIMENSION = 32;
+    public static final int CH_MAIN_RG_VIEW_TILE_DIMENSION = 24;
 
     public static final int CH_MAIN_RG_MINIMAP_TILE_DIMENSION = 2;
 
@@ -45,8 +45,8 @@ public class GUIConstants {
     public static final int CH_MAIN_RG_MINIMAP_ORIGIN_X = CANVAS_WIDTH - CH_MAIN_RG_MINIMAP_TILE_DIMENSION * CH_MAIN_RG_MINIMAP_WIDTH;
     public static final int CH_MAIN_RG_MINIMAP_ORIGIN_Y = 0;
 
-    public static final int CH_MAIN_RG_VIEW_HEIGHT = 27;
-    public static final int CH_MAIN_RG_VIEW_WIDTH = 40;
+    public static final int CH_MAIN_RG_VIEW_HEIGHT = 36;
+    public static final int CH_MAIN_RG_VIEW_WIDTH = 53;
 
     public static final int CH_MAIN_RG_LOCATION_DESCRIPTION_HEIGHT = 1;
     public static final int CH_MAIN_RG_LOCATION_DESCRIPTION_WIDTH = 32;
