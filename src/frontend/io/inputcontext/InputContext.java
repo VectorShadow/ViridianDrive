@@ -1,5 +1,7 @@
 package frontend.io.inputcontext;
 
+import frontend.io.IOManager;
+
 import java.awt.event.KeyEvent;
 import static frontend.io.IOManager.*;
 import static java.awt.event.KeyEvent.*;
@@ -18,6 +20,8 @@ public abstract class InputContext {
         //handle events which produce the same result in any context
         if (e.getKeyCode() == VK_ENTER && e.getModifiersEx() == ALT_DOWN_MASK)
             gui.toggleFullScreenMode();
+        if (e.getKeyCode() == VK_G && e.getModifiersEx() == ALT_DOWN_MASK)
+            IOManager.setGraphicsMode(!IOManager.getGraphicsMode()); //toggle graphics
         //don't delegate alts in case of alt enter
         else if (e.getKeyCode() == VK_ALT)
             return;

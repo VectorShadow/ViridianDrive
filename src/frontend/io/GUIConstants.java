@@ -1,9 +1,11 @@
 package frontend.io;
 
 import gamestate.coordinates.PointCoordinate;
-import implementation.matrixupdater.MinimapMatrixUpdater;
 
 public class GUIConstants {
+
+    public static final int TILE_GFX_TERRAIN_ROW_0 = 0;
+
     public static final int CHANNEL_SPLASH_SCREEN = 0;
     public static final int CHANNEL_LOGIN = 1;
     public static final int CHANNEL_AVATAR_SELECTION = 2;

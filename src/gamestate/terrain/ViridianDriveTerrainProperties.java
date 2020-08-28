@@ -1,8 +1,10 @@
 package gamestate.terrain;
 
+import frontend.io.GUIConstants;
 import frontend.io.IOManager;
 import frontend.io.Imageable;
 import images.ImageSource;
+import images.RecoloredTrueImageSource;
 import images.TextImageSource;
 import images.TrueImageSource;
 import util.Direction;
@@ -21,7 +23,12 @@ public class ViridianDriveTerrainProperties extends TerrainProperties implements
                     TerrainProperties.MATTER_PERMISSION_IMPASSABLE,
                     TerrainProperties.TRAVEL_PERMISSION_NONE,
                     new TextImageSource(Color.BLACK, Color.RED, '#'),
-                    null
+                    new RecoloredTrueImageSource(
+                            1,
+                            GUIConstants.TILE_GFX_TERRAIN_ROW_0,
+                            DISPLAY_BACKGROUND_0,
+                            Color.RED
+                    )
             ),
             // 1 - empty tile - used in TestGameZoneBuilder exclusively
             new ViridianDriveTerrainProperties(
@@ -29,7 +36,12 @@ public class ViridianDriveTerrainProperties extends TerrainProperties implements
                     TerrainProperties.MATTER_PERMISSION_FREE,
                     TerrainProperties.TRAVEL_PERMISSION_NONE,
                     new TextImageSource(Color.BLACK, Color.WHITE,  '.'),
-                    null
+                    new RecoloredTrueImageSource(
+                            2,
+                            GUIConstants.TILE_GFX_TERRAIN_ROW_0,
+                            DISPLAY_BACKGROUND_0,
+                            Color.WHITE
+                    )
             ),
             // 2 - verdigris dust - used in VerdigrisWasteTownTheme
             new ViridianDriveTerrainProperties(
@@ -37,7 +49,13 @@ public class ViridianDriveTerrainProperties extends TerrainProperties implements
                     TerrainProperties.MATTER_PERMISSION_FREE,
                     TerrainProperties.TRAVEL_PERMISSION_NONE,
                     new TextImageSource(ASSET_VERDIGRIS_DUST, ASSET_BLUE_STONE, ' '),
-                    null
+                    new RecoloredTrueImageSource(
+                            3,
+                            GUIConstants.TILE_GFX_TERRAIN_ROW_0,
+                            DISPLAY_BACKGROUND_0,
+                            ASSET_BLUE_STONE,
+                            ASSET_VERDIGRIS_DUST
+                    )
             ),
             // 3 - waste flora - used in VerdigrisWasteTownTheme
             new ViridianDriveTerrainProperties(
@@ -45,7 +63,14 @@ public class ViridianDriveTerrainProperties extends TerrainProperties implements
                     TerrainProperties.MATTER_PERMISSION_UNEVEN,
                     TerrainProperties.TRAVEL_PERMISSION_NONE,
                     new TextImageSource(ASSET_VERDIGRIS_DUST, ASSET_FUNGAL_FLORA_0, '*'),
-                    null
+                    new RecoloredTrueImageSource(
+                            4,
+                            GUIConstants.TILE_GFX_TERRAIN_ROW_0,
+                            DISPLAY_BACKGROUND_0,
+                            ASSET_FUNGAL_FLORA_0,
+                            ASSET_VERDIGRIS_DUST,
+                            ASSET_BLUE_STONE
+                    )
             ),
             // 4 - blue stone - used in VerdigrisWasteTownTheme
             new ViridianDriveTerrainProperties(
@@ -53,7 +78,13 @@ public class ViridianDriveTerrainProperties extends TerrainProperties implements
                     TerrainProperties.MATTER_PERMISSION_SKY,
                     TerrainProperties.TRAVEL_PERMISSION_NONE,
                     new TextImageSource(ASSET_VERDIGRIS_DUST, ASSET_BLUE_STONE, '#'),
-                    null
+                    new RecoloredTrueImageSource(
+                            5,
+                            GUIConstants.TILE_GFX_TERRAIN_ROW_0,
+                            DISPLAY_BACKGROUND_0,
+                            ASSET_BLUE_STONE,
+                            ASSET_VERDIGRIS_DUST
+                    )
             ),
             // 5 - waste fungus tree - used in VerdigrisWasteTownTheme
             new ViridianDriveTerrainProperties(
@@ -61,7 +92,14 @@ public class ViridianDriveTerrainProperties extends TerrainProperties implements
                     TerrainProperties.MATTER_PERMISSION_OBSTACLE,
                     TerrainProperties.TRAVEL_PERMISSION_NONE,
                     new TextImageSource(ASSET_VERDIGRIS_DUST, ASSET_FUNGAL_FLORA_0, 'T'),
-                    null
+                    new RecoloredTrueImageSource(
+                            6,
+                            GUIConstants.TILE_GFX_TERRAIN_ROW_0,
+                            DISPLAY_BACKGROUND_0,
+                            ASSET_FUNGAL_FLORA_0,
+                            ASSET_VERDIGRIS_DUST,
+                            ASSET_BLUE_STONE
+                    )
             ),
             // 6 - blue stone brick - used in VerdigrisWasteTownTheme
             new ViridianDriveTerrainProperties(
@@ -69,7 +107,14 @@ public class ViridianDriveTerrainProperties extends TerrainProperties implements
                     TerrainProperties.MATTER_PERMISSION_SHEER,
                     TerrainProperties.TRAVEL_PERMISSION_NONE,
                     new TextImageSource(ASSET_BLUE_STONE, ASSET_BLUE_STONE_BRICK, '$'),
-                    null
+                    new RecoloredTrueImageSource(
+                            7,
+                            GUIConstants.TILE_GFX_TERRAIN_ROW_0,
+                            DISPLAY_BACKGROUND_0,
+                            ASSET_BLUE_STONE_BRICK,
+                            ASSET_BLUE_STONE,
+                            ASSET_VERDIGRIS_DUST
+                    )
             ),
             // 7 - tar paved road - used in VerdigrisWasteTownTheme
             new ViridianDriveTerrainProperties(
@@ -77,7 +122,14 @@ public class ViridianDriveTerrainProperties extends TerrainProperties implements
                     TerrainProperties.MATTER_PERMISSION_FREE,
                     TerrainProperties.TRAVEL_PERMISSION_NONE,
                     new TextImageSource(ASSET_TAR_PAVEMENT, ASSET_VERDIGRIS_DUST, ':'),
-                    null
+                    new RecoloredTrueImageSource(
+                            8,
+                            GUIConstants.TILE_GFX_TERRAIN_ROW_0,
+                            DISPLAY_BACKGROUND_0,
+                            ASSET_TAR_PAVEMENT,
+                            ASSET_BLUE_STONE,
+                            ASSET_VERDIGRIS_DUST
+                    )
             ),
             // 8 - arena entry gate - special - used to enter the Steadrock Settlement testing arena.
             new ViridianDriveTerrainProperties(
