@@ -1,6 +1,5 @@
 package gamestate.terrain;
 
-import frontend.io.GUIConstants;
 import frontend.io.IOManager;
 import frontend.io.Imageable;
 import images.ImageSource;
@@ -12,6 +11,7 @@ import util.Direction;
 import java.awt.*;
 
 import static definitions.ViridianDriveColors.*;
+import static frontend.io.GUIConstants.*;
 
 //todo - shops as features, not terrain!
 public class ViridianDriveTerrainProperties extends TerrainProperties implements Imageable {
@@ -25,7 +25,7 @@ public class ViridianDriveTerrainProperties extends TerrainProperties implements
                     new TextImageSource(Color.BLACK, Color.RED, '#'),
                     new RecoloredTrueImageSource(
                             1,
-                            GUIConstants.TILE_GFX_TERRAIN_ROW_0,
+                            TILE_GFX_TERRAIN_ROW_0,
                             DISPLAY_BACKGROUND_0,
                             Color.RED
                     )
@@ -38,7 +38,7 @@ public class ViridianDriveTerrainProperties extends TerrainProperties implements
                     new TextImageSource(Color.BLACK, Color.WHITE,  '.'),
                     new RecoloredTrueImageSource(
                             2,
-                            GUIConstants.TILE_GFX_TERRAIN_ROW_0,
+                            TILE_GFX_TERRAIN_ROW_0,
                             DISPLAY_BACKGROUND_0,
                             Color.WHITE
                     )
@@ -51,7 +51,7 @@ public class ViridianDriveTerrainProperties extends TerrainProperties implements
                     new TextImageSource(ASSET_VERDIGRIS_DUST, ASSET_BLUE_STONE, ' '),
                     new RecoloredTrueImageSource(
                             3,
-                            GUIConstants.TILE_GFX_TERRAIN_ROW_0,
+                            TILE_GFX_TERRAIN_ROW_0,
                             DISPLAY_BACKGROUND_0,
                             ASSET_BLUE_STONE,
                             ASSET_VERDIGRIS_DUST
@@ -65,7 +65,7 @@ public class ViridianDriveTerrainProperties extends TerrainProperties implements
                     new TextImageSource(ASSET_VERDIGRIS_DUST, ASSET_FUNGAL_FLORA_0, '*'),
                     new RecoloredTrueImageSource(
                             4,
-                            GUIConstants.TILE_GFX_TERRAIN_ROW_0,
+                            TILE_GFX_TERRAIN_ROW_0,
                             DISPLAY_BACKGROUND_0,
                             ASSET_FUNGAL_FLORA_0,
                             ASSET_VERDIGRIS_DUST,
@@ -80,7 +80,7 @@ public class ViridianDriveTerrainProperties extends TerrainProperties implements
                     new TextImageSource(ASSET_VERDIGRIS_DUST, ASSET_BLUE_STONE, '#'),
                     new RecoloredTrueImageSource(
                             5,
-                            GUIConstants.TILE_GFX_TERRAIN_ROW_0,
+                            TILE_GFX_TERRAIN_ROW_0,
                             DISPLAY_BACKGROUND_0,
                             ASSET_BLUE_STONE,
                             ASSET_VERDIGRIS_DUST
@@ -94,7 +94,7 @@ public class ViridianDriveTerrainProperties extends TerrainProperties implements
                     new TextImageSource(ASSET_VERDIGRIS_DUST, ASSET_FUNGAL_FLORA_0, 'T'),
                     new RecoloredTrueImageSource(
                             6,
-                            GUIConstants.TILE_GFX_TERRAIN_ROW_0,
+                            TILE_GFX_TERRAIN_ROW_0,
                             DISPLAY_BACKGROUND_0,
                             ASSET_FUNGAL_FLORA_0,
                             ASSET_VERDIGRIS_DUST,
@@ -109,7 +109,7 @@ public class ViridianDriveTerrainProperties extends TerrainProperties implements
                     new TextImageSource(ASSET_BLUE_STONE, ASSET_BLUE_STONE_BRICK, '$'),
                     new RecoloredTrueImageSource(
                             7,
-                            GUIConstants.TILE_GFX_TERRAIN_ROW_0,
+                            TILE_GFX_TERRAIN_ROW_0,
                             DISPLAY_BACKGROUND_0,
                             ASSET_BLUE_STONE_BRICK,
                             ASSET_BLUE_STONE,
@@ -124,7 +124,7 @@ public class ViridianDriveTerrainProperties extends TerrainProperties implements
                     new TextImageSource(ASSET_TAR_PAVEMENT, ASSET_VERDIGRIS_DUST, ':'),
                     new RecoloredTrueImageSource(
                             8,
-                            GUIConstants.TILE_GFX_TERRAIN_ROW_0,
+                            TILE_GFX_TERRAIN_ROW_0,
                             DISPLAY_BACKGROUND_0,
                             ASSET_TAR_PAVEMENT,
                             ASSET_BLUE_STONE,
@@ -166,14 +166,20 @@ public class ViridianDriveTerrainProperties extends TerrainProperties implements
 
     @Override
     public ImageSource getVisibleImageSource() {
-        //todo - apply ascii gfx coloration to image_gfx
         return !IOManager.getGraphicsMode() || IMAGE_GFX == null ? ASCII_GFX : IMAGE_GFX;
     }
 
     @Override
     public ImageSource getMemoryImageSource() {
-        //todo - apply memory coloration to image_gfx
-        return new TextImageSource(OVERRIDE_MEMORY_BACKGROUND, OVERRIDE_MEMORY_FOREGROUND, ASCII_GFX);
+        return !IOManager.getGraphicsMode() || IMAGE_GFX == null
+                ? new TextImageSource(OVERRIDE_MEMORY_BACKGROUND, OVERRIDE_MEMORY_FOREGROUND, ASCII_GFX)
+                : new RecoloredTrueImageSource(
+                        IMAGE_GFX,
+                        DISPLAY_BACKGROUND_0,
+                        OVERRIDE_MEMORY_FOREGROUND,
+                        OVERRIDE_MEMORY_BACKGROUND,
+                        OVERRIDE_MEMORY_BACKGROUND
+                    );
     }
 
     public static ViridianDriveTerrainProperties lookup(short terrainID) {

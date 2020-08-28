@@ -3,16 +3,24 @@ package gamestate.terrain;
 import frontend.io.IOManager;
 import frontend.io.Imageable;
 import images.ImageSource;
+import images.RecoloredTrueImageSource;
 import images.TextImageSource;
 import images.TrueImageSource;
 
 import static definitions.ViridianDriveColors.*;
+import static frontend.io.GUIConstants.*;
 
 public enum ViridianDriveTerrainFeature implements Imageable, TerrainFeature {
 
     HANGAR(
             new TextImageSource(BUILDING_HANGAR_BG, BUILDING_HANGAR_FG, 'H'),
-            null
+            new RecoloredTrueImageSource(
+                    1,
+                    TILE_GFX_FEATURE_ROW_0,
+                    DISPLAY_BACKGROUND_0,
+                    BUILDING_HANGAR_FG,
+                    BUILDING_HANGAR_BG
+            )
     ),
     SALOON(
             new TextImageSource(BUILDING_SALOON_BG, BUILDING_SALOON_FG, 'S'),
@@ -169,13 +177,19 @@ public enum ViridianDriveTerrainFeature implements Imageable, TerrainFeature {
 
     @Override
     public ImageSource getVisibleImageSource() {
-        //todo - apply ascii gfx coloration to image_gfx
         return !IOManager.getGraphicsMode() || IMAGE_GFX == null ? ASCII_GFX : IMAGE_GFX;
     }
 
     @Override
     public ImageSource getMemoryImageSource() {
-        //todo - apply memory coloration to image_gfx
-        return new TextImageSource(OVERRIDE_MEMORY_BACKGROUND, OVERRIDE_MEMORY_FOREGROUND, ASCII_GFX);
+        return !IOManager.getGraphicsMode() || IMAGE_GFX == null
+                ? new TextImageSource(OVERRIDE_MEMORY_BACKGROUND, OVERRIDE_MEMORY_FOREGROUND, ASCII_GFX)
+                : new RecoloredTrueImageSource(
+                        IMAGE_GFX,
+                        DISPLAY_BACKGROUND_0,
+                        OVERRIDE_MEMORY_FOREGROUND,
+                        OVERRIDE_MEMORY_BACKGROUND,
+                        OVERRIDE_MEMORY_BACKGROUND
+                    );
     }
 }

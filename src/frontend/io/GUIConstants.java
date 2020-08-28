@@ -5,6 +5,7 @@ import gamestate.coordinates.PointCoordinate;
 public class GUIConstants {
 
     public static final int TILE_GFX_TERRAIN_ROW_0 = 0;
+    public static final int TILE_GFX_FEATURE_ROW_0 = 4;
 
     public static final int CHANNEL_SPLASH_SCREEN = 0;
     public static final int CHANNEL_LOGIN = 1;
