@@ -1,6 +1,7 @@
 package frontend.io;
 
 import definitions.ViridianDriveColors;
+import frontend.UserPreferences;
 import frontend.io.inputcontext.InputContext;
 import frontend.io.inputcontext.SplashScreenInputContext;
 import images.ImageSource;
@@ -23,8 +24,6 @@ public class IOManager {
     public static Gui gui;
 
     private static InputContext inputContext = new SplashScreenInputContext();
-
-    private static boolean graphicsMode = false;
 
     public static void launchGui() {
         ImageSource.setImageDirectoryPath("./gfx");
@@ -214,15 +213,8 @@ public class IOManager {
                         }
                 )
                 .build(30);
-        //gui.toggleFullScreenMode();
-    }
-
-    public static boolean getGraphicsMode() {
-        return graphicsMode;
-    }
-
-    public static void setGraphicsMode(boolean graphicsOn) {
-        graphicsMode = graphicsOn;
+        if (UserPreferences.getInstance().isFullScreen())
+            gui.toggleFullScreenMode();
     }
 
     public static void setInputContext(InputContext inputContext) {

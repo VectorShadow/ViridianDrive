@@ -1,5 +1,6 @@
 package util;
 
+import frontend.UserPreferences;
 import main.LiveLog;
 import main.LogHub;
 import user.UserAccountManager;
@@ -22,6 +23,9 @@ public class ArgumentHandler {
                         case "log":
                             LiveLog.stop(); //terminate any active logging
                             removeRecursively(LogHub.getDirectoryPath());
+                            break;
+                        case "prf":
+                            removeRecursively(UserPreferences.getDirectoryPath());
                             break;
                         case "usr":
                             removeRecursively(UserAccountManager.getDirectoryPath());

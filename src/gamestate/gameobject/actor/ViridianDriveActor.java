@@ -1,6 +1,7 @@
 package gamestate.gameobject.actor;
 
 import definitions.ViridianDriveColors;
+import frontend.UserPreferences;
 import frontend.io.IOManager;
 import frontend.io.Imageable;
 import gamestate.gameobject.GameActor;
@@ -27,8 +28,7 @@ public abstract class ViridianDriveActor extends GameActor implements Imageable 
 
     @Override
     public ImageSource getVisibleImageSource() {
-        //todo - apply ascii gfx coloration to image_gfx
-        return !IOManager.getGraphicsMode() || IMAGE_GFX == null ? ASCII_GFX : IMAGE_GFX;
+        return !UserPreferences.getInstance().isGraphics() || IMAGE_GFX == null ? ASCII_GFX : IMAGE_GFX;
     }
 
     @Override

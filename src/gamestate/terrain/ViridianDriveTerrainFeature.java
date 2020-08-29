@@ -1,5 +1,6 @@
 package gamestate.terrain;
 
+import frontend.UserPreferences;
 import frontend.io.IOManager;
 import frontend.io.Imageable;
 import images.ImageSource;
@@ -177,12 +178,12 @@ public enum ViridianDriveTerrainFeature implements Imageable, TerrainFeature {
 
     @Override
     public ImageSource getVisibleImageSource() {
-        return !IOManager.getGraphicsMode() || IMAGE_GFX == null ? ASCII_GFX : IMAGE_GFX;
+        return !UserPreferences.getInstance().isGraphics() || IMAGE_GFX == null ? ASCII_GFX : IMAGE_GFX;
     }
 
     @Override
     public ImageSource getMemoryImageSource() {
-        return !IOManager.getGraphicsMode() || IMAGE_GFX == null
+        return !UserPreferences.getInstance().isGraphics() || IMAGE_GFX == null
                 ? new TextImageSource(OVERRIDE_MEMORY_BACKGROUND, OVERRIDE_MEMORY_FOREGROUND, ASCII_GFX)
                 : new RecoloredTrueImageSource(
                         IMAGE_GFX,
