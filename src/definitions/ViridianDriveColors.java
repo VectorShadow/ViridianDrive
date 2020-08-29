@@ -16,12 +16,12 @@ public class ViridianDriveColors {
     public static final Color ASSET_TAR_PAVEMENT = new Color(0, 15, 31);
     public static final Color ASSET_VERDIGRIS_DUST = new Color(0, 207, 143);
 
-    public static final Color CLASS_BEASTMASTER = new Color(195, 195, 0);
-    public static final Color CLASS_BIOENGINEER = new Color(0, 195, 195);
+    public static final Color CLASS_BEASTMASTER = new Color(195, 97, 0);
+    public static final Color CLASS_CYBERNAUT = new Color(0, 195, 0);
     public static final Color CLASS_ENGINEER = new Color(0, 0, 195);
-    public static final Color CLASS_MERCENARY = new Color(195, 0, 0);
-    public static final Color CLASS_PSION = new Color(97, 0, 97);
-    public static final Color CLASS_SYMBIANT = new Color(97, 195, 97);
+    public static final Color CLASS_GUNNER = new Color(195, 0, 0);
+    public static final Color CLASS_PSION = new Color(97, 0, 195);
+    public static final Color CLASS_SCOUT = new Color(195, 195, 0);
 
     public static final Color BUILDING_HANGAR_BG = new Color(47, 47, 71);
     public static final Color BUILDING_HANGAR_FG = new Color(127, 127, 143);
